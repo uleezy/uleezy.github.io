@@ -39,14 +39,14 @@
       overflow: hidden;
     }
 
-    /* Smooth animated gradient: blue → purple → pink → red → back */
+    /* Smooth animated gradient: blue → purple → pink → red → back (slow) */
     .hero-bg {
       position: absolute;
       inset: 0;
       background: radial-gradient(circle at center, #1d2a6a, #020617);
       z-index: 0;
-      background-size: 200% 200%;
-      animation: heroGradient 40s linear infinite;
+      background-size: 250% 250%;
+      animation: heroGradient 80s linear infinite;
     }
 
     @keyframes heroGradient {
@@ -442,6 +442,15 @@
       color: #f97316;
       font-weight: 600;
     }
+    .contact-list a {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    .contact-list a:hover {
+      text-decoration-thickness: 2px;
+      color: #bfdbfe;
+    }
 
     /* Responsive layout */
     @media (max-width: 768px) {
@@ -495,7 +504,7 @@
           <!-- JS injects media here -->
         </div>
         <p class="about-media-note">
-          Slideshow cycles through your main photos every 5 seconds.
+          Slideshow cycles through your photos every 5 seconds.
         </p>
       </div>
     </div>
@@ -509,10 +518,34 @@
         Booking, beats, collabs, or just to tap in — reach out and we’ll build.
       </p>
       <ul class="contact-list">
-        <!-- Replace these placeholders with your real info later -->
-        <li><strong>Email:</strong> <span>your-email@example.com</span></li>
-        <li><strong>Instagram:</strong> <span>@your_ig_here</span></li>
-        <li><strong>SoundCloud:</strong> <span>soundcloud.com/yourname</span></li>
+        <li>
+          <strong>Streaming:</strong>
+          <span>Ula on Spotify, Apple Music, Pandora &amp; more</span>
+        </li>
+        <li>
+          <strong>Instagram:</strong>
+          <span>
+            <a href="https://www.instagram.com/uleezy4sheezy/" target="_blank" rel="noopener">
+              @Uleezy4sheezy
+            </a>
+          </span>
+        </li>
+        <li>
+          <strong>YouTube:</strong>
+          <span>
+            <a href="https://www.youtube.com/@ula619" target="_blank" rel="noopener">
+              @Ula619
+            </a>
+          </span>
+        </li>
+        <li>
+          <strong>SoundCloud:</strong>
+          <span>
+            <a href="https://soundcloud.com/la_the_anda" target="_blank" rel="noopener">
+              Ula
+            </a>
+          </span>
+        </li>
       </ul>
     </div>
   </section>
@@ -638,16 +671,10 @@
     // ======== Floating background kaomoji ========
     const kaomojiLayer = document.getElementById("kaomojiLayer");
     const backgroundKaos = [
-      "(◕‿◕✿)",
-      "(ᵔᴥᵔ)",
-      "(¬‿¬ )",
-      "(≖‿≖ )",
-      "(｡•́︿•̀｡)",
-      "(ಥ﹏ಥ)",
-      "(；ω；)",
-      "(._.)",
-      "(｡♥‿♥｡)",
-      "¯\\\\_(ツ)_/¯"
+      "(◕‿◕✿)", "(ᵔᴥᵔ)", "(¬‿¬ )", "(≖‿≖ )", "(｡•́︿•̀｡)",
+      "(ಥ﹏ಥ)", "(；ω；)", "(._.)", "(｡♥‿♥｡)", "¯\\\\_(ツ)_/¯",
+      "(ノ・∀・)ノ", "(ﾉ´ヮ`)ﾉ*:･ﾟ✧", "(；￣Д￣)", "(⊙_☉)",
+      "(-_-;)", "(ง'̀-'́)ง", "(´･ω･`)", "(⌒‿⌒)", "(>_<)", "(✧ω✧)"
     ];
 
     function spawnKaomoji() {
@@ -657,12 +684,12 @@
         backgroundKaos[Math.floor(Math.random() * backgroundKaos.length)];
       span.style.left = Math.random() * 100 + "vw";
       span.style.top = "110vh";
-      span.style.fontSize = 12 + Math.random() * 20 + "px";
-      span.style.animationDuration = 18 + Math.random() * 10 + "s";
+      span.style.fontSize = 10 + Math.random() * 22 + "px";
+      span.style.animationDuration = 22 + Math.random() * 14 + "s";
       kaomojiLayer.appendChild(span);
       span.addEventListener("animationend", () => span.remove());
     }
-    setInterval(spawnKaomoji, 800);
+    setInterval(spawnKaomoji, 900);
 
     // ======== Button kaomoji: timed + hover states ========
     const musicBtn = document.getElementById("musicBtn");
@@ -671,30 +698,19 @@
     const mapBtnKao = document.getElementById("mapBtnKao");
 
     const neutralKaos = [
-      "(・ω・)",
-      "(･ω･)",
-      "(￣ω￣)",
-      "(＾▽＾)",
-      "(◕‿◕✿)",
-      "(=^‥^=)"
+      "(・ω・)", "(･ω･)", "(￣ω￣)", "(＾▽＾)", "(◕‿◕✿)",
+      "(=^‥^=)", "(´･ω･`)", "(・_・;)", "(￣▽￣)", "(⌒‿⌒)"
     ];
     const fearKaos = [
-      "(◎﹏◎;)",
-      "(ﾟдﾟ；)",
-      "(；ﾟДﾟ)",
-      "(⊙﹏⊙✿)"
+      "(◎﹏◎;)", "(ﾟдﾟ；)", "(；ﾟДﾟ)", "(⊙﹏⊙✿)", "(；￣Д￣)",
+      "(╯°□°）╯︵ ┻━┻"
     ];
     const loveKaos = [
-      "(｡♥‿♥｡)",
-      "(づ｡◕‿‿◕｡)づ",
-      "(*´▽`*)",
-      "(♡＾▽＾♡)"
+      "(｡♥‿♥｡)", "(づ｡◕‿‿◕｡)づ", "(*´▽`*)", "(♡＾▽＾♡)",
+      "(´｡• ᵕ •｡`)", "(✿˶˘ ³˘)♡"
     ];
     const sadKaos = [
-      "(｡•́︿•̀｡)",
-      "(ಥ﹏ಥ)",
-      "(；ω；)",
-      "(._.)"
+      "(｡•́︿•̀｡)", "(ಥ﹏ಥ)", "(；ω；)", "(._.)", "(╥﹏╥)", "(ノ_<。)"
     ];
 
     function rand(arr) {
@@ -743,7 +759,7 @@
     // Hover behavior:
     // - Hover button → fear
     // - Hover kaomoji itself → love
-    // - Leave kaomoji → sad instantly
+    // - Leave kaomoji/button → sad, then back to neutral
 
     // MUSIC BUTTON hover
     musicBtn.addEventListener("mouseenter", () => {
@@ -751,7 +767,6 @@
     });
     musicBtn.addEventListener("mouseleave", () => {
       if (musicState !== "love") setMusicState("sad");
-      // After 3s, drift back to neutral if not being pet
       setTimeout(() => {
         if (musicState !== "love") setMusicState("neutral");
       }, 3000);
@@ -805,7 +820,7 @@
       {
         title: "Prototype Track 1",
         artist: "Ula",
-        src: "" // set to "assets/videos/main-audio-1.mp3" later etc.
+        src: "" // set to your audio file later
       }
     ];
     let currentTrack = 0;
@@ -927,21 +942,42 @@
       }
     });
 
-    // ======== ABOUT SECTION SLIDESHOW ========
+    // ======== ABOUT SECTION SLIDESHOW (URL version) ========
     const aboutSlideshowEl = document.getElementById("aboutSlideshow");
 
-    // IMPORTANT:
-    // Make sure these filenames exist in your repo under assets/images/
-    // You can rename them or add more later.
     const aboutMediaItems = [
-      { type: "image", src: "assets/images/main-photo-1.png", alt: "Main photo 1" },
-      { type: "image", src: "assets/images/main-photo-2.png", alt: "Main photo 2" }
+      {
+        type: "image",
+        src: "https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg",
+        alt: "Ula photo 1"
+      },
+      {
+        type: "image",
+        src: "https://i.pinimg.com/736x/43/fe/d2/43fed25a912fd4e44af1d35b9aac6a01.jpg",
+        alt: "Ula photo 2"
+      },
+      {
+        type: "image",
+        src: "https://i.pinimg.com/736x/4a/90/45/4a9045416707ca4f825c70cb81079ebb.jpg",
+        alt: "Ula photo 3"
+      },
+      {
+        type: "image",
+        src: "https://i.pinimg.com/736x/68/d8/e6/68d8e6a18aac67bb0b47c8ec77ec1cd2.jpg",
+        alt: "Ula photo 4"
+      },
+      {
+        type: "image",
+        src: "https://i.pinimg.com/736x/86/6d/22/866d220dbf59a6aee104196a586c0832.jpg",
+        alt: "Ula photo 5"
+      }
     ];
 
     let aboutIndex = 0;
 
     function renderAboutMedia() {
       if (!aboutSlideshowEl || aboutMediaItems.length === 0) return;
+
       const item = aboutMediaItems[aboutIndex];
       aboutSlideshowEl.innerHTML = "";
 
@@ -968,4 +1004,3 @@
   </script>
 </body>
 </html>
-
