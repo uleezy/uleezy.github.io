@@ -39,30 +39,36 @@
       overflow: hidden;
     }
 
-    /* Animated gradient background: blue → purple → pink → red → purple */
+    /* Smooth animated gradient: blue → purple → pink → red → back */
     .hero-bg {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, #1b1b2d, #020617);
+      background: radial-gradient(circle at center, #1d2a6a, #020617);
       z-index: 0;
-      animation: heroGradient 20s ease-in-out infinite;
+      background-size: 200% 200%;
+      animation: heroGradient 40s linear infinite;
     }
 
     @keyframes heroGradient {
       0% {
-        background: radial-gradient(circle at center, #1d2a6a, #020617);
+        background-position: 50% 0%;
+        background-image: radial-gradient(circle at center, #1d2a6a, #020617);
       }
       25% {
-        background: radial-gradient(circle at top, #3b1f6a, #050013);
+        background-position: 100% 50%;
+        background-image: radial-gradient(circle at top, #3b1f6a, #050013);
       }
       50% {
-        background: radial-gradient(circle at center, #5b1b6a, #0b0218);
+        background-position: 50% 100%;
+        background-image: radial-gradient(circle at center, #5b1b6a, #0b0218);
       }
       75% {
-        background: radial-gradient(circle at bottom, #7a1234, #050013);
+        background-position: 0% 50%;
+        background-image: radial-gradient(circle at bottom, #7a1234, #050013);
       }
       100% {
-        background: radial-gradient(circle at center, #3b1f6a, #020617);
+        background-position: 50% 0%;
+        background-image: radial-gradient(circle at center, #1d2a6a, #020617);
       }
     }
 
@@ -72,7 +78,7 @@
       inset: 0;
       pointer-events: none;
       overflow: hidden;
-      opacity: 0.4; /* noticeable but not too much */
+      opacity: 0.4;
       z-index: 1;
     }
     .kaomoji {
@@ -124,59 +130,36 @@
       top: 0;
       width: 100%;
       overflow: hidden;
-      clip-path: inset(0 0 50% 0);
       opacity: 0.8;
     }
     .typing-name.glitch::before {
       text-shadow: -2px 0 rgba(56, 189, 248, 0.9);
+      clip-path: inset(0 0 60% 0);
       animation: glitchSlice1 0.35s infinite;
     }
     .typing-name.glitch::after {
       text-shadow: 2px 0 rgba(244, 63, 94, 0.9);
+      clip-path: inset(40% 0 0 0);
       animation: glitchSlice2 0.35s infinite;
     }
 
     @keyframes glitchShake {
-      0% {
-        transform: translate(0, 0);
-      }
-      20% {
-        transform: translate(-1px, 1px);
-      }
-      40% {
-        transform: translate(1px, -1px);
-      }
-      60% {
-        transform: translate(-1px, -1px);
-      }
-      80% {
-        transform: translate(1px, 1px);
-      }
-      100% {
-        transform: translate(0, 0);
-      }
+      0% { transform: translate(0, 0); }
+      20% { transform: translate(-1px, 1px); }
+      40% { transform: translate(1px, -1px); }
+      60% { transform: translate(-1px, -1px); }
+      80% { transform: translate(1px, 1px); }
+      100% { transform: translate(0, 0); }
     }
     @keyframes glitchSlice1 {
-      0% {
-        clip-path: inset(0 0 65% 0);
-      }
-      50% {
-        clip-path: inset(20% 0 30% 0);
-      }
-      100% {
-        clip-path: inset(45% 0 0 0);
-      }
+      0%   { clip-path: inset(0 0 60% 0); }
+      50%  { clip-path: inset(20% 0 30% 0); }
+      100% { clip-path: inset(50% 0 0 0); }
     }
     @keyframes glitchSlice2 {
-      0% {
-        clip-path: inset(65% 0 0 0);
-      }
-      50% {
-        clip-path: inset(30% 0 20% 0);
-      }
-      100% {
-        clip-path: inset(0 0 45% 0);
-      }
+      0%   { clip-path: inset(40% 0 0 0); }
+      50%  { clip-path: inset(30% 0 20% 0); }
+      100% { clip-path: inset(0 0 50% 0); }
     }
 
     .tagline {
@@ -417,21 +400,11 @@
       animation: censoredShake 0.35s infinite;
     }
     @keyframes censoredShake {
-      0% {
-        transform: translate(0, 0) rotate(0deg);
-      }
-      25% {
-        transform: translate(-1px, 1px) rotate(-0.5deg);
-      }
-      50% {
-        transform: translate(1px, -1px) rotate(0.5deg);
-      }
-      75% {
-        transform: translate(-1px, -0.5px) rotate(0deg);
-      }
-      100% {
-        transform: translate(0.5px, 1px) rotate(0.5deg);
-      }
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+      50% { transform: translate(1px, -1px) rotate(0.5deg); }
+      75% { transform: translate(-1px, -0.5px) rotate(0deg); }
+      100% { transform: translate(0.5px, 1px) rotate(0.5deg); }
     }
 
     /* === CONTACT SECTION === */
@@ -522,7 +495,7 @@
           <!-- JS injects media here -->
         </div>
         <p class="about-media-note">
-          Slideshow cycles through your main photos &amp; videos every 5 seconds.
+          Slideshow cycles through your main photos every 5 seconds.
         </p>
       </div>
     </div>
@@ -674,7 +647,7 @@
       "(；ω；)",
       "(._.)",
       "(｡♥‿♥｡)",
-      "¯\\_(ツ)_/¯"
+      "¯\\\\_(ツ)_/¯"
     ];
 
     function spawnKaomoji() {
@@ -691,35 +664,74 @@
     }
     setInterval(spawnKaomoji, 800);
 
-    // ======== Button kaomoji swapping (Music ↔ Map every 5s) ========
+    // ======== Button kaomoji: timed + hover states ========
+    const musicBtn = document.getElementById("musicBtn");
+    const mapBtn = document.getElementById("mapBtn");
     const musicBtnKao = document.getElementById("musicBtnKao");
     const mapBtnKao = document.getElementById("mapBtnKao");
-    const buttonKaos = [
-      "(◕‿◕✿)",
-      "(＾▽＾)",
+
+    const neutralKaos = [
+      "(・ω・)",
       "(･ω･)",
-      "(≧◡≦)",
-      "(｡♥‿♥｡)",
-      "(ʘ‿ʘ)",
-      "(ノ・∀・)ノ",
       "(￣ω￣)",
+      "(＾▽＾)",
+      "(◕‿◕✿)",
+      "(=^‥^=)"
+    ];
+    const fearKaos = [
+      "(◎﹏◎;)",
+      "(ﾟдﾟ；)",
+      "(；ﾟДﾟ)",
+      "(⊙﹏⊙✿)"
+    ];
+    const loveKaos = [
+      "(｡♥‿♥｡)",
+      "(づ｡◕‿‿◕｡)づ",
+      "(*´▽`*)",
+      "(♡＾▽＾♡)"
+    ];
+    const sadKaos = [
+      "(｡•́︿•̀｡)",
       "(ಥ﹏ಥ)",
-      "(._.)",
-      "(¬_¬\")",
-      "(/・ω・)/"
+      "(；ω；)",
+      "(._.)"
     ];
 
-    function randomButtonKao() {
-      return buttonKaos[Math.floor(Math.random() * buttonKaos.length)];
+    function rand(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
     }
 
+    let musicState = "neutral";
+    let mapState = "neutral";
+
+    function setMusicState(state) {
+      musicState = state;
+      if (state === "neutral") musicBtnKao.textContent = rand(neutralKaos);
+      if (state === "fear") musicBtnKao.textContent = rand(fearKaos);
+      if (state === "love") musicBtnKao.textContent = rand(loveKaos);
+      if (state === "sad") musicBtnKao.textContent = rand(sadKaos);
+    }
+
+    function setMapState(state) {
+      mapState = state;
+      if (state === "neutral") mapBtnKao.textContent = rand(neutralKaos);
+      if (state === "fear") mapBtnKao.textContent = rand(fearKaos);
+      if (state === "love") mapBtnKao.textContent = rand(loveKaos);
+      if (state === "sad") mapBtnKao.textContent = rand(sadKaos);
+    }
+
+    // Initial neutral faces
+    setMusicState("neutral");
+    setMapState("neutral");
+
+    // Timed alternation: every 5s, only if that button is neutral
     function startButtonKaomojiLoop() {
       let toggle = true;
       function step() {
-        if (toggle) {
-          musicBtnKao.textContent = randomButtonKao();
-        } else {
-          mapBtnKao.textContent = randomButtonKao();
+        if (toggle && musicState === "neutral") {
+          setMusicState("neutral");
+        } else if (!toggle && mapState === "neutral") {
+          setMapState("neutral");
         }
         toggle = !toggle;
         setTimeout(step, 5000);
@@ -728,9 +740,58 @@
     }
     startButtonKaomojiLoop();
 
+    // Hover behavior:
+    // - Hover button → fear
+    // - Hover kaomoji itself → love
+    // - Leave kaomoji → sad instantly
+
+    // MUSIC BUTTON hover
+    musicBtn.addEventListener("mouseenter", () => {
+      if (musicState !== "love") setMusicState("fear");
+    });
+    musicBtn.addEventListener("mouseleave", () => {
+      if (musicState !== "love") setMusicState("sad");
+      // After 3s, drift back to neutral if not being pet
+      setTimeout(() => {
+        if (musicState !== "love") setMusicState("neutral");
+      }, 3000);
+    });
+    musicBtnKao.addEventListener("mouseenter", (e) => {
+      e.stopPropagation();
+      setMusicState("love");
+    });
+    musicBtnKao.addEventListener("mouseleave", (e) => {
+      e.stopPropagation();
+      setMusicState("sad");
+      setTimeout(() => {
+        if (musicState !== "love") setMusicState("neutral");
+      }, 3000);
+    });
+
+    // MAP BUTTON hover
+    mapBtn.addEventListener("mouseenter", () => {
+      if (mapState !== "love") setMapState("fear");
+    });
+    mapBtn.addEventListener("mouseleave", () => {
+      if (mapState !== "love") setMapState("sad");
+      setTimeout(() => {
+        if (mapState !== "love") setMapState("neutral");
+      }, 3000);
+    });
+    mapBtnKao.addEventListener("mouseenter", (e) => {
+      e.stopPropagation();
+      setMapState("love");
+    });
+    mapBtnKao.addEventListener("mouseleave", (e) => {
+      e.stopPropagation();
+      setMapState("sad");
+      setTimeout(() => {
+        if (mapState !== "love") setMapState("neutral");
+      }, 3000);
+    });
+
     // ======== Music Console Overlay Logic ========
     const musicOverlay = document.getElementById("musicOverlay");
-    const musicBtn = document.getElementById("musicBtn");
     const musicAudio = document.getElementById("musicAudio");
     const trackTitleEl = document.getElementById("trackTitle");
     const trackArtistEl = document.getElementById("trackArtist");
@@ -744,7 +805,7 @@
       {
         title: "Prototype Track 1",
         artist: "Ula",
-        src: "" // e.g. "assets/videos/main-audio-1.mp3" later
+        src: "" // set to "assets/videos/main-audio-1.mp3" later etc.
       }
     ];
     let currentTrack = 0;
@@ -776,9 +837,7 @@
     musicBtn.addEventListener("click", openMusic);
 
     playPauseBtn.addEventListener("click", () => {
-      if (!tracks[currentTrack].src) {
-        return; // no track yet
-      }
+      if (!tracks[currentTrack].src) return;
       if (musicAudio.paused) {
         musicAudio.play();
         playPauseBtn.textContent = "Pause";
@@ -841,15 +900,12 @@
     window.closeMusic = closeMusic;
 
     // ======== MAP BUTTON → 360° VIEWER (prototype) ========
-    const mapBtn = document.getElementById("mapBtn");
     const viewer = document.getElementById("viewer");
 
     function launchViewer() {
-      // simple portal flash (you can fancy this up later)
       viewer.innerHTML = `
         <a-scene embedded vr-mode-ui="enabled: false">
           <a-assets>
-            <!-- Replace this src with your own 360 video later if you want -->
             <video id="worldvideo" autoplay loop="true" crossorigin="anonymous"
               src="https://videos.pexels.com/video-files/2583496/2583496-sd_640_360_30fps.mp4">
             </video>
@@ -874,13 +930,12 @@
     // ======== ABOUT SECTION SLIDESHOW ========
     const aboutSlideshowEl = document.getElementById("aboutSlideshow");
 
-    // Update these paths to match your actual uploaded files:
+    // IMPORTANT:
+    // Make sure these filenames exist in your repo under assets/images/
+    // You can rename them or add more later.
     const aboutMediaItems = [
-      // Example placeholders – change these when you upload real files:
-      { type: "image", src: "assets/images/main-photo-1.png", alt: "Main cover 1" },
-      { type: "image", src: "assets/images/main-photo-2.jpg", alt: "Main cover 2" },
-      { type: "video", src: "assets/videos/main-video-1.mp4" },
-      { type: "video", src: "assets/videos/main-video-2.mp4" }
+      { type: "image", src: "assets/images/main-photo-1.png", alt: "Main photo 1" },
+      { type: "image", src: "assets/images/main-photo-2.png", alt: "Main photo 2" }
     ];
 
     let aboutIndex = 0;
@@ -913,4 +968,4 @@
   </script>
 </body>
 </html>
-<!DOCTYPE html>
+
