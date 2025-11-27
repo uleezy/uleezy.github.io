@@ -1,148 +1,488 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Ula / Uleezy • Dagorilla Academy Alumni</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-  /* === Basic Reset === */
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body, html { width:100%; height:100%; overflow-x:hidden; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #020617; color: #f9fafb; }
+    /* === BASIC RESET === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: #020617;
+      color: #f9fafb;
+      scroll-behavior: smooth;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-  a { text-decoration: none; color: inherit; }
+    /* === HERO SECTION === */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
 
-  /* === Hero Section === */
-  .hero {
-    position: relative;
-    width: 100%; height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden;
-  }
+    /* Animated gradient background: blue → purple → pink → red → purple */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, #1b1b2d, #020617);
+      z-index: 0;
+      animation: heroGradient 20s ease-in-out infinite;
+    }
 
-  .hero-bg {
-    position: absolute;
-    top:0; left:0; width:100%; height:100%;
-    background: radial-gradient(circle at center, #1b1b2d, #020617);
-    z-index: 0;
-    animation: gradientShift 20s infinite;
-  }
+    @keyframes heroGradient {
+      0% {
+        background: radial-gradient(circle at center, #1d2a6a, #020617);
+      }
+      25% {
+        background: radial-gradient(circle at top, #3b1f6a, #050013);
+      }
+      50% {
+        background: radial-gradient(circle at center, #5b1b6a, #0b0218);
+      }
+      75% {
+        background: radial-gradient(circle at bottom, #7a1234, #050013);
+      }
+      100% {
+        background: radial-gradient(circle at center, #3b1f6a, #020617);
+      }
+    }
 
-  @keyframes gradientShift {
-    0% { background: #1b1b2d; }
-    25% { background: #2d1b3b; }
-    50% { background: #3d1b4b; }
-    75% { background: #4b1b3d; }
-    100% { background: #1b1b2d; }
-  }
+    /* Floating kaomoji background layer */
+    .kaomoji-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.4; /* noticeable but not too much */
+      z-index: 1;
+    }
+    .kaomoji {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.1rem;
+      user-select: none;
+      will-change: transform, opacity;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120vh) scale(0.6);
+        opacity: 0;
+      }
+    }
 
-  .kaomoji-layer {
-    position: absolute;
-    top:0; left:0; width:100%; height:100%;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 1;
-    opacity: 0.4;
-  }
-  .kaomoji {
-    position: absolute;
-    color: rgba(255,255,255,0.8);
-    user-select: none;
-    font-size: 1.2rem;
-    will-change: transform, opacity;
-    animation: floatUp linear infinite;
-  }
-  @keyframes floatUp {
-    0% { transform: translateY(0) scale(1); opacity:1; }
-    100% { transform: translateY(-120vh) scale(0.5); opacity:0; }
-  }
+    .title-container {
+      position: relative;
+      z-index: 2;
+      padding: 0 1.5rem;
+    }
 
-  .title-container {
-    position: relative;
-    z-index: 2;
-  }
-  .typing-name {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 700;
-    color: transparent;
-    -webkit-text-stroke: 1px #fff;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  .tagline {
-    margin-top: 1rem;
-    font-size: 1.2rem;
-    color: #d1d1d1;
-  }
+    .typing-name {
+      font-size: clamp(2.6rem, 7vw, 4rem);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: transparent;
+      -webkit-text-stroke: 1px #ffffff;
+      text-shadow: 0 0 10px rgba(129, 140, 248, 0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+    }
 
-  .buttons {
-    margin-top: 2rem;
-    display: flex;
-    gap: 1rem;
-  }
-  .btn {
-    padding: 0.8rem 1.8rem;
-    border: 2px solid #6c6c7d;
-    border-radius: 999px;
-    background: rgba(15,23,42,0.8);
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .btn:hover {
-    background: rgba(15,23,42,1);
-    border-color: #22c55e;
-  }
+    /* Glitch effect for "The Ulatron" */
+    .typing-name.glitch {
+      animation: glitchShake 0.25s infinite;
+    }
+    .typing-name.glitch::before,
+    .typing-name.glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      overflow: hidden;
+      clip-path: inset(0 0 50% 0);
+      opacity: 0.8;
+    }
+    .typing-name.glitch::before {
+      text-shadow: -2px 0 rgba(56, 189, 248, 0.9);
+      animation: glitchSlice1 0.35s infinite;
+    }
+    .typing-name.glitch::after {
+      text-shadow: 2px 0 rgba(244, 63, 94, 0.9);
+      animation: glitchSlice2 0.35s infinite;
+    }
 
-  /* — Overlay styles — */
-  .overlay {
-    position: fixed;
-    top:0; left:0; width:100%; height:100%;
-    background: rgba(0,0,0,0.9);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-  }
-  .overlay.show {
-    display: flex;
-  }
-  .music-console {
-    width: 90%; max-width: 500px;
-    padding: 2rem;
-    background: rgba(20,20,30,0.95);
-    border: 2px solid #444;
-    border-radius: 12px;
-    text-align: center;
-    color: #eee;
-  }
-  .music-console button {
-    padding: 0.6rem 1.2rem;
-    margin: 0.5rem;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
+    @keyframes glitchShake {
+      0% {
+        transform: translate(0, 0);
+      }
+      20% {
+        transform: translate(-1px, 1px);
+      }
+      40% {
+        transform: translate(1px, -1px);
+      }
+      60% {
+        transform: translate(-1px, -1px);
+      }
+      80% {
+        transform: translate(1px, 1px);
+      }
+      100% {
+        transform: translate(0, 0);
+      }
+    }
+    @keyframes glitchSlice1 {
+      0% {
+        clip-path: inset(0 0 65% 0);
+      }
+      50% {
+        clip-path: inset(20% 0 30% 0);
+      }
+      100% {
+        clip-path: inset(45% 0 0 0);
+      }
+    }
+    @keyframes glitchSlice2 {
+      0% {
+        clip-path: inset(65% 0 0 0);
+      }
+      50% {
+        clip-path: inset(30% 0 20% 0);
+      }
+      100% {
+        clip-path: inset(0 0 45% 0);
+      }
+    }
 
-  /* 360 viewer overlay (full screen) */
-  #viewer {
-    position: fixed;
-    top:0; left:0; width:100%; height:100%;
-    background: black;
-    display: none;
-    z-index: 20;
-  }
+    .tagline {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: #d1d5db;
+    }
 
+    .buttons {
+      margin-top: 2.2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      position: relative;
+      padding: 0.9rem 1.8rem;
+      border-radius: 999px;
+      border: 2px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: #f9fafb;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease,
+        border-color 0.2s ease, background 0.2s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.85);
+      border-color: #22c55e;
+      background: rgba(15, 23, 42, 1);
+    }
+
+    .btn-kao {
+      display: inline-block;
+      margin-left: 0.35rem;
+      min-width: 3ch;
+      text-align: left;
+      font-size: 0.98rem;
+      opacity: 0.9;
+    }
+
+    /* === OVERLAYS === */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    .overlay.show {
+      display: flex;
+    }
+
+    /* Music Console Overlay */
+    .music-console {
+      width: 90%;
+      max-width: 520px;
+      padding: 2rem;
+      background: radial-gradient(circle at top, #111827, #020617);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.9);
+      color: #e5e7eb;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .music-console h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.25rem;
+    }
+    .music-console-sub {
+      font-size: 0.86rem;
+      color: #9ca3af;
+      margin-bottom: 1.2rem;
+    }
+    .music-meta {
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .music-meta strong {
+      color: #f97316;
+      font-weight: 600;
+    }
+    .music-controls {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-bottom: 1.1rem;
+      flex-wrap: wrap;
+    }
+    .music-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 0.5rem 1.1rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      background: #111827;
+      color: #f9fafb;
+      border: 1px solid rgba(75, 85, 99, 0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease,
+        background 0.15s ease, border-color 0.15s ease;
+    }
+    .music-btn:hover {
+      background: #1f2937;
+      border-color: #22c55e;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.8);
+    }
+    .music-volume-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.1rem;
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+    .music-volume-row input[type="range"] {
+      width: 180px;
+    }
+
+    /* Kaomoji "pets" inside music console */
+    .music-kaomoji-row {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .pet-kao {
+      font-size: 1.2rem;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    .pet-kao:hover {
+      transform: translateY(-2px) scale(1.05);
+      filter: drop-shadow(0 0 6px rgba(248, 250, 252, 0.85));
+    }
+    .music-console-footer {
+      font-size: 0.78rem;
+      color: #6b7280;
+    }
+    .music-close {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.8rem;
+      border: none;
+      background: transparent;
+      color: #9ca3af;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .music-close:hover {
+      color: #f9fafb;
+    }
+
+    /* 360° viewer overlay */
+    #viewer {
+      position: fixed;
+      inset: 0;
+      background: black;
+      display: none;
+      z-index: 20;
+    }
+
+    /* === ABOUT SECTION === */
+    .about-section {
+      padding: 4rem 1.5rem;
+      background: radial-gradient(circle at top, rgba(30, 64, 175, 0.35), #020617);
+      color: #e5e7eb;
+    }
+    .about-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .about-text h2 {
+      font-size: clamp(2rem, 4vw, 2.6rem);
+      margin-bottom: 1rem;
+    }
+    .about-text p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+    .about-media {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .about-slideshow {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #020617;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+    }
+    .about-slideshow img,
+    .about-slideshow video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .about-slideshow video {
+      background: black;
+    }
+    .about-media-note {
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+
+    /* Shaking censored word */
+    .shake-censored {
+      display: inline-block;
+      position: relative;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 4px rgba(248, 250, 252, 0.6),
+        0 0 10px rgba(244, 114, 182, 0.8);
+      filter: blur(0.3px);
+      animation: censoredShake 0.35s infinite;
+    }
+    @keyframes censoredShake {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      25% {
+        transform: translate(-1px, 1px) rotate(-0.5deg);
+      }
+      50% {
+        transform: translate(1px, -1px) rotate(0.5deg);
+      }
+      75% {
+        transform: translate(-1px, -0.5px) rotate(0deg);
+      }
+      100% {
+        transform: translate(0.5px, 1px) rotate(0.5deg);
+      }
+    }
+
+    /* === CONTACT SECTION === */
+    .contact-section {
+      padding: 3.5rem 1.5rem 4.5rem;
+      background: #020617;
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+    }
+    .contact-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .contact-inner h2 {
+      font-size: clamp(2rem, 3.5vw, 2.4rem);
+      margin-bottom: 0.75rem;
+      color: #f9fafb;
+    }
+    .contact-inner p {
+      margin-bottom: 1rem;
+      color: #d1d5db;
+    }
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.5rem;
+    }
+    .contact-list li {
+      font-size: 0.98rem;
+      color: #e5e7eb;
+    }
+    .contact-list strong {
+      color: #f97316;
+      font-weight: 600;
+    }
+
+    /* Responsive layout */
+    @media (max-width: 768px) {
+      .about-inner {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .music-console {
+        padding: 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
-
+  <!-- HERO -->
   <div class="hero">
     <div class="hero-bg"></div>
     <div class="kaomoji-layer" id="kaomojiLayer"></div>
@@ -151,89 +491,426 @@
       <div id="typing" class="typing-name"></div>
       <div class="tagline">I make sounds and stuff.</div>
       <div class="buttons">
-        <button id="musicBtn" class="btn">Press Start ___</button>
-        <button id="mapBtn" class="btn">Step inside Ulaville ___</button>
+        <button id="musicBtn" class="btn">
+          Press Start
+          <span id="musicBtnKao" class="btn-kao">___</span>
+        </button>
+        <button id="mapBtn" class="btn">
+          Step inside Ulaville
+          <span id="mapBtnKao" class="btn-kao">___</span>
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Music Console Overlay -->
+  <!-- ABOUT SECTION -->
+  <section id="about" class="about-section">
+    <div class="about-inner">
+      <div class="about-text">
+        <h2>Meet The Ulanator...</h2>
+        <p>
+          I'm just me, I be making sounds and stuff. I make all kinds of sounds but I'm deeply rooted in G-funk and glitch-hop and then whatever else I'm listening to at that time. I started making music back in 2017 and now I finally feel confident enough to properly make my debut.
+        </p>
+        <p>
+          Anything and everything feeds into what I do. I'm half nerd, half ghetto fabulous — a So-Cal Samoan out of San Diego. I produce, compose and sing a bit, but don't get it twisted... I ain't no poet, I'm a
+          <span class="shake-censored">m**********g</span> rapper.
+        </p>
+      </div>
+
+      <div class="about-media">
+        <div id="aboutSlideshow" class="about-slideshow">
+          <!-- JS injects media here -->
+        </div>
+        <p class="about-media-note">
+          Slideshow cycles through your main photos &amp; videos every 5 seconds.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="contact-section">
+    <div class="contact-inner">
+      <h2>Contact &amp; Links</h2>
+      <p>
+        Booking, beats, collabs, or just to tap in — reach out and we’ll build.
+      </p>
+      <ul class="contact-list">
+        <!-- Replace these placeholders with your real info later -->
+        <li><strong>Email:</strong> <span>your-email@example.com</span></li>
+        <li><strong>Instagram:</strong> <span>@your_ig_here</span></li>
+        <li><strong>SoundCloud:</strong> <span>soundcloud.com/yourname</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MUSIC CONSOLE OVERLAY -->
   <div id="musicOverlay" class="overlay">
     <div class="music-console">
+      <button class="music-close" onclick="closeMusic()">✕</button>
       <h2>Music Console</h2>
-      <p>(Prototype — no tracks yet)</p>
-      <button onclick="closeMusic()">Close</button>
+      <div class="music-console-sub">
+        Prototype player — hook it up to your tracks later.
+      </div>
+
+      <div class="music-meta">
+        <div><strong>Now Playing:</strong> <span id="trackTitle">No track loaded</span></div>
+        <div><strong>Artist:</strong> <span id="trackArtist">—</span></div>
+      </div>
+
+      <div class="music-controls">
+        <button class="music-btn" id="prevTrack">Prev</button>
+        <button class="music-btn" id="playPause">Play</button>
+        <button class="music-btn" id="nextTrack">Next</button>
+      </div>
+
+      <div class="music-volume-row">
+        <span>Volume</span>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.7" />
+      </div>
+
+      <div class="music-kaomoji-row" id="musicPets">
+        <span class="pet-kao" data-state="neutral">(・ω・)</span>
+        <span class="pet-kao" data-state="neutral">(＾▽＾)</span>
+        <span class="pet-kao" data-state="neutral">(=^‥^=)</span>
+      </div>
+
+      <div class="music-console-footer">
+        Hover the little guys to pet them. Move away to see how they feel about it.
+      </div>
+
+      <!-- AUDIO (placeholder – set src later) -->
+      <audio id="musicAudio"></audio>
     </div>
   </div>
 
-  <!-- 360° Viewer Overlay -->
+  <!-- 360° VIEWER OVERLAY (ULAVILLE PROTOTYPE) -->
   <div id="viewer"></div>
 
   <!-- A-Frame for 360° video -->
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
   <script>
-  // ======== Typing + name cycling logic ========
-  const names = ["Ula", "Uleezy", "The Ulanator", "The Ulatron"];
-  let current = 0;
-  const typingEl = document.getElementById("typing");
+    // ======== Typing + name cycling logic ========
+    const names = ["Ula", "Uleezy", "The Ulanator", "The Ulatron"];
+    let currentIndex = 0;
+    const typingEl = document.getElementById("typing");
 
-  function typeOut(text, callback) {
-    let i = 0;
-    typingEl.style.color = "transparent";
-    typingEl.style.webkitTextStroke = "1px #fff";
-    typingEl.textContent = "";
-    const outlineColor = "#fff";
-    const glowStart = "rgba(170,170,255,0.5)";
-    const glowEnd = "rgba(255,180,220,1)";
-    const duration = text.length * 80;
+    function typeOut(text, callback) {
+      let i = 0;
+      typingEl.textContent = "";
+      typingEl.style.color = "transparent";
+      typingEl.style.webkitTextStroke = "1px #ffffff";
+      typingEl.dataset.text = text;
 
-    const interval = setInterval(() => {
-      typingEl.textContent = text.slice(0, ++i);
-      const progress = i / text.length;
-      // gradient glow interpolation
-      const r = 170 + (255-170)*progress;
-      const g = 170 - (90*progress);
-      const b = 255 - (75*progress);
-      typingEl.style.color = `rgb(${r},${g},${b})`;
-      if (i >= text.length) {
-        clearInterval(interval);
-        callback();
+      const interval = setInterval(() => {
+        i++;
+        typingEl.textContent = text.slice(0, i);
+
+        const progress = i / text.length;
+        const r = 140 + (255 - 140) * progress;
+        const g = 130 - 80 * progress;
+        const b = 255 - 100 * progress;
+        typingEl.style.color = `rgb(${r}, ${g}, ${b})`;
+        typingEl.style.textShadow = `
+          0 0 8px rgba(129,140,248,${0.4 + 0.4 * progress}),
+          0 0 18px rgba(244,114,182,${0.2 + 0.6 * progress})
+        `;
+
+        if (i >= text.length) {
+          clearInterval(interval);
+          callback && callback();
+        }
+      }, 80);
+    }
+
+    function erase(callback) {
+      const text = typingEl.textContent;
+      let i = text.length;
+      const original = text;
+
+      const interval = setInterval(() => {
+        i--;
+        typingEl.textContent = original.slice(0, i);
+        typingEl.style.opacity = i / text.length;
+        if (i <= 0) {
+          clearInterval(interval);
+          typingEl.style.opacity = 1;
+          callback && callback();
+        }
+      }, 40);
+    }
+
+    function cycleNames() {
+      const name = names[currentIndex];
+
+      if (name === "The Ulatron") {
+        typingEl.classList.add("glitch");
+      } else {
+        typingEl.classList.remove("glitch");
       }
-    }, 80);
-  }
 
-  function erase(callback) {
-    const text = typingEl.textContent;
-    let i = text.length;
-    const interval = setInterval(() => {
-      typingEl.textContent = text.slice(0, --i);
-      typingEl.style.opacity = (i / text.length).toString();
-      if (i <= 0) {
-        clearInterval(interval);
-        callback();
+      typeOut(name, () => {
+        const wait = 8000 + Math.random() * 6000; // 8–14 seconds
+        setTimeout(() => {
+          erase(() => {
+            currentIndex = (currentIndex + 1) % names.length;
+            cycleNames();
+          });
+        }, wait);
+      });
+    }
+    cycleNames();
+
+    // ======== Floating background kaomoji ========
+    const kaomojiLayer = document.getElementById("kaomojiLayer");
+    const backgroundKaos = [
+      "(◕‿◕✿)",
+      "(ᵔᴥᵔ)",
+      "(¬‿¬ )",
+      "(≖‿≖ )",
+      "(｡•́︿•̀｡)",
+      "(ಥ﹏ಥ)",
+      "(；ω；)",
+      "(._.)",
+      "(｡♥‿♥｡)",
+      "¯\\_(ツ)_/¯"
+    ];
+
+    function spawnKaomoji() {
+      const span = document.createElement("div");
+      span.className = "kaomoji";
+      span.textContent =
+        backgroundKaos[Math.floor(Math.random() * backgroundKaos.length)];
+      span.style.left = Math.random() * 100 + "vw";
+      span.style.top = "110vh";
+      span.style.fontSize = 12 + Math.random() * 20 + "px";
+      span.style.animationDuration = 18 + Math.random() * 10 + "s";
+      kaomojiLayer.appendChild(span);
+      span.addEventListener("animationend", () => span.remove());
+    }
+    setInterval(spawnKaomoji, 800);
+
+    // ======== Button kaomoji swapping (Music ↔ Map every 5s) ========
+    const musicBtnKao = document.getElementById("musicBtnKao");
+    const mapBtnKao = document.getElementById("mapBtnKao");
+    const buttonKaos = [
+      "(◕‿◕✿)",
+      "(＾▽＾)",
+      "(･ω･)",
+      "(≧◡≦)",
+      "(｡♥‿♥｡)",
+      "(ʘ‿ʘ)",
+      "(ノ・∀・)ノ",
+      "(￣ω￣)",
+      "(ಥ﹏ಥ)",
+      "(._.)",
+      "(¬_¬\")",
+      "(/・ω・)/"
+    ];
+
+    function randomButtonKao() {
+      return buttonKaos[Math.floor(Math.random() * buttonKaos.length)];
+    }
+
+    function startButtonKaomojiLoop() {
+      let toggle = true;
+      function step() {
+        if (toggle) {
+          musicBtnKao.textContent = randomButtonKao();
+        } else {
+          mapBtnKao.textContent = randomButtonKao();
+        }
+        toggle = !toggle;
+        setTimeout(step, 5000);
       }
-    }, 40);
-  }
+      step();
+    }
+    startButtonKaomojiLoop();
 
-  function cycleName() {
-    const name = names[current];
-    typeOut(name, () => {
-      const wait = 8000 + Math.random()*6000;
-      setTimeout(() => {
-        erase(() => {
-          current = (current + 1) % names.length;
-          cycleName();
-        });
-      }, wait);
+    // ======== Music Console Overlay Logic ========
+    const musicOverlay = document.getElementById("musicOverlay");
+    const musicBtn = document.getElementById("musicBtn");
+    const musicAudio = document.getElementById("musicAudio");
+    const trackTitleEl = document.getElementById("trackTitle");
+    const trackArtistEl = document.getElementById("trackArtist");
+    const playPauseBtn = document.getElementById("playPause");
+    const prevTrackBtn = document.getElementById("prevTrack");
+    const nextTrackBtn = document.getElementById("nextTrack");
+    const volumeSlider = document.getElementById("volumeSlider");
+
+    // Placeholder track list (replace with your own later)
+    const tracks = [
+      {
+        title: "Prototype Track 1",
+        artist: "Ula",
+        src: "" // e.g. "assets/videos/main-audio-1.mp3" later
+      }
+    ];
+    let currentTrack = 0;
+
+    function loadTrack(index) {
+      const t = tracks[index];
+      trackTitleEl.textContent = t.title || "Unknown";
+      trackArtistEl.textContent = t.artist || "Unknown";
+      if (t.src) {
+        musicAudio.src = t.src;
+      }
+    }
+
+    function openMusic() {
+      musicOverlay.classList.add("show");
+      if (!tracks[currentTrack].src) {
+        trackTitleEl.textContent = "No track loaded yet";
+        trackArtistEl.textContent = "—";
+      } else {
+        loadTrack(currentTrack);
+      }
+    }
+    function closeMusic() {
+      musicOverlay.classList.remove("show");
+      musicAudio.pause();
+      playPauseBtn.textContent = "Play";
+    }
+
+    musicBtn.addEventListener("click", openMusic);
+
+    playPauseBtn.addEventListener("click", () => {
+      if (!tracks[currentTrack].src) {
+        return; // no track yet
+      }
+      if (musicAudio.paused) {
+        musicAudio.play();
+        playPauseBtn.textContent = "Pause";
+      } else {
+        musicAudio.pause();
+        playPauseBtn.textContent = "Play";
+      }
     });
-  }
-  cycleName();
 
-  // ======== Kaomoji overlay logic ========
-  const kaomojiList = ["(◕‿◕✿)", "(ᵔᴥᵔ)", "(¬‿¬ )", "(≖‿≖ )", "(｡•́︿•̀｡)", "(ಥ﹏ಥ)", "(；ω；)", "(._.)", "(｡♥‿♥｡)", "¯\\_(ツ)_/¯"];
-  const layer = document.getElementById("kaomojiLayer");
-  function spawnKaomoji(){
-    const span = document.createElement("
+    prevTrackBtn.addEventListener("click", () => {
+      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+      loadTrack(currentTrack);
+      if (tracks[currentTrack].src) {
+        musicAudio.play();
+        playPauseBtn.textContent = "Pause";
+      }
+    });
 
+    nextTrackBtn.addEventListener("click", () => {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      loadTrack(currentTrack);
+      if (tracks[currentTrack].src) {
+        musicAudio.play();
+        playPauseBtn.textContent = "Pause";
+      }
+    });
 
+    volumeSlider.addEventListener("input", () => {
+      musicAudio.volume = volumeSlider.value;
+    });
+
+    // Kaomoji pets logic
+    const petKaos = document.querySelectorAll(".pet-kao");
+
+    petKaos.forEach((el) => {
+      let timeouts = [];
+      el.addEventListener("mouseenter", () => {
+        timeouts.forEach(clearTimeout);
+        timeouts = [];
+        el.dataset.state = "happy";
+        el.textContent = "(ﾉ´ヮ`)ﾉ*:･ﾟ✧";
+      });
+
+      el.addEventListener("mouseleave", () => {
+        el.dataset.state = "upset";
+        el.textContent = "(◎﹏◎;)";
+        const t1 = setTimeout(() => {
+          el.dataset.state = "sad";
+          el.textContent = "(｡•́︿•̀｡)";
+        }, 2500);
+        const t2 = setTimeout(() => {
+          el.dataset.state = "neutral";
+          el.textContent = "(・ω・)";
+        }, 2500 + 3000);
+        timeouts.push(t1, t2);
+      });
+    });
+
+    // Make closeMusic accessible globally
+    window.closeMusic = closeMusic;
+
+    // ======== MAP BUTTON → 360° VIEWER (prototype) ========
+    const mapBtn = document.getElementById("mapBtn");
+    const viewer = document.getElementById("viewer");
+
+    function launchViewer() {
+      // simple portal flash (you can fancy this up later)
+      viewer.innerHTML = `
+        <a-scene embedded vr-mode-ui="enabled: false">
+          <a-assets>
+            <!-- Replace this src with your own 360 video later if you want -->
+            <video id="worldvideo" autoplay loop="true" crossorigin="anonymous"
+              src="https://videos.pexels.com/video-files/2583496/2583496-sd_640_360_30fps.mp4">
+            </video>
+          </a-assets>
+          <a-videosphere src="#worldvideo"></a-videosphere>
+          <a-entity camera look-controls wasd-controls></a-entity>
+        </a-scene>
+      `;
+      viewer.style.display = "block";
+    }
+
+    mapBtn.addEventListener("click", launchViewer);
+
+    // Close viewer on Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        viewer.style.display = "none";
+        viewer.innerHTML = "";
+      }
+    });
+
+    // ======== ABOUT SECTION SLIDESHOW ========
+    const aboutSlideshowEl = document.getElementById("aboutSlideshow");
+
+    // Update these paths to match your actual uploaded files:
+    const aboutMediaItems = [
+      // Example placeholders – change these when you upload real files:
+      { type: "image", src: "assets/images/main-photo-1.png", alt: "Main cover 1" },
+      { type: "image", src: "assets/images/main-photo-2.jpg", alt: "Main cover 2" },
+      { type: "video", src: "assets/videos/main-video-1.mp4" },
+      { type: "video", src: "assets/videos/main-video-2.mp4" }
+    ];
+
+    let aboutIndex = 0;
+
+    function renderAboutMedia() {
+      if (!aboutSlideshowEl || aboutMediaItems.length === 0) return;
+      const item = aboutMediaItems[aboutIndex];
+      aboutSlideshowEl.innerHTML = "";
+
+      if (item.type === "image") {
+        const img = document.createElement("img");
+        img.src = item.src;
+        img.alt = item.alt || "Main media";
+        aboutSlideshowEl.appendChild(img);
+      } else if (item.type === "video") {
+        const vid = document.createElement("video");
+        vid.src = item.src;
+        vid.autoplay = true;
+        vid.loop = true;
+        vid.muted = true;
+        vid.playsInline = true;
+        aboutSlideshowEl.appendChild(vid);
+      }
+
+      aboutIndex = (aboutIndex + 1) % aboutMediaItems.length;
+    }
+
+    renderAboutMedia();
+    setInterval(renderAboutMedia, 5000);
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
