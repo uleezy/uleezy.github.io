@@ -1,2 +1,239 @@
-https://uleezy.github.io
-</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ula / Uleezy • Dagorilla Academy Alumni</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  /* === Basic Reset === */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body, html { width:100%; height:100%; overflow-x:hidden; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #020617; color: #f9fafb; }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* === Hero Section === */
+  .hero {
+    position: relative;
+    width: 100%; height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    top:0; left:0; width:100%; height:100%;
+    background: radial-gradient(circle at center, #1b1b2d, #020617);
+    z-index: 0;
+    animation: gradientShift 20s infinite;
+  }
+
+  @keyframes gradientShift {
+    0% { background: #1b1b2d; }
+    25% { background: #2d1b3b; }
+    50% { background: #3d1b4b; }
+    75% { background: #4b1b3d; }
+    100% { background: #1b1b2d; }
+  }
+
+  .kaomoji-layer {
+    position: absolute;
+    top:0; left:0; width:100%; height:100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+    opacity: 0.4;
+  }
+  .kaomoji {
+    position: absolute;
+    color: rgba(255,255,255,0.8);
+    user-select: none;
+    font-size: 1.2rem;
+    will-change: transform, opacity;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity:1; }
+    100% { transform: translateY(-120vh) scale(0.5); opacity:0; }
+  }
+
+  .title-container {
+    position: relative;
+    z-index: 2;
+  }
+  .typing-name {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    color: transparent;
+    -webkit-text-stroke: 1px #fff;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .tagline {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #d1d1d1;
+  }
+
+  .buttons {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+  }
+  .btn {
+    padding: 0.8rem 1.8rem;
+    border: 2px solid #6c6c7d;
+    border-radius: 999px;
+    background: rgba(15,23,42,0.8);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn:hover {
+    background: rgba(15,23,42,1);
+    border-color: #22c55e;
+  }
+
+  /* — Overlay styles — */
+  .overlay {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  .overlay.show {
+    display: flex;
+  }
+  .music-console {
+    width: 90%; max-width: 500px;
+    padding: 2rem;
+    background: rgba(20,20,30,0.95);
+    border: 2px solid #444;
+    border-radius: 12px;
+    text-align: center;
+    color: #eee;
+  }
+  .music-console button {
+    padding: 0.6rem 1.2rem;
+    margin: 0.5rem;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  /* 360 viewer overlay (full screen) */
+  #viewer {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: black;
+    display: none;
+    z-index: 20;
+  }
+
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="kaomoji-layer" id="kaomojiLayer"></div>
+
+    <div class="title-container">
+      <div id="typing" class="typing-name"></div>
+      <div class="tagline">I make sounds and stuff.</div>
+      <div class="buttons">
+        <button id="musicBtn" class="btn">Press Start ___</button>
+        <button id="mapBtn" class="btn">Step inside Ulaville ___</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Music Console Overlay -->
+  <div id="musicOverlay" class="overlay">
+    <div class="music-console">
+      <h2>Music Console</h2>
+      <p>(Prototype — no tracks yet)</p>
+      <button onclick="closeMusic()">Close</button>
+    </div>
+  </div>
+
+  <!-- 360° Viewer Overlay -->
+  <div id="viewer"></div>
+
+  <!-- A-Frame for 360° video -->
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+  <script>
+  // ======== Typing + name cycling logic ========
+  const names = ["Ula", "Uleezy", "The Ulanator", "The Ulatron"];
+  let current = 0;
+  const typingEl = document.getElementById("typing");
+
+  function typeOut(text, callback) {
+    let i = 0;
+    typingEl.style.color = "transparent";
+    typingEl.style.webkitTextStroke = "1px #fff";
+    typingEl.textContent = "";
+    const outlineColor = "#fff";
+    const glowStart = "rgba(170,170,255,0.5)";
+    const glowEnd = "rgba(255,180,220,1)";
+    const duration = text.length * 80;
+
+    const interval = setInterval(() => {
+      typingEl.textContent = text.slice(0, ++i);
+      const progress = i / text.length;
+      // gradient glow interpolation
+      const r = 170 + (255-170)*progress;
+      const g = 170 - (90*progress);
+      const b = 255 - (75*progress);
+      typingEl.style.color = `rgb(${r},${g},${b})`;
+      if (i >= text.length) {
+        clearInterval(interval);
+        callback();
+      }
+    }, 80);
+  }
+
+  function erase(callback) {
+    const text = typingEl.textContent;
+    let i = text.length;
+    const interval = setInterval(() => {
+      typingEl.textContent = text.slice(0, --i);
+      typingEl.style.opacity = (i / text.length).toString();
+      if (i <= 0) {
+        clearInterval(interval);
+        callback();
+      }
+    }, 40);
+  }
+
+  function cycleName() {
+    const name = names[current];
+    typeOut(name, () => {
+      const wait = 8000 + Math.random()*6000;
+      setTimeout(() => {
+        erase(() => {
+          current = (current + 1) % names.length;
+          cycleName();
+        });
+      }, wait);
+    });
+  }
+  cycleName();
+
+  // ======== Kaomoji overlay logic ========
+  const kaomojiList = ["(◕‿◕✿)", "(ᵔᴥᵔ)", "(¬‿¬ )", "(≖‿≖ )", "(｡•́︿•̀｡)", "(ಥ﹏ಥ)", "(；ω；)", "(._.)", "(｡♥‿♥｡)", "¯\\_(ツ)_/¯"];
+  const layer = document.getElementById("kaomojiLayer");
+  function spawnKaomoji(){
+    const span = document.createElement("
+
+
