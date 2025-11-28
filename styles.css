@@ -1,247 +1,201 @@
-/* ---------------------------------------------------------
-   GLOBAL RESET
---------------------------------------------------------- */
+/* ========== GLOBAL RESET ========== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    user-select: none;
 }
 
-body {
-    background: black;
-    font-family: 'Press Start 2P', monospace;
-    color: white;
+html, body {
+    width: 100%;
+    height: 100%;
     overflow-x: hidden;
+    background: #000;
+    font-family: Arial, sans-serif;
+    color: white;
 }
 
-/* ---------------------------------------------------------
-   BACKGROUND GRADIENT
---------------------------------------------------------- */
-#background-gradient {
+/* Hide elements until activated */
+.hidden {
+    display: none;
+}
+
+/* ========== INTRO SCREEN ========== */
+#intro-screen {
     position: fixed;
     top: 0; left: 0;
     width: 100%;
     height: 100%;
-    z-index: -5;
-
-    background: linear-gradient(45deg, #3a00ff, #8a2be2, #ff4fe0, #ff2222, #c020ff);
-    background-size: 600% 600%;
-    animation: rainbowShift 25s ease infinite;
-}
-
-@keyframes rainbowShift {
-    0% { background-position: 0% 50%; }
-    25% { background-position: 50% 100%; }
-    50% { background-position: 100% 50%; }
-    75% { background-position: 50% 0%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* ---------------------------------------------------------
-   KAOMOJI LAYER
---------------------------------------------------------- */
-#kaomoji-container {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -3;
-}
-
-.kaomoji {
-    position: absolute;
-    font-size: 24px;
-    opacity: 0.6;
-    animation: driftKaomoji 12s linear infinite;
-}
-
-@keyframes driftKaomoji {
-    from { transform: translateY(100vh) translateX(0); opacity: 0.4; }
-    to { transform: translateY(-10vh) translateX(20px); opacity: 0; }
-}
-
-/* ---------------------------------------------------------
-   CRT OVERLAY
---------------------------------------------------------- */
-#crt-overlay {
-    pointer-events: none;
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    background: repeating-linear-gradient(
-        rgba(255,255,255,0.05) 0px,
-        rgba(255,255,255,0.05) 2px,
-        rgba(0,0,0,0) 3px,
-        rgba(0,0,0,0) 4px
-    );
-    opacity: 0;
-    transition: opacity 1s ease;
-}
-
-/* ---------------------------------------------------------
-   STARTUP SCREEN
---------------------------------------------------------- */
-#startup-screen {
-    position: fixed;
-    inset: 0;
+    background: black;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    animation: introFadeIn 1s ease-out forwards;
+}
+
+#intro-names {
     text-align: center;
-    z-index: 50;
+    margin-bottom: 40px;
 }
 
-#startup-name {
-    font-size: 32px;
-    text-shadow: 0 0 12px black;
-    margin-bottom: 30px;
+.intro-name {
+    font-size: 3rem;
+    letter-spacing: 2px;
+    padding: 5px 20px;
+    animation: glowPulse 3s infinite alternate ease-in-out;
 }
 
-#press-start {
-    font-size: 20px;
-    padding: 20px 40px;
-    background: rgba(255,255,255,0.1);
-    border: 3px solid white;
-    color: white;
-    cursor: pointer;
-    animation: startPulse 1.5s infinite ease-in-out;
+.main-font {
+    font-family: 'Bungee Shade', sans-serif;
 }
 
-@keyframes startPulse {
-    0% { transform: scale(1); opacity: 0.9; }
-    50% { transform: scale(1.05); opacity: 1; }
-    100% { transform: scale(1); opacity: 0.9; }
+.glitch-font {
+    font-family: 'Rubik Wet Paint', cursive;
 }
 
-/* ---------------------------------------------------------
-   HANDHELD UI WRAPPER
---------------------------------------------------------- */
-#handheld-ui {
-    position: fixed;
-    inset: 0;
-    display: none;
-    z-index: 60;
+/* crossed-out ulatron */
+.crossed {
+    position: relative;
+    display: inline-block;
 }
 
-#handheld-screen {
+.crossed::after {
+    content: "";
     position: absolute;
-    width: 700px;
-    height: 1000px;
-    background: #1a1a1a;
-    border: 12px solid #333;
-    border-radius: 50px;
-    left: 50%;
-    top: 120%;
-    transform: translateX(-50%);
-    padding: 40px;
-    transition: all 1.1s ease;
-    overflow: hidden;
-    box-shadow: 0 0 40px rgba(0,0,0,0.8);
-}
-
-/* ACTIVE STATE (ZOOM FULLSCREEN) */
-.handheld-active {
     top: 50%;
-    transform: translate(-50%, -50%) scale(1.05);
+    left: -5%;
+    width: 110%;
+    height: 3px;
+    background: red;
+    transform: rotate(-10deg);
 }
 
-/* ---------------------------------------------------------
-   MAIN CUTOUT NAME
---------------------------------------------------------- */
-#main-cutout-name {
-    font-size: 38px;
+/* Press Start button */
+#press-start {
+    font-size: 1.5rem;
+    padding: 12px 30px;
+    font-family: 'Bungee Shade', sans-serif;
+    color: #fff;
+    background: transparent;
+    border: 2px solid #fff;
+    cursor: pointer;
+    animation: startBlink 1.5s infinite;
+}
+
+@keyframes startBlink {
+    0%, 50% { opacity: 1; }
+    60%, 100% { opacity: 0.35; }
+}
+
+@keyframes introFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes glowPulse {
+    0% { text-shadow: 0 0 4px #4a00ff; }
+    100% { text-shadow: 0 0 20px #ff77ff; }
+}
+
+/* ========== GAME CONTAINER AFTER TRANSITION ========== */
+
+#game-container {
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 180px; /* space for bottom HUD toggle */
+    position: relative;
+    overflow-x: hidden;
+    animation: gameAppear 1.2s ease-out forwards;
+}
+
+/* CRT overlay */
+#crt-overlay {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.18;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.05) 0px,
+        rgba(255,255,255,0.05) 2px,
+        rgba(0,0,0,0) 4px
+    );
+    z-index: 3;
+}
+
+@keyframes gameAppear {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ========== HEADER TITLE ========== */
+#site-title {
     text-align: center;
-    margin-bottom: 10px;
-    opacity: 0;
-    transition: opacity 1s ease;
+    margin-top: 40px;
 }
 
-/* CUTOUT EFFECT */
-.cutout {
-    display: inline-block;
-    padding: 3px 5px;
-    margin: 0 4px;
-    font-family: 'Anton', sans-serif;
-    font-size: 22px;
-    background: white;
-    color: black;
-    transform: rotate(var(--rot));
-    animation: cutoutJitter 1.2s infinite;
-}
-
-@keyframes cutoutJitter {
-    0% { transform: translate(0,0) rotate(var(--rot)); }
-    50% { transform: translate(1px,-1px) rotate(calc(var(--rot) + 1deg)); }
-    100% { transform: translate(0,0) rotate(var(--rot)); }
-}
-
-.censor-shake {
-    display: inline-block;
-    animation: censorShake 0.3s infinite;
-}
-
-@keyframes censorShake {
-    0% { transform: translate(0px, 0px); }
-    25% { transform: translate(2px, -2px); }
-    50% { transform: translate(-2px, 2px); }
-    75% { transform: translate(2px, 2px); }
-    100% { transform: translate(0px, 0px); }
-}
-
-/* ---------------------------------------------------------
-   TAGLINE
---------------------------------------------------------- */
-#tagline-cutout {
-    text-align: center;
-    font-size: 16px;
-    opacity: 0;
-    transition: opacity 1.2s ease;
-}
-
-/* ---------------------------------------------------------
-   NAV BUTTONS
---------------------------------------------------------- */
-#nav-buttons {
+#cutout-title {
+    font-size: 4rem;
+    letter-spacing: 8px;
     display: flex;
     justify-content: center;
-    gap: 40px;
-    margin: 30px 0;
 }
 
-#nav-buttons button {
-    padding: 15px 25px;
-    font-size: 18px;
-    background: rgba(255,255,255,0.1);
-    border: 3px solid white;
-    color: white;
-    transition: 0.3s;
+.cutout-letter {
+    display: inline-block;
+    padding: 6px 10px;
+    background: white;
+    color: black;
+    margin: 0 4px;
+    transform: rotate(calc(-5deg + (10deg * (var(--i, 0)))));
+    font-family: 'Bungee Shade', sans-serif;
 }
 
-#nav-buttons button:hover {
-    transform: scale(1.08);
-    background: rgba(255,255,255,0.2);
+#sub-title {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    opacity: 0.7;
 }
 
-/* ---------------------------------------------------------
-   CONTENT WRAPPER
---------------------------------------------------------- */
-#content-wrapper {
+/* ========== CONTENT AREA ========== */
+#content-area {
     display: flex;
     justify-content: space-between;
-    margin-top: 30px;
+    margin: 60px auto;
+    width: 80%;
 }
 
-/* ABOUT SECTION */
-#about-section {
-    width: 52%;
-    padding-right: 25px;
-    border-right: 2px solid rgba(255,255,255,0.2);
+/* About Me */
+#about-me {
+    width: 48%;
 }
 
-/* GALLERY */
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.about-text {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.shake {
+    display: inline-block;
+    animation: shakyCensor 0.15s infinite;
+    color: #ff77ff;
+}
+
+@keyframes shakyCensor {
+    0% { transform: translate(0,0); }
+    33% { transform: translate(-1px, 1px); }
+    66% { transform: translate(1px,-1px); }
+    100% { transform: translate(0,0); }
+}
+
+/* Gallery */
 #gallery {
     width: 48%;
     display: flex;
@@ -249,99 +203,107 @@ body {
     justify-content: center;
 }
 
-#gallery-image {
+#gallery-img {
     width: 100%;
-    border-radius: 20px;
-    box-shadow: 0 0 25px rgba(0,0,0,0.7);
+    max-height: 420px;
+    object-fit: cover;
+    border: 5px solid white;
+    box-shadow: 0 0 20px #ff77ff;
 }
 
-/* ---------------------------------------------------------
-   CONTACT SECTION
---------------------------------------------------------- */
-#contact-section {
-    margin-top: 30px;
-    text-align: center;
-    font-size: 14px;
-}
-
-#contact-section ul {
-    list-style: none;
-}
-
-#contact-section a {
-    color: #ffb6ff;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-#contact-section a:hover {
-    text-decoration: underline;
-}
-
-/* ---------------------------------------------------------
-   MUSIC PLAYER (TAMAGOTCHI STYLE)
---------------------------------------------------------- */
-#music-player {
+/* ========== KAOMOJI DRIFT ========== */
+#kaomoji-layer {
     position: fixed;
-    bottom: -450px;
-    right: 40px;
-    width: 320px;
-    z-index: 999;
-    transition: bottom 0.9s ease;
-}
-
-#music-frame {
-    background: #2d0666;
-    border: 8px solid #ffc8ff;
-    border-radius: 100px;
-    padding: 25px;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.7);
-}
-
-#now-playing {
-    font-size: 14px;
-    margin-bottom: 6px;
-}
-
-#music-embed {
+    top: 0; left: 0;
     width: 100%;
-    height: 70px;
-    margin: 10px 0;
-    border-radius: 14px;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 4;
 }
 
+.kaomoji {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.8;
+    animation: drift 12s linear forwards;
+    color: #ffbbff;
+}
+
+@keyframes drift {
+    0% { transform: translateY(0) translateX(0); opacity: 1; }
+    100% { transform: translateY(-120vh) translateX(40px); opacity: 0; }
+}
+
+/* ========== MUSIC HUD ========== */
+
+#music-toggle {
+    position: fixed;
+    bottom: 15px;
+    right: 20px;
+    z-index: 20;
+    font-size: 2rem;
+    padding: 8px 14px;
+    background: #222;
+    color: white;
+    border: 2px solid white;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+#music-hud {
+    position: fixed;
+    bottom: -260px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    padding: 20px;
+    background: rgba(20,20,20,0.9);
+    border: 3px solid white;
+    border-radius: 14px;
+    transition: bottom 0.5s ease;
+    z-index: 30;
+}
+
+/* Visualizer */
 #visualizer {
     width: 100%;
     height: 80px;
     background: black;
-    margin-top: 5px;
+    border: 2px solid white;
 }
 
-#music-controls {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
+/* Player label */
+#player-label {
+    text-align: center;
     margin-top: 10px;
+    font-size: 0.9rem;
 }
 
-#music-controls button {
-    font-size: 18px;
-    background: #ffc8ff;
+.player-link {
+    color: #ff99ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Controls */
+#player-controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 12px;
+}
+
+#player-controls button {
+    background: white;
+    color: black;
+    font-size: 1.2rem;
+    padding: 6px 10px;
+    border-radius: 6px;
     border: none;
-    padding: 5px 10px;
     cursor: pointer;
 }
 
-#volume {
+#volume-slider {
     width: 80px;
 }
-
-/* ---------------------------------------------------------
-   MUSIC PLAYER ACTIVE
---------------------------------------------------------- */
-#music-player.open {
-    bottom: 40px;
-}
-
-
