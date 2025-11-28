@@ -1,1 +1,347 @@
-styles.css
+/* ---------------------------------------------------------
+   GLOBAL RESET
+--------------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background: black;
+    font-family: 'Press Start 2P', monospace;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* ---------------------------------------------------------
+   BACKGROUND GRADIENT
+--------------------------------------------------------- */
+#background-gradient {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -5;
+
+    background: linear-gradient(45deg, #3a00ff, #8a2be2, #ff4fe0, #ff2222, #c020ff);
+    background-size: 600% 600%;
+    animation: rainbowShift 25s ease infinite;
+}
+
+@keyframes rainbowShift {
+    0% { background-position: 0% 50%; }
+    25% { background-position: 50% 100%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 0%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ---------------------------------------------------------
+   KAOMOJI LAYER
+--------------------------------------------------------- */
+#kaomoji-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -3;
+}
+
+.kaomoji {
+    position: absolute;
+    font-size: 24px;
+    opacity: 0.6;
+    animation: driftKaomoji 12s linear infinite;
+}
+
+@keyframes driftKaomoji {
+    from { transform: translateY(100vh) translateX(0); opacity: 0.4; }
+    to { transform: translateY(-10vh) translateX(20px); opacity: 0; }
+}
+
+/* ---------------------------------------------------------
+   CRT OVERLAY
+--------------------------------------------------------- */
+#crt-overlay {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: repeating-linear-gradient(
+        rgba(255,255,255,0.05) 0px,
+        rgba(255,255,255,0.05) 2px,
+        rgba(0,0,0,0) 3px,
+        rgba(0,0,0,0) 4px
+    );
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+/* ---------------------------------------------------------
+   STARTUP SCREEN
+--------------------------------------------------------- */
+#startup-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 50;
+}
+
+#startup-name {
+    font-size: 32px;
+    text-shadow: 0 0 12px black;
+    margin-bottom: 30px;
+}
+
+#press-start {
+    font-size: 20px;
+    padding: 20px 40px;
+    background: rgba(255,255,255,0.1);
+    border: 3px solid white;
+    color: white;
+    cursor: pointer;
+    animation: startPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes startPulse {
+    0% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.9; }
+}
+
+/* ---------------------------------------------------------
+   HANDHELD UI WRAPPER
+--------------------------------------------------------- */
+#handheld-ui {
+    position: fixed;
+    inset: 0;
+    display: none;
+    z-index: 60;
+}
+
+#handheld-screen {
+    position: absolute;
+    width: 700px;
+    height: 1000px;
+    background: #1a1a1a;
+    border: 12px solid #333;
+    border-radius: 50px;
+    left: 50%;
+    top: 120%;
+    transform: translateX(-50%);
+    padding: 40px;
+    transition: all 1.1s ease;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+}
+
+/* ACTIVE STATE (ZOOM FULLSCREEN) */
+.handheld-active {
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* ---------------------------------------------------------
+   MAIN CUTOUT NAME
+--------------------------------------------------------- */
+#main-cutout-name {
+    font-size: 38px;
+    text-align: center;
+    margin-bottom: 10px;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+/* CUTOUT EFFECT */
+.cutout {
+    display: inline-block;
+    padding: 3px 5px;
+    margin: 0 4px;
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    background: white;
+    color: black;
+    transform: rotate(var(--rot));
+    animation: cutoutJitter 1.2s infinite;
+}
+
+@keyframes cutoutJitter {
+    0% { transform: translate(0,0) rotate(var(--rot)); }
+    50% { transform: translate(1px,-1px) rotate(calc(var(--rot) + 1deg)); }
+    100% { transform: translate(0,0) rotate(var(--rot)); }
+}
+
+.censor-shake {
+    display: inline-block;
+    animation: censorShake 0.3s infinite;
+}
+
+@keyframes censorShake {
+    0% { transform: translate(0px, 0px); }
+    25% { transform: translate(2px, -2px); }
+    50% { transform: translate(-2px, 2px); }
+    75% { transform: translate(2px, 2px); }
+    100% { transform: translate(0px, 0px); }
+}
+
+/* ---------------------------------------------------------
+   TAGLINE
+--------------------------------------------------------- */
+#tagline-cutout {
+    text-align: center;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+/* ---------------------------------------------------------
+   NAV BUTTONS
+--------------------------------------------------------- */
+#nav-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 30px 0;
+}
+
+#nav-buttons button {
+    padding: 15px 25px;
+    font-size: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 3px solid white;
+    color: white;
+    transition: 0.3s;
+}
+
+#nav-buttons button:hover {
+    transform: scale(1.08);
+    background: rgba(255,255,255,0.2);
+}
+
+/* ---------------------------------------------------------
+   CONTENT WRAPPER
+--------------------------------------------------------- */
+#content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+/* ABOUT SECTION */
+#about-section {
+    width: 52%;
+    padding-right: 25px;
+    border-right: 2px solid rgba(255,255,255,0.2);
+}
+
+/* GALLERY */
+#gallery {
+    width: 48%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#gallery-image {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.7);
+}
+
+/* ---------------------------------------------------------
+   CONTACT SECTION
+--------------------------------------------------------- */
+#contact-section {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 14px;
+}
+
+#contact-section ul {
+    list-style: none;
+}
+
+#contact-section a {
+    color: #ffb6ff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+#contact-section a:hover {
+    text-decoration: underline;
+}
+
+/* ---------------------------------------------------------
+   MUSIC PLAYER (TAMAGOTCHI STYLE)
+--------------------------------------------------------- */
+#music-player {
+    position: fixed;
+    bottom: -450px;
+    right: 40px;
+    width: 320px;
+    z-index: 999;
+    transition: bottom 0.9s ease;
+}
+
+#music-frame {
+    background: #2d0666;
+    border: 8px solid #ffc8ff;
+    border-radius: 100px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+}
+
+#now-playing {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+#music-embed {
+    width: 100%;
+    height: 70px;
+    margin: 10px 0;
+    border-radius: 14px;
+}
+
+#visualizer {
+    width: 100%;
+    height: 80px;
+    background: black;
+    margin-top: 5px;
+}
+
+#music-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+#music-controls button {
+    font-size: 18px;
+    background: #ffc8ff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#volume {
+    width: 80px;
+}
+
+/* ---------------------------------------------------------
+   MUSIC PLAYER ACTIVE
+--------------------------------------------------------- */
+#music-player.open {
+    bottom: 40px;
+}
+
+
