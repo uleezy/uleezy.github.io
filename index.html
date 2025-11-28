@@ -1,62 +1,22 @@
-/* ============================================================
-   INTRO SCREEN FIX — MATCHING YOUR EXACT HTML
-   ============================================================ */
-
-document.addEventListener("DOMContentLoaded", () => {
-    const introScreen = document.getElementById("intro-screen");
-    const pressStart = document.getElementById("press-start-btn");
-    const nameAliases = document.querySelectorAll("#intro-names .alias");
-
-    // Simple cycling effect
-    let aliasIndex = 0;
-    function cycleAliases() {
-        nameAliases.forEach((a, i) => {
-            a.style.opacity = i === aliasIndex ? "1" : "0";
-        });
-        aliasIndex = (aliasIndex + 1) % nameAliases.length;
-    }
-
-    // Start cycling every 1.5 sec
-    cycleAliases();
-    setInterval(cycleAliases, 1500);
-
-    // When user presses Start
-    pressStart.addEventListener("click", () => {
-        introScreen.classList.add("fade-out");
-
-        // After fade, hide intro & show site
-        setTimeout(() => {
-            introScreen.style.display = "none";
-
-            const mainSite = document.getElementById("main-site");
-            if (mainSite) mainSite.classList.remove("hidden");
-
-            // Start music AFTER intro
-            const music = document.getElementById("site-music-player");
-            if (music) music.play();
-
-        }, 800);
-    });
-});
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ulanator.online</title>
+    <title>ulanator.online</title>
 
-    <!-- Magazine fonts -->
+    <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Rubik+Wet+Paint&display=swap" rel="stylesheet">
 
-    <!-- Your CSS -->
+    <!-- MAIN CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- ======================================= -->
-<!--  INTRO SCREEN — BLACKOUT + NAME + START -->
-<!-- ======================================= -->
-
+<!-- ===============================
+     INTRO SCREEN → BLACKOUT + NAMES
+================================ -->
 <div id="intro-screen">
 
     <div id="intro-names">
@@ -66,120 +26,114 @@ document.addEventListener("DOMContentLoaded", () => {
         <span class="alias crossed">The Ulatron</span>
     </div>
 
+    <audio id="intro-music" src="assets/music/intro_loop.mp3" loop></audio>
+
     <button id="press-start-btn">Press Start</button>
 </div>
 
-<!-- ================================ -->
-<!--  MAIN SITE WRAPPER (HIDDEN INIT) -->
-<!-- ================================ -->
-
+<!-- ===============================
+     MAIN SITE WRAPPER — HIDDEN INIT
+================================ -->
 <div id="site-wrapper">
 
-    <!-- ========================= -->
-    <!--  GAMEBOY SP CONSOLE FRAME -->
-    <!-- ========================= -->
-
+    <!-- ===========================
+         GAMEBOY SP CONSOLE FRAME
+    ============================ -->
     <div id="gba-container">
 
-        <!-- TOP LID / SCREEN -->
         <div id="gba-screen">
 
-            <!-- GOLD TRIM FRAME -->
             <div id="screen-frame"></div>
 
-            <!-- CONTENT INSIDE SCREEN -->
             <div id="screen-content">
 
-                <!-- ===== NAME AFTER REVEAL (MAGAZINE STYLE) ===== -->
-                <h1 id="ula-title">
-                    <span class="cutout">U</span>
-                    <span class="cutout">L</span>
-                    <span class="cutout">A</span>
-                </h1>
+                <!-- ABOUT ME -->
+                <section id="about-section">
 
-                <!-- ===== SUBTITLE TEXT ===== -->
-                <h2 id="ula-sub">so cal samoan • half nerd / half ghetto fabulous</h2>
-
-                <!-- ===== ABOUT ME SECTION ===== -->
-                <section id="about">
+                    <h1 class="mag-title">Ula</h1>
+                    <h2 class="mag-subtitle">so cal samoan — half nerd / half ghetto fabulous</h2>
 
                     <h3>Meet The Ulanator…</h3>
 
-                    <p class="about-text">
+                    <p>
                         I’m just me — I be making sounds and stuff.  
-                        I make all kinds of sounds, but I’m rooted in G-funk, glitch-hop, and whatever else I’m rocking with in that moment.  
-                        I started around 2017–2018 and now I finally feel like I got the experience… I’m ready to do my thang.  
-                        <br><br>
-                        I produce, I compose, I sing a bit — but don’t get it twisted…  
-                        I ain’t no poet, I’m a <span id="censor-word">m@$%&*!#(%g</span> rapper.
+                        I make all kinds of sounds, but I’m rooted in G-funk, glitch-hop, and whatever else I’m rocking with at that moment.  
+                        I started back in 2017–2018 and now I feel I got the experience, I’m ready to do my thang.
+                    </p>
+
+                    <p>
+                        I produce, I compose, I sing a bit… but don’t get it twisted…  
+                        I ain’t no <span id="censored-rapper">m#$%&@!(%g</span> rapper.
                     </p>
 
                 </section>
 
-                <!-- ===== GALLERY SECTION ===== -->
-                <section id="gallery">
-                    <img id="gallery-img" src="https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg">
+                <!-- GALLERY -->
+                <section id="gallery-section">
+                    <img id="gallery-image" src="assets/images/main-image-1.jpg">
                 </section>
 
-                <!-- ===== MENU TABS ===== -->
-                <nav id="menu-tabs">
-                    <a href="#" class="menu-link">Home</a>
-                    <a href="#" class="menu-link">Music</a>
-                    <a href="#" class="menu-link">Gallery</a>
-                    <a href="#" class="menu-link">Contact</a>
-                </nav>
+                <!-- TABS (HOME / MUSIC / GALLERY / CONTACT) -->
+                <div id="tab-buttons">
+                    <button class="tab-btn" data-tab="about">About</button>
+                    <button class="tab-btn" data-tab="gallery">Gallery</button>
+                    <button class="tab-btn" data-tab="contact">Contact</button>
+                    <button class="tab-btn" data-tab="music">Music</button>
+                </div>
+
+                <!-- CONTACT SECTION -->
+                <section id="contact-section" class="hidden">
+
+                    <h3>Contact / Links</h3>
+
+                    <ul>
+                        <li><a href="https://linktr.ee/uleezy" target="_blank">Linktree</a></li>
+                        <li><a href="https://www.instagram.com/uleezy4sheezy/" target="_blank">Instagram</a></li>
+                        <li><a href="https://www.youtube.com/@ula619" target="_blank">YouTube</a></li>
+                        <li><a href="https://soundcloud.com/la_the_anda" target="_blank">SoundCloud</a></li>
+                    </ul>
+
+                </section>
 
             </div>
         </div>
-
-        <!-- BOTTOM BUTTONS (FAKE GBA SP BUTTONS) -->
-        <div id="gba-bottom">
-            <div class="gba-btn" id="gba-a">A</div>
-            <div class="gba-btn" id="gba-b">B</div>
-        </div>
-
-    </div>
-
-    <!-- ===================== -->
-    <!--  MUSIC PLAYER (PANEL) -->
-    <!-- ===================== -->
-
-    <div id="music-player">
-
-        <div id="music-visualizer"></div>
-
-        <div id="music-info">
-            <span id="music-status">Rocking w the music? Tap in.</span>
-            <a id="music-artist" href="https://linktr.ee/uleezy" target="_blank">Ula</a>
-        </div>
-
-        <div id="music-controls">
-            <button id="play-btn">▶</button>
-            <button id="pause-btn">⏸</button>
-            <button id="skip-btn">⏭</button>
-        </div>
-
-        <input type="range" id="volume-slider" min="0" max="1" step="0.01">
-
     </div>
 
 </div>
 
-<!-- ================= -->
-<!--  KAOMOJI OVERLAYS -->
-<!-- ================= -->
+<!-- ===============================
+     KAOMOJI LAYER
+================================ -->
 <div id="kaomoji-layer"></div>
 
-<!-- ======================== -->
-<!-- HIDDEN FETU EASTER EGG -->
-<!-- ======================== -->
-<div id="fetu-egg">★</div>
+<!-- ===============================
+     MUSIC PLAYER HUD
+================================ -->
+<div id="music-player" class="hidden">
 
-<!-- ================= -->
-<!--  YOUR SCRIPT FILE -->
-<!-- ================= -->
+    <div id="music-title">Rocking w the music? Tap in.<br>
+        <a href="https://linktr.ee/uleezy" target="_blank">Ula / Uleezy / The Ulanator</a>
+    </div>
+
+    <div id="music-controls">
+        <button id="play-btn">▶</button>
+        <button id="pause-btn">⏸</button>
+        <button id="skip-btn">⏭</button>
+    </div>
+
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01">
+
+</div>
+
+<!-- ===============================
+     FETU EASTER EGG (TINY CLICK)
+================================ -->
+<div id="fetu-ez">★</div>
+
+<!-- ===============================
+     MAIN SCRIPT
+================================ -->
 <script src="script.js"></script>
 
 </body>
 </html>
-
