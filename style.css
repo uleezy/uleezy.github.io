@@ -1,4 +1,6 @@
-/* ========== GLOBAL RESET ========== */
+/* ====================================== */
+/*  GLOBAL RESET                          */
+/* ====================================== */
 * {
     margin: 0;
     padding: 0;
@@ -8,302 +10,341 @@
 html, body {
     width: 100%;
     height: 100%;
-    overflow-x: hidden;
-    background: #000;
+    overflow: hidden;
+    background: black;
     font-family: Arial, sans-serif;
     color: white;
 }
 
-/* Hide elements until activated */
-.hidden {
-    display: none;
-}
-
-/* ========== INTRO SCREEN ========== */
+/* ====================================== */
+/* INTRO SCREEN                           */
+/* ====================================== */
 #intro-screen {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: black;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    animation: introFadeIn 1s ease-out forwards;
+    align-items: center;
+    z-index: 9000;
+    animation: crt-flicker 1.8s ease-out forwards;
 }
 
 #intro-names {
+    font-size: 2.5rem;
     text-align: center;
-    margin-bottom: 40px;
+    line-height: 3.3rem;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards 1.2s;
 }
 
-.intro-name {
-    font-size: 3rem;
-    letter-spacing: 2px;
-    padding: 5px 20px;
-    animation: glowPulse 3s infinite alternate ease-in-out;
+.alias {
+    display: block;
 }
 
-.main-font {
-    font-family: 'Bungee Shade', sans-serif;
-}
-
-.glitch-font {
-    font-family: 'Rubik Wet Paint', cursive;
-}
-
-/* crossed-out ulatron */
 .crossed {
-    position: relative;
-    display: inline-block;
+    text-decoration: line-through;
+    opacity: 0.4;
 }
 
-.crossed::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: -5%;
-    width: 110%;
-    height: 3px;
-    background: red;
-    transform: rotate(-10deg);
-}
-
-/* Press Start button */
-#press-start {
-    font-size: 1.5rem;
-    padding: 12px 30px;
-    font-family: 'Bungee Shade', sans-serif;
-    color: #fff;
-    background: transparent;
-    border: 2px solid #fff;
+#press-start-btn {
+    margin-top: 40px;
+    font-size: 1.4rem;
+    padding: 10px 28px;
     cursor: pointer;
-    animation: startBlink 1.5s infinite;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    transition: 0.3s;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards 2s;
 }
 
-@keyframes startBlink {
-    0%, 50% { opacity: 1; }
-    60%, 100% { opacity: 0.35; }
+#press-start-btn:hover {
+    background: white;
+    color: black;
 }
 
-@keyframes introFadeIn {
+/* Intro CRT flicker */
+@keyframes crt-flicker {
+    0% { opacity: 0; }
+    5% { opacity: 0.1; }
+    12% { opacity: 0.9; }
+    18% { opacity: 0.4; }
+    26% { opacity: 1; }
+    32% { opacity: 0.2; }
+    45% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-@keyframes glowPulse {
-    0% { text-shadow: 0 0 4px #4a00ff; }
-    100% { text-shadow: 0 0 20px #ff77ff; }
+/* ====================================== */
+/* SITE WRAPPER                           */
+/* ====================================== */
+#site-wrapper {
+    position: fixed;
+    inset: 0;
+    display: none; /* hidden until start */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-/* ========== GAME CONTAINER AFTER TRANSITION ========== */
-
-#game-container {
-    width: 100%;
-    min-height: 100vh;
-    padding-bottom: 180px; /* space for bottom HUD toggle */
+/* ====================================== */
+/* GBA CONSOLE                            */
+/* ====================================== */
+#gba-container {
     position: relative;
-    overflow-x: hidden;
-    animation: gameAppear 1.2s ease-out forwards;
+    width: 750px;
+    height: 1000px;
+    background: #3b3b3b;
+    border-radius: 30px;
+    border: 8px solid #1a1a1a;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 1s ease, opacity 1s ease;
 }
 
-/* CRT overlay */
-#crt-overlay {
-    pointer-events: none;
+/* TOP SCREEN */
+#gba-screen {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    height: 55%;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Warm Gold frame glow */
+#screen-frame {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.18;
-    background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.05) 0px,
-        rgba(255,255,255,0.05) 2px,
-        rgba(0,0,0,0) 4px
-    );
-    z-index: 3;
+    border: 6px solid #d9b95c;
+    border-radius: 12px;
+    pointer-events: none;
+    box-shadow:
+        0 0 6px #d9b95c,
+        0 0 12px rgba(217,185,92,0.8),
+        inset 0 0 10px rgba(217,185,92,0.5);
 }
 
-@keyframes gameAppear {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+/* CONTENT ON SCREEN */
+#screen-content {
+    position: absolute;
+    inset: 0;
+    padding: 20px;
+    overflow-y: auto;
 }
 
-/* ========== HEADER TITLE ========== */
-#site-title {
+/* ====================================== */
+/* CUTOUT TITLE                           */
+/* ====================================== */
+#ula-title {
+    font-family: 'Bungee Shade', cursive;
+    font-size: 3.5rem;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 20px;
+    letter-spacing: 6px;
 }
 
-#cutout-title {
-    font-size: 4rem;
-    letter-spacing: 8px;
-    display: flex;
-    justify-content: center;
-}
-
-.cutout-letter {
+.cutout {
     display: inline-block;
-    padding: 6px 10px;
-    background: white;
-    color: black;
-    margin: 0 4px;
-    transform: rotate(calc(-5deg + (10deg * (var(--i, 0)))));
-    font-family: 'Bungee Shade', sans-serif;
+    transform: rotate(calc(-5deg + 10deg * random()));
 }
 
-#sub-title {
-    margin-top: 10px;
-    font-size: 1.3rem;
-    opacity: 0.7;
+/* Subtitle */
+#ula-sub {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    text-align: center;
+    margin-top: 8px;
 }
 
-/* ========== CONTENT AREA ========== */
-#content-area {
-    display: flex;
-    justify-content: space-between;
-    margin: 60px auto;
-    width: 80%;
+/* ====================================== */
+/* ABOUT SECTION                          */
+/* ====================================== */
+#about {
+    margin-top: 35px;
+    padding: 10px;
 }
 
-/* About Me */
-#about-me {
-    width: 48%;
-}
-
-.section-title {
+#about h3 {
+    font-family: 'Rubik Wet Paint', cursive;
     font-size: 2rem;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .about-text {
-    line-height: 1.8;
     font-size: 1.1rem;
+    line-height: 1.6rem;
 }
 
-.shake {
+/* Censor word shaking */
+#censor-word {
     display: inline-block;
-    animation: shakyCensor 0.15s infinite;
-    color: #ff77ff;
+    animation: censorShake 0.15s infinite alternate;
 }
 
-@keyframes shakyCensor {
-    0% { transform: translate(0,0); }
-    33% { transform: translate(-1px, 1px); }
-    66% { transform: translate(1px,-1px); }
-    100% { transform: translate(0,0); }
+@keyframes censorShake {
+    from { transform: translateX(-2px); }
+    to   { transform: translateX(2px); }
 }
 
-/* Gallery */
+/* ====================================== */
+/* GALLERY                                */
+/* ====================================== */
 #gallery {
-    width: 48%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    text-align: center;
+    margin-top: 30px;
 }
 
 #gallery-img {
-    width: 100%;
-    max-height: 420px;
-    object-fit: cover;
-    border: 5px solid white;
-    box-shadow: 0 0 20px #ff77ff;
+    width: 90%;
+    border-radius: 12px;
+    box-shadow: 0 0 18px rgba(255,255,255,0.3);
 }
 
-/* ========== KAOMOJI DRIFT ========== */
-#kaomoji-layer {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 4;
+/* ====================================== */
+/* MENU TABS                              */
+/* ====================================== */
+#menu-tabs {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-evenly;
 }
 
-.kaomoji {
-    position: absolute;
-    font-size: 1.5rem;
-    opacity: 0.8;
-    animation: drift 12s linear forwards;
-    color: #ffbbff;
-}
-
-@keyframes drift {
-    0% { transform: translateY(0) translateX(0); opacity: 1; }
-    100% { transform: translateY(-120vh) translateX(40px); opacity: 0; }
-}
-
-/* ========== MUSIC HUD ========== */
-
-#music-toggle {
-    position: fixed;
-    bottom: 15px;
-    right: 20px;
-    z-index: 20;
-    font-size: 2rem;
-    padding: 8px 14px;
-    background: #222;
+.menu-link {
+    font-size: 1.2rem;
     color: white;
-    border: 2px solid white;
-    cursor: pointer;
-    border-radius: 10px;
-}
-
-#music-hud {
-    position: fixed;
-    bottom: -260px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 340px;
-    padding: 20px;
-    background: rgba(20,20,20,0.9);
-    border: 3px solid white;
-    border-radius: 14px;
-    transition: bottom 0.5s ease;
-    z-index: 30;
-}
-
-/* Visualizer */
-#visualizer {
-    width: 100%;
-    height: 80px;
-    background: black;
-    border: 2px solid white;
-}
-
-/* Player label */
-#player-label {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 0.9rem;
-}
-
-.player-link {
-    color: #ff99ff;
     text-decoration: none;
+    opacity: 0.8;
+    transition: 0.3s;
+}
+
+.menu-link:hover {
+    opacity: 1;
+}
+
+/* ====================================== */
+/* GBA BOTTOM BUTTONS                     */
+/* ====================================== */
+#gba-bottom {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+}
+
+.gba-btn {
+    width: 70px;
+    height: 70px;
+    background: #2d2d2d;
+    border-radius: 50%;
+    border: 5px solid #1a1a1a;
+    box-shadow: inset 0 0 8px #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: bold;
 }
 
-/* Controls */
-#player-controls {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 12px;
+/* ====================================== */
+/* MUSIC PLAYER                           */
+/* ====================================== */
+#music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 260px;
+    background: rgba(20, 20, 20, 0.85);
+    border: 2px solid #d9b95c;
+    border-radius: 12px;
+    padding: 15px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow:
+        0 0 8px #d9b95c,
+        0 0 16px rgba(217,185,92,0.7);
 }
 
-#player-controls button {
-    background: white;
-    color: black;
-    font-size: 1.2rem;
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: none;
+#music-info {
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+#music-artist {
+    color: #d9b95c;
+    text-decoration: none;
+}
+
+#music-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+#music-controls button {
+    font-size: 1.3rem;
     cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
 }
 
 #volume-slider {
-    width: 80px;
+    width: 100%;
+}
+
+/* ====================================== */
+/* KAOMOJI LAYER                          */
+/* ====================================== */
+#kaomoji-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 2000;
+}
+
+/* Single kaomoji */
+.kaomoji {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.8;
+    animation: floatUp 6s linear forwards;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(100vh); opacity: 0.2; }
+    to   { transform: translateY(-10vh); opacity: 0.8; }
+}
+
+/* ====================================== */
+/* FETU EASTER EGG                        */
+/* ====================================== */
+#fetu-egg {
+    position: fixed;
+    left: 5px;
+    bottom: 5px;
+    font-size: 1.3rem;
+    opacity: 0.4;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#fetu-egg:hover {
+    opacity: 1;
 }
