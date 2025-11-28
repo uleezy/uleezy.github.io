@@ -1,194 +1,205 @@
+/* ===========================
+   GLOBAL RESET + BASE
+=========================== */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background: black;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+/* Hide scrollbar */
+::-webkit-scrollbar {
+    width: 0;
+}
+
+/* Fade helper */
+.hidden {
+    display: none !important;
+}
+
+/* ===========================
+   INTRO SCREEN
+=========================== */
 #intro-screen {
-    opacity: 1;
-    transition: opacity 0.8s ease;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 9999;
+    transition: opacity 1s ease;
 }
 
-#intro-screen.fade-out {
+#intro-names {
+    margin-bottom: 25px;
+}
+
+#intro-names .alias {
+    display: block;
+    font-size: 2rem;
+    opacity: 0.9;
+}
+
+#intro-names .crossed {
+    text-decoration: line-through;
+    opacity: 0.4;
+}
+
+#press-start-btn {
+    padding: 10px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    background: black;
+    color: white;
+    border: 2px solid white;
+    transition: 0.2s;
+}
+
+#press-start-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* ===========================
+   CRT FLASH TRANSITION
+=========================== */
+body.crt-start::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: rgba(255,255,255,0.7);
+    animation: crtFlash 0.75s ease forwards;
+    z-index: 9998;
+}
+
+@keyframes crtFlash {
+    0% { opacity: 1; }
+    40% { opacity: 0.3; }
+    100% { opacity: 0; }
+}
+
+/* ===========================
+   SITE WRAPPER (HIDDEN INIT)
+=========================== */
+#site-wrapper {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* ===========================
+   GAMEBOY SP LAYOUT
+=========================== */
+#gba-container {
+    width: 90vw;
+    max-width: 600px;
+    margin: 50px auto;
+    transform: translateY(200px) scale(0.7);
     opacity: 0;
-}
-/* ============================================================
-   INTRO SEQUENCE
-   ============================================================ */
-let introLoop = new Audio("assets/music/intro_loop.mp3");
-introLoop.loop = true;
-introLoop.volume = 0.35;
-
-window.onload = () => {
-    introLoop.play().catch(() => {
-        console.log("Autoplay blocked until user interacts.");
-    });
-};
-
-const pressStartBtn = document.getElementById("press-start-btn");
-const introScreen = document.getElementById("intro-screen");
-const siteWrapper = document.getElementById("site-wrapper");
-const gba = document.getElementById("gba-container");
-
-pressStartBtn.addEventListener("click", () => {
-    // Fade out intro loop
-    let fadeOut = setInterval(() => {
-        if (introLoop.volume > 0.01) {
-            introLoop.volume -= 0.02;
-        } else {
-            clearInterval(fadeOut);
-            introLoop.pause();
-        }
-    }, 80);
-
-    introScreen.style.transition = "opacity 1.3s ease";
-    introScreen.style.opacity = "0";
-
-    setTimeout(() => {
-        introScreen.style.display = "none";
-        siteWrapper.style.display = "flex";
-
-        // Animate the GBA SP sliding up
-        setTimeout(() => {
-            gba.style.opacity = "1";
-            gba.style.transform = "translateY(0)";
-        }, 100);
-    }, 1200);
-});
-
-
-/* ============================================================
-   CENSOR RANDOM SYMBOLS
-   ============================================================ */
-const censorWord = document.getElementById("censor-word");
-const censorSymbols = ["@#$%&*!?", "*%@!#%", "!$#*@&", "%#@!*%", "&*!@#$"];
-
-setInterval(() => {
-    censorWord.textContent = censorSymbols[Math.floor(Math.random() * censorSymbols.length)];
-}, 200);
-
-
-/* ============================================================
-   GALLERY ROTATION
-   ============================================================ */
-const galleryImg = document.getElementById("gallery-img");
-
-const galleryImages = [
-    "https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg",
-    "https://i.pinimg.com/736x/43/fe/d2/43fed25a912fd4e44af1d35b9aac6a01.jpg",
-    "https://i.pinimg.com/736x/4a/90/45/4a9045416707ca4f825c70cb81079ebb.jpg",
-    "https://i.pinimg.com/736x/68/d8/e6/68d8e6a18aac67bb0b47c8ec77ec1cd2.jpg",
-    "https://i.pinimg.com/736x/86/6d/22/866d220dbf59a6aee104196a586c0832.jpg"
-];
-
-let currentGalleryIndex = 0;
-setInterval(() => {
-    currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
-    galleryImg.src = galleryImages[currentGalleryIndex];
-}, 6000);
-
-
-/* ============================================================
-   KAOMOJI SYSTEM
-   ============================================================ */
-const kaomojiLayer = document.getElementById("kaomoji-layer");
-
-const kaomojiList = [
-    "(｡•́‿•̀｡)", "(≧◡≦)", "(•ө•)♡", "(っ˘з(˘⌣˘ )", "(⌒‿⌒)", "(=｀ω´=)",
-    "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧", "(╯✧▽✧)╯", "(◕ᴥ◕)", "(✿◠‿◠)", "(´｡• ◡ •｡`)"
-];
-
-function spawnKaomoji() {
-    if (document.hidden) return;
-
-    if (kaomojiLayer.childElementCount > 10) return;
-
-    const k = document.createElement("div");
-    k.classList.add("kaomoji");
-    k.innerText = kaomojiList[Math.floor(Math.random() * kaomojiList.length)];
-
-    k.style.left = Math.random() * 90 + "%";
-    k.style.top = "110%";
-    k.style.opacity = 0.5 + Math.random() * 0.4;
-
-    kaomojiLayer.appendChild(k);
-
-    setTimeout(() => k.remove(), 6000);
+    transition: 1.2s ease;
 }
 
-setInterval(spawnKaomoji, 1200);
-
-
-/* ============================================================
-   MUSIC PLAYER — SHUFFLE SYSTEM
-   ============================================================ */
-const playBtn = document.getElementById("play-btn");
-const pauseBtn = document.getElementById("pause-btn");
-const skipBtn = document.getElementById("skip-btn");
-const volumeSlider = document.getElementById("volume-slider");
-
-const songs = [
-    "assets/music/song1.mp3",
-    "assets/music/song2.mp3",
-    "assets/music/song3.mp3",
-    "assets/music/song4.mp3",
-    "assets/music/song5.mp3",
-    "assets/music/song6.mp3",
-    "assets/music/song7.mp3"
-];
-
-let currentSong = null;
-
-function playRandomSong() {
-    if (currentSong) {
-        currentSong.pause();
-    }
-
-    let pick = songs[Math.floor(Math.random() * songs.length)];
-    currentSong = new Audio(pick);
-    currentSong.volume = volumeSlider.value;
-    currentSong.play();
-
-    currentSong.onended = () => playRandomSong();
+/* Animate in after PRESS START */
+#gba-container.gba-animate {
+    transform: translateY(0) scale(1);
+    opacity: 1;
 }
 
-playBtn.addEventListener("click", () => {
-    if (!currentSong) {
-        playRandomSong();
-    } else {
-        currentSong.play();
-    }
-});
+/* ===========================
+   KAOMOJI FLOATING LAYER
+=========================== */
+#kaomoji-layer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 20;
+}
 
-pauseBtn.addEventListener("click", () => {
-    if (currentSong) currentSong.pause();
-});
+/* floating kaomoji */
+.kaomoji {
+    position: absolute;
+    font-size: 1.4rem;
+    animation: drift 10s linear infinite;
+    opacity: 0.75;
+}
 
-skipBtn.addEventListener("click", () => {
-    playRandomSong();
-});
+@keyframes drift {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-200px); opacity: 0; }
+}
 
-volumeSlider.addEventListener("input", () => {
-    if (currentSong) currentSong.volume = volumeSlider.value;
-});
+/* ===========================
+   MUSIC PLAYER MINI HUD
+=========================== */
+#music-player {
+    position: fixed;
+    right: 15px;
+    bottom: 20px;
+    width: 210px;
+    padding: 12px;
+    background: rgba(0,0,0,0.7);
+    border: 2px solid white;
+    border-radius: 8px;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
 
+#music-title {
+    font-size: 0.9rem;
+    text-align: center;
+}
 
-/* ============================================================
-   MUSIC PLAYER POPUP
-   ============================================================ */
-const musicPlayer = document.getElementById("music-player");
-const gbaA = document.getElementById("gba-a");
-const gbaB = document.getElementById("gba-b");
+#music-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
 
-gbaA.addEventListener("click", () => {
-    musicPlayer.style.display = "flex";
-});
+#music-controls button {
+    background: white;
+    color: black;
+    border: none;
+    padding: 5px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
 
-gbaB.addEventListener("click", () => {
-    musicPlayer.style.display = "none";
-});
+#volume-slider {
+    width: 100%;
+}
 
+/* ===========================
+   EASTER EGG (TINY CLICK ZONE)
+=========================== */
+#fetu-ez {
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    bottom: 5px;
+    left: 5px;
+    opacity: 0.2;
+    cursor: pointer;
+    z-index: 200;
+}
 
-/* ============================================================
-   HIDDEN FETU EASTER EGG
-   ============================================================ */
-const fetuEgg = document.getElementById("fetu-egg");
-
-fetuEgg.addEventListener("click", () => {
-    alert("✨ Fetu appears for a split second… then vanishes.");
-});
-
+#fetu-ez:hover {
+    opacity: 0.9;
+}
