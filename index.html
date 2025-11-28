@@ -3,135 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ula / Uleezy / The Ulanator</title>
+    <title>Ulanator.online</title>
 
-    <!-- CSS FILE -->
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Rubik+Wet+Paint&display=swap" rel="stylesheet">
+
+    <!-- MAIN CSS -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- Google Fonts (temporary until we swap to custom fonts per artist) -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Anton&family=Rubik+Mono+One&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-    <!-- 🌈 BACKGROUND GRADIENT + KAOMOJI LAYER -->
-    <div id="background-gradient"></div>
-    <div id="kaomoji-container"></div>
+    <!-- ===================== INTRO SCREEN ===================== -->
+    <div id="intro-screen">
+        <div id="intro-names">
+            <div id="name-line-1" class="intro-name main-font">Ula</div>
+            <div id="name-line-2" class="intro-name glitch-font"><span class="crossed">The Ulatron</span></div>
+        </div>
 
-    <!-- 🔊 INTRO MUSIC -->
-    <audio id="introLoop" src="assets/music/intro_loop.mp3" loop></audio>
-    <audio id="introEcho" src=""></audio> <!-- echo generated in JS -->
+        <audio id="intro-music" src="assets/music/intro_loop.mp3" loop></audio>
 
-    <!-- 🔊 SOUND EFFECTS -->
-    <audio id="sfx-click" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
-    <audio id="sfx-chrono" src="https://assets.mixkit.co/sfx/preview/mixkit-cool-interface-click-tone-2566.mp3"></audio>
-    <audio id="sfx-whoosh" src="https://assets.mixkit.co/sfx/preview/mixkit-fast-small-swoosh-1535.mp3"></audio>
-    <audio id="sfx-shimmer" src="https://assets.mixkit.co/sfx/preview/mixkit-game-magic-shimmer-2591.mp3"></audio>
-
-    <!-- 📺 CRT OVERLAY -->
-    <div id="crt-overlay"></div>
-
-    <!-- 🎮 STARTUP SCREEN -->
-    <div id="startup-screen">
-        <h1 id="startup-name">Ula / Uleezy / The Ulanator</h1>
-
-        <button id="press-start">
-            PRESS START <span id="pressKaomoji">(◕‿◕✿)</span>
-        </button>
+        <button id="press-start">PRESS START</button>
     </div>
 
-    <!-- 🎮 HANDHELD UI (HIDDEN UNTIL START) -->
-    <div id="handheld-ui">
 
-        <div id="handheld-screen">
+    <!-- ===================== MAIN GAME UI ===================== -->
+    <div id="game-container" class="hidden">
 
-            <!-- HEADER CUTOUT NAME (TRANSFORMS AFTER EXPANSION) -->
-            <h1 id="main-cutout-name">Ula / Uleezy / The Ulanator</h1>
+        <!-- CRT EFFECT OVERLAY -->
+        <div id="crt-overlay"></div>
 
-            <!-- SUBTITLE -->
-            <h2 id="tagline-cutout">so cal samoan • half nerd / half ghetto fabulous</h2>
+        <!-- HEADER TITLE -->
+        <header id="site-title">
+            <h1 id="cutout-title" class="main-font">
+                <span class="cutout-letter">U</span>
+                <span class="cutout-letter">l</span>
+                <span class="cutout-letter">a</span>
+            </h1>
+            <h2 id="sub-title">so cal samoan — half nerd / half ghetto fabulous</h2>
+        </header>
 
-            <!-- NAV BUTTONS -->
-            <div id="nav-buttons">
-                <button id="music-btn">Press Start <span class="btnKao"></span></button>
-                <button id="ulaville-btn">Ulaville <span class="btnKao"></span></button>
-            </div>
+        <!-- MAIN CONTENT -->
+        <div id="content-area">
 
-            <!-- MAIN CONTENT AREA -->
-            <div id="content-wrapper">
+            <!-- ABOUT ME -->
+            <section id="about-me">
+                <h2 class="section-title main-font">Meet The Ulanator…</h2>
+                <p class="about-text">
+                    I’m just me — I be making sounds and stuff.  
+                    I make all kinds of sounds, but I’m rooted in G-funk, glitch-hop,  
+                    and whatever else I’m rocking with in that moment.  
+                    I started back in 2017–2018 and now I feel I got the experience,  
+                    I'm ready to do my thang.  
+                    <br><br>
+                    I produce, I compose, I sing a bit…  
+                    but don’t get it twisted…  
+                    I ain’t no 
+                    <span id="censored-word" class="shake">m#$%&@!(%g</span>  
+                    rapper.
+                </p>
+            </section>
 
-                <!-- ABOUT ME -->
-                <div id="about-section">
-                    <h3>Meet The Ulanator...</h3>
-
-                    <p id="about-text">
-                        I’m just me — I be making sounds and stuff.  
-                        I make all kinds of sounds, but I’m rooted in 
-                        <span class="cutout">G-funk</span>, 
-                        <span class="cutout">glitch-hop</span>, 
-                        and whatever else I’m rocking with in that moment.  
-
-                        I started back in 
-                        <span class="cutout">2017–2018</span>  
-                        and now I finally feel I got the experience —  
-                        I'm ready to 
-                        <span class="cutout">do my thang</span>.  
-
-                        I 
-                        <span class="cutout">produce</span>, 
-                        <span class="cutout">compose</span>, 
-                        <span class="cutout">sing a bit</span>  
-                        ...but don’t get it twisted...  
-                        I ain’t no poet...  
-                        I’m a <span id="censored-rapper" class="cutout censor-shake">m#$%&@!*(%g rapper</span>.
-                    </p>
-                </div>
-
-                <!-- GALLERY (RANDOM PINTEREST IMAGES) -->
-                <div id="gallery">
-                    <img id="gallery-image" src="" alt="Gallery Image">
-                </div>
-
-            </div>
-
-            <!-- CONTACT SECTION -->
-            <div id="contact-section">
-                <h3>Contact & Music</h3>
-
-                <ul>
-                    <li><a href="https://www.instagram.com/uleezy4sheezy/" target="_blank">Instagram: @Uleezy4sheezy</a></li>
-                    <li><a href="https://www.youtube.com/@ula619" target="_blank">YouTube: @Ula619</a></li>
-                    <li><a href="https://soundcloud.com/la_the_anda" target="_blank">SoundCloud: Ula</a></li>
-                    <li><a href="https://open.spotify.com/artist/2xfdMTaWnH1kgowZNwnWT5" target="_blank">Spotify: Ula</a></li>
-                </ul>
-            </div>
+            <!-- GALLERY -->
+            <section id="gallery">
+                <img id="gallery-img" src="https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg" alt="Gallery Image">
+            </section>
 
         </div>
-    </div>
 
-    <!-- 🎵 MUSIC PLAYER (TAMAGOTCHI STYLE) -->
-    <div id="music-player">
-        <div id="music-frame">
+        <!-- KAOMOJI DRIFT LAYER -->
+        <div id="kaomoji-layer"></div>
 
-            <h3 id="now-playing">Now Playing:</h3>
-            <div id="artist-style"></div>
 
-            <iframe id="music-embed" src="" frameborder="0"></iframe>
+        <!-- ========== MUSIC HUD (SLIDE UP) ========== -->
+        <div id="music-hud">
 
-            <!-- VISUALIZER -->
+            <!-- PIXEL VISUALIZER -->
             <canvas id="visualizer"></canvas>
 
-            <div id="music-controls">
-                <button id="pausePlay">▶/⏸</button>
-                <button id="skip">⏭</button>
-
-                <input id="volume" type="range" min="0" max="1" step="0.01" value="0.4">
+            <!-- PLAYER LABEL -->
+            <div id="player-label">
+                Rocking w the music? Tap in.  
+                <br>
+                <a href="https://linktr.ee/uleezy" target="_blank" class="player-link">Ula / Uleezy / The Ulanator</a>
             </div>
 
+            <!-- PLAYER CONTROLS -->
+            <div id="player-controls">
+                <button id="play-btn">▶</button>
+                <button id="pause-btn">⏸</button>
+                <button id="skip-btn">⏭</button>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01">
+            </div>
+
+            <!-- AUDIO ELEMENT -->
+            <audio id="music-player"></audio>
+
         </div>
+
+        <!-- MUSIC HUD TOGGLE ICON -->
+        <button id="music-toggle">♫</button>
+
     </div>
 
-    <!-- JS FILE -->
+
+    <!-- MAIN SCRIPT -->
     <script src="script.js"></script>
 
 </body>
