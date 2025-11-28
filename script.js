@@ -1,117 +1,80 @@
-/* =========================================================
-   INTRO NAME CYCLING + GLITCH ULATRON
-========================================================= */
-const line1Names = ["Ula", "Uleezy", "The Ulanator"];
-let nameIndex = 0;
+// =============================
+// INTRO + PRESS START SEQUENCE
+// =============================
 
-const nameLine1 = document.getElementById("name-line-1");
-const nameLine2 = document.getElementById("name-line-2");
-
-function cycleNames() {
-    nameIndex = (nameIndex + 1) % line1Names.length;
-    nameLine1.textContent = line1Names[nameIndex];
-}
-setInterval(cycleNames, 6000); // stays ~5–6 seconds per name
-
-// Random glitch on crossed-out Ulatron
-setInterval(() => {
-    if (Math.random() < 0.3) {
-        nameLine2.style.transform = "rotate(" + (Math.random() * 6 - 3) + "deg)";
-        nameLine2.style.opacity = 0.7 + Math.random() * 0.3;
-    }
-}, 200);
-
-
-/* =========================================================
-   PRESS START → INTRO LOOP FADE → TRANSITION
-========================================================= */
+// Get elements safely
 const introScreen = document.getElementById("intro-screen");
-const pressStart = document.getElementById("press-start");
-const introMusic = document.getElementById("intro-music");
-const gameContainer = document.getElementById("game-container");
+const pressStartBtn = document.getElementById("press-start-btn");
+const siteWrapper = document.getElementById("site-wrapper");
 
-pressStart.addEventListener("click", () => {
-    introMusic.volume = 1;
-    const fadeOut = setInterval(() => {
-        introMusic.volume -= 0.05;
-        if (introMusic.volume <= 0) {
+// Your audio files
+const introMusic = new Audio("assets/music/intro_loop.mp3");
+introMusic.loop = true;
+introMusic.volume = 0.45;
+
+// Game SFX (you can replace these later)
+const startSFX = new Audio("assets/music/start_sfx.mp3");
+startSFX.volume = 0.35;
+
+// -----------------------------
+// START INTRO MUSIC ON LOAD
+// -----------------------------
+window.addEventListener("load", () => {
+    introMusic.play().catch(() => {
+        console.log("Autoplay blocked until user presses something.");
+    });
+});
+
+// -----------------------------
+// PRESS START BUTTON
+// -----------------------------
+pressStartBtn.addEventListener("click", () => {
+
+    // Fade out intro loop
+    let fadeOut = setInterval(() => {
+        if (introMusic.volume > 0.02) {
+            introMusic.volume -= 0.02;
+        } else {
             clearInterval(fadeOut);
             introMusic.pause();
         }
-    }, 80);
+    }, 120);
 
-    introScreen.style.animation = "fadeOutIntro 1s forwards";
+    // Play SFX
+    startSFX.play();
+
+    // Fade out intro screen
+    introScreen.style.opacity = "0";
+    introScreen.style.transition = "opacity 1.2s ease";
 
     setTimeout(() => {
         introScreen.style.display = "none";
-        gameContainer.classList.remove("hidden");
+
+        // Reveal site wrapper
+        siteWrapper.style.display = "block";
+
+        // CRT flash effect
+        document.body.classList.add("crt-start");
+
+        setTimeout(() => {
+            document.body.classList.remove("crt-start");
+
+            // Trigger HUD animation (GBA zoom + slide)
+            const gba = document.getElementById("gba-container");
+            if (gba) {
+                gba.classList.add("gba-animate");
+            }
+
+        }, 900);
+
     }, 1200);
 });
 
+// =============================
+// MUSIC PLAYER (LOCAL FILES)
+// =============================
 
-/* =========================================================
-   GALLERY ROTATOR
-========================================================= */
-const galleryImages = [
-    "https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg",
-    "https://i.pinimg.com/736x/43/fe/d2/43fed25a912fd4e44af1d35b9aac6a01.jpg",
-    "https://i.pinimg.com/736x/4a/90/45/4a9045416707ca4f825c70cb81079ebb.jpg",
-    "https://i.pinimg.com/736x/68/d8/e6/68d8e6a18aac67bb0b47c8ec77ec1cd2.jpg",
-    "https://i.pinimg.com/736x/86/6d/22/866d220dbf59a6aee104196a586c0832.jpg"
-];
-
-const galleryImg = document.getElementById("gallery-img");
-let galleryIndex = 0;
-
-function changeGallery() {
-    galleryIndex = (galleryIndex + 1) % galleryImages.length;
-    galleryImg.style.opacity = 0;
-    setTimeout(() => {
-        galleryImg.src = galleryImages[galleryIndex];
-        galleryImg.style.opacity = 1;
-    }, 400);
-}
-setInterval(changeGallery, 5000);
-
-
-/* =========================================================
-   KAOMOJI DRIFT SYSTEM (LIMITED POPULATION)
-========================================================= */
-const kaomojiLayer = document.getElementById("kaomoji-layer");
-const kaomojiFaces = [
-    "(^_^)", "(•‿•)", "(✿◠‿◠)", "(｡♥‿♥｡)", "(⚆_⚆)",
-    "(⊙_⊙)", "(◕‿◕)", "(✧ω✧)", "(≧◡≦)", "(；▽；)",
-    "(｡•́︿•̀｡)", "(ಥ_ಥ)", "(´･ω･`)", "(='X'=)", "(>_<)"
-];
-let maxKaomoji = 12;
-
-function spawnKaomoji() {
-    if (kaomojiLayer.children.length >= maxKaomoji) return;
-
-    const k = document.createElement("div");
-    k.className = "kaomoji";
-    k.textContent = kaomojiFaces[Math.floor(Math.random() * kaomojiFaces.length)];
-
-    k.style.left = Math.random() * 90 + "%";
-    k.style.bottom = "-40px";
-
-    kaomojiLayer.appendChild(k);
-
-    setTimeout(() => k.remove(), 12000);
-}
-setInterval(spawnKaomoji, 2000);
-
-
-/* =========================================================
-   MUSIC PLAYER — RANDOM SHUFFLE SYSTEM
-========================================================= */
-const musicPlayer = document.getElementById("music-player");
-const playBtn = document.getElementById("play-btn");
-const pauseBtn = document.getElementById("pause-btn");
-const skipBtn = document.getElementById("skip-btn");
-const volumeSlider = document.getElementById("volume-slider");
-
-const songs = [
+let tracks = [
     "assets/music/song1.mp3",
     "assets/music/song2.mp3",
     "assets/music/song3.mp3",
@@ -121,112 +84,39 @@ const songs = [
     "assets/music/song7.mp3"
 ];
 
-let currentSong = null;
+shuffleArray(tracks);
 
-function getRandomSong() {
-    let pick = songs[Math.floor(Math.random() * songs.length)];
-    if (pick === currentSong) return getRandomSong();
-    return pick;
-}
+// Player elements
+const audio = new Audio();
+audio.volume = 0.6;
 
-function playRandomSong() {
-    let next = getRandomSong();
-    currentSong = next;
+let currentTrack = 0;
 
-    // crossfade
-    let fade = setInterval(() => {
-        musicPlayer.volume -= 0.05;
-        if (musicPlayer.volume <= 0) {
-            clearInterval(fade);
-            musicPlayer.src = next;
-            musicPlayer.play();
-            fadeIn();
-        }
-    }, 50);
-}
-
-function fadeIn() {
-    musicPlayer.volume = 0;
-    let up = setInterval(() => {
-        musicPlayer.volume += 0.05;
-        if (musicPlayer.volume >= volumeSlider.value) {
-            clearInterval(up);
-        }
-    }, 50);
-}
-
-// AUTOSTART music after transition
-setTimeout(() => {
-    musicPlayer.src = getRandomSong();
-    currentSong = musicPlayer.src;
-    musicPlayer.play();
-}, 1800);
-
-// Buttons
-playBtn.addEventListener("click", () => musicPlayer.play());
-pauseBtn.addEventListener("click", () => musicPlayer.pause());
-
-skipBtn.addEventListener("click", () => playRandomSong());
-
-volumeSlider.addEventListener("input", () => {
-    musicPlayer.volume = volumeSlider.value;
-});
-
-
-/* =========================================================
-   MUSIC HUD — SLIDE UP / DOWN
-========================================================= */
-const musicHUD = document.getElementById("music-hud");
-const musicToggle = document.getElementById("music-toggle");
-let hudOpen = false;
-
-musicToggle.addEventListener("click", () => {
-    hudOpen = !hudOpen;
-    musicHUD.style.bottom = hudOpen ? "20px" : "-260px";
-});
-
-
-/* =========================================================
-   SNES PIXEL VISUALIZER
-========================================================= */
-const canvas = document.getElementById("visualizer");
-const ctx = canvas.getContext("2d");
-
-let audioCtx, analyser, bufferLength, dataArray;
-
-function setupVisualizer() {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const source = audioCtx.createMediaElementSource(musicPlayer);
-
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 64;
-
-    bufferLength = analyser.frequencyBinCount;
-    dataArray = new Uint8Array(bufferLength);
-
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-
-    animateVisualizer();
-}
-
-function animateVisualizer() {
-    requestAnimationFrame(animateVisualizer);
-
-    analyser.getByteFrequencyData(dataArray);
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const barWidth = canvas.width / bufferLength;
-
-    for (let i = 0; i < bufferLength; i++) {
-        const barHeight = dataArray[i] / 2;
-
-        ctx.fillStyle = "#ff77ff";
-        ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 2, barHeight);
+// Shuffle function
+function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
     }
 }
 
-musicPlayer.addEventListener("play", () => {
-    if (!audioCtx) setupVisualizer();
-});
+// Play next song
+function playNext() {
+    currentTrack = (currentTrack + 1) % tracks.length;
+    audio.src = tracks[currentTrack];
+    audio.play();
+}
+
+// Auto-next on finish
+audio.addEventListener("ended", playNext);
+
+// Expose controls to the page
+window.musicPlayer = {
+    play: () => {
+        audio.src = tracks[currentTrack];
+        audio.play();
+    },
+    pause: () => audio.pause(),
+    skip: playNext,
+    setVolume: (value) => audio.volume = value
+};
