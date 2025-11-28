@@ -1,350 +1,185 @@
-/* ====================================== */
-/*  GLOBAL RESET                          */
-/* ====================================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ============================================================
+   INTRO SEQUENCE
+   ============================================================ */
+let introLoop = new Audio("assets/music/intro_loop.mp3");
+introLoop.loop = true;
+introLoop.volume = 0.35;
+
+window.onload = () => {
+    introLoop.play().catch(() => {
+        console.log("Autoplay blocked until user interacts.");
+    });
+};
+
+const pressStartBtn = document.getElementById("press-start-btn");
+const introScreen = document.getElementById("intro-screen");
+const siteWrapper = document.getElementById("site-wrapper");
+const gba = document.getElementById("gba-container");
+
+pressStartBtn.addEventListener("click", () => {
+    // Fade out intro loop
+    let fadeOut = setInterval(() => {
+        if (introLoop.volume > 0.01) {
+            introLoop.volume -= 0.02;
+        } else {
+            clearInterval(fadeOut);
+            introLoop.pause();
+        }
+    }, 80);
+
+    introScreen.style.transition = "opacity 1.3s ease";
+    introScreen.style.opacity = "0";
+
+    setTimeout(() => {
+        introScreen.style.display = "none";
+        siteWrapper.style.display = "flex";
+
+        // Animate the GBA SP sliding up
+        setTimeout(() => {
+            gba.style.opacity = "1";
+            gba.style.transform = "translateY(0)";
+        }, 100);
+    }, 1200);
+});
+
+
+/* ============================================================
+   CENSOR RANDOM SYMBOLS
+   ============================================================ */
+const censorWord = document.getElementById("censor-word");
+const censorSymbols = ["@#$%&*!?", "*%@!#%", "!$#*@&", "%#@!*%", "&*!@#$"];
+
+setInterval(() => {
+    censorWord.textContent = censorSymbols[Math.floor(Math.random() * censorSymbols.length)];
+}, 200);
+
+
+/* ============================================================
+   GALLERY ROTATION
+   ============================================================ */
+const galleryImg = document.getElementById("gallery-img");
+
+const galleryImages = [
+    "https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg",
+    "https://i.pinimg.com/736x/43/fe/d2/43fed25a912fd4e44af1d35b9aac6a01.jpg",
+    "https://i.pinimg.com/736x/4a/90/45/4a9045416707ca4f825c70cb81079ebb.jpg",
+    "https://i.pinimg.com/736x/68/d8/e6/68d8e6a18aac67bb0b47c8ec77ec1cd2.jpg",
+    "https://i.pinimg.com/736x/86/6d/22/866d220dbf59a6aee104196a586c0832.jpg"
+];
+
+let currentGalleryIndex = 0;
+setInterval(() => {
+    currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
+    galleryImg.src = galleryImages[currentGalleryIndex];
+}, 6000);
+
+
+/* ============================================================
+   KAOMOJI SYSTEM
+   ============================================================ */
+const kaomojiLayer = document.getElementById("kaomoji-layer");
+
+const kaomojiList = [
+    "(｡•́‿•̀｡)", "(≧◡≦)", "(•ө•)♡", "(っ˘з(˘⌣˘ )", "(⌒‿⌒)", "(=｀ω´=)",
+    "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧", "(╯✧▽✧)╯", "(◕ᴥ◕)", "(✿◠‿◠)", "(´｡• ◡ •｡`)"
+];
+
+function spawnKaomoji() {
+    if (document.hidden) return;
+
+    if (kaomojiLayer.childElementCount > 10) return;
+
+    const k = document.createElement("div");
+    k.classList.add("kaomoji");
+    k.innerText = kaomojiList[Math.floor(Math.random() * kaomojiList.length)];
+
+    k.style.left = Math.random() * 90 + "%";
+    k.style.top = "110%";
+    k.style.opacity = 0.5 + Math.random() * 0.4;
+
+    kaomojiLayer.appendChild(k);
+
+    setTimeout(() => k.remove(), 6000);
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: black;
-    font-family: Arial, sans-serif;
-    color: white;
+setInterval(spawnKaomoji, 1200);
+
+
+/* ============================================================
+   MUSIC PLAYER — SHUFFLE SYSTEM
+   ============================================================ */
+const playBtn = document.getElementById("play-btn");
+const pauseBtn = document.getElementById("pause-btn");
+const skipBtn = document.getElementById("skip-btn");
+const volumeSlider = document.getElementById("volume-slider");
+
+const songs = [
+    "assets/music/song1.mp3",
+    "assets/music/song2.mp3",
+    "assets/music/song3.mp3",
+    "assets/music/song4.mp3",
+    "assets/music/song5.mp3",
+    "assets/music/song6.mp3",
+    "assets/music/song7.mp3"
+];
+
+let currentSong = null;
+
+function playRandomSong() {
+    if (currentSong) {
+        currentSong.pause();
+    }
+
+    let pick = songs[Math.floor(Math.random() * songs.length)];
+    currentSong = new Audio(pick);
+    currentSong.volume = volumeSlider.value;
+    currentSong.play();
+
+    currentSong.onended = () => playRandomSong();
 }
 
-/* ====================================== */
-/* INTRO SCREEN                           */
-/* ====================================== */
-#intro-screen {
-    position: fixed;
-    inset: 0;
-    background: black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9000;
-    animation: crt-flicker 1.8s ease-out forwards;
-}
+playBtn.addEventListener("click", () => {
+    if (!currentSong) {
+        playRandomSong();
+    } else {
+        currentSong.play();
+    }
+});
 
-#intro-names {
-    font-size: 2.5rem;
-    text-align: center;
-    line-height: 3.3rem;
-    opacity: 0;
-    animation: fadeIn 2s ease forwards 1.2s;
-}
+pauseBtn.addEventListener("click", () => {
+    if (currentSong) currentSong.pause();
+});
 
-.alias {
-    display: block;
-}
+skipBtn.addEventListener("click", () => {
+    playRandomSong();
+});
 
-.crossed {
-    text-decoration: line-through;
-    opacity: 0.4;
-}
+volumeSlider.addEventListener("input", () => {
+    if (currentSong) currentSong.volume = volumeSlider.value;
+});
 
-#press-start-btn {
-    margin-top: 40px;
-    font-size: 1.4rem;
-    padding: 10px 28px;
-    cursor: pointer;
-    background: transparent;
-    border: 2px solid white;
-    color: white;
-    transition: 0.3s;
-    opacity: 0;
-    animation: fadeIn 2s ease forwards 2s;
-}
 
-#press-start-btn:hover {
-    background: white;
-    color: black;
-}
+/* ============================================================
+   MUSIC PLAYER POPUP
+   ============================================================ */
+const musicPlayer = document.getElementById("music-player");
+const gbaA = document.getElementById("gba-a");
+const gbaB = document.getElementById("gba-b");
 
-/* Intro CRT flicker */
-@keyframes crt-flicker {
-    0% { opacity: 0; }
-    5% { opacity: 0.1; }
-    12% { opacity: 0.9; }
-    18% { opacity: 0.4; }
-    26% { opacity: 1; }
-    32% { opacity: 0.2; }
-    45% { opacity: 1; }
-    100% { opacity: 1; }
-}
+gbaA.addEventListener("click", () => {
+    musicPlayer.style.display = "flex";
+});
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+gbaB.addEventListener("click", () => {
+    musicPlayer.style.display = "none";
+});
 
-/* ====================================== */
-/* SITE WRAPPER                           */
-/* ====================================== */
-#site-wrapper {
-    position: fixed;
-    inset: 0;
-    display: none; /* hidden until start */
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
 
-/* ====================================== */
-/* GBA CONSOLE                            */
-/* ====================================== */
-#gba-container {
-    position: relative;
-    width: 750px;
-    height: 1000px;
-    background: #3b3b3b;
-    border-radius: 30px;
-    border: 8px solid #1a1a1a;
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-    transform: translateY(100%);
-    opacity: 0;
-    transition: transform 1s ease, opacity 1s ease;
-}
+/* ============================================================
+   HIDDEN FETU EASTER EGG
+   ============================================================ */
+const fetuEgg = document.getElementById("fetu-egg");
 
-/* TOP SCREEN */
-#gba-screen {
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 92%;
-    height: 55%;
-    background: #000;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-/* Warm Gold frame glow */
-#screen-frame {
-    position: absolute;
-    inset: 0;
-    border: 6px solid #d9b95c;
-    border-radius: 12px;
-    pointer-events: none;
-    box-shadow:
-        0 0 6px #d9b95c,
-        0 0 12px rgba(217,185,92,0.8),
-        inset 0 0 10px rgba(217,185,92,0.5);
-}
-
-/* CONTENT ON SCREEN */
-#screen-content {
-    position: absolute;
-    inset: 0;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-/* ====================================== */
-/* CUTOUT TITLE                           */
-/* ====================================== */
-#ula-title {
-    font-family: 'Bungee Shade', cursive;
-    font-size: 3.5rem;
-    text-align: center;
-    margin-top: 20px;
-    letter-spacing: 6px;
-}
-
-.cutout {
-    display: inline-block;
-    transform: rotate(calc(-5deg + 10deg * random()));
-}
-
-/* Subtitle */
-#ula-sub {
-    font-size: 1.1rem;
-    opacity: 0.9;
-    text-align: center;
-    margin-top: 8px;
-}
-
-/* ====================================== */
-/* ABOUT SECTION                          */
-/* ====================================== */
-#about {
-    margin-top: 35px;
-    padding: 10px;
-}
-
-#about h3 {
-    font-family: 'Rubik Wet Paint', cursive;
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.about-text {
-    font-size: 1.1rem;
-    line-height: 1.6rem;
-}
-
-/* Censor word shaking */
-#censor-word {
-    display: inline-block;
-    animation: censorShake 0.15s infinite alternate;
-}
-
-@keyframes censorShake {
-    from { transform: translateX(-2px); }
-    to   { transform: translateX(2px); }
-}
-
-/* ====================================== */
-/* GALLERY                                */
-/* ====================================== */
-#gallery {
-    width: 100%;
-    text-align: center;
-    margin-top: 30px;
-}
-
-#gallery-img {
-    width: 90%;
-    border-radius: 12px;
-    box-shadow: 0 0 18px rgba(255,255,255,0.3);
-}
-
-/* ====================================== */
-/* MENU TABS                              */
-/* ====================================== */
-#menu-tabs {
-    margin-top: 30px;
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.menu-link {
-    font-size: 1.2rem;
-    color: white;
-    text-decoration: none;
-    opacity: 0.8;
-    transition: 0.3s;
-}
-
-.menu-link:hover {
-    opacity: 1;
-}
-
-/* ====================================== */
-/* GBA BOTTOM BUTTONS                     */
-/* ====================================== */
-#gba-bottom {
-    position: absolute;
-    bottom: 40px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 70px;
-}
-
-.gba-btn {
-    width: 70px;
-    height: 70px;
-    background: #2d2d2d;
-    border-radius: 50%;
-    border: 5px solid #1a1a1a;
-    box-shadow: inset 0 0 8px #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-}
-
-/* ====================================== */
-/* MUSIC PLAYER                           */
-/* ====================================== */
-#music-player {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 260px;
-    background: rgba(20, 20, 20, 0.85);
-    border: 2px solid #d9b95c;
-    border-radius: 12px;
-    padding: 15px;
-    display: none;
-    flex-direction: column;
-    gap: 10px;
-    box-shadow:
-        0 0 8px #d9b95c,
-        0 0 16px rgba(217,185,92,0.7);
-}
-
-#music-info {
-    text-align: center;
-    font-size: 0.9rem;
-}
-
-#music-artist {
-    color: #d9b95c;
-    text-decoration: none;
-}
-
-#music-controls {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-#music-controls button {
-    font-size: 1.3rem;
-    cursor: pointer;
-    background: none;
-    border: none;
-    color: white;
-}
-
-#volume-slider {
-    width: 100%;
-}
-
-/* ====================================== */
-/* KAOMOJI LAYER                          */
-/* ====================================== */
-#kaomoji-layer {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 2000;
-}
-
-/* Single kaomoji */
-.kaomoji {
-    position: absolute;
-    font-size: 2rem;
-    opacity: 0.8;
-    animation: floatUp 6s linear forwards;
-}
-
-@keyframes floatUp {
-    from { transform: translateY(100vh); opacity: 0.2; }
-    to   { transform: translateY(-10vh); opacity: 0.8; }
-}
-
-/* ====================================== */
-/* FETU EASTER EGG                        */
-/* ====================================== */
-#fetu-egg {
-    position: fixed;
-    left: 5px;
-    bottom: 5px;
-    font-size: 1.3rem;
-    opacity: 0.4;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-#fetu-egg:hover {
-    opacity: 1;
-}
+fetuEgg.addEventListener("click", () => {
+    alert("✨ Fetu appears for a split second… then vanishes.");
+});
