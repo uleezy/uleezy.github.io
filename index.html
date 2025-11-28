@@ -5,114 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ulanator.online</title>
 
-    <!-- GOOGLE FONTS -->
+    <!-- Magazine fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Rubik+Wet+Paint&display=swap" rel="stylesheet">
 
-    <!-- MAIN CSS -->
+    <!-- Your CSS -->
     <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 
-    <!-- ===================== INTRO SCREEN ===================== -->
-    <div id="intro-screen">
-        <div id="intro-names">
-            <div id="name-line-1" class="intro-name main-font">Ula</div>
-            <div id="name-line-2" class="intro-name glitch-font"><span class="crossed">The Ulatron</span></div>
-        </div>
+<!-- ======================================= -->
+<!--  INTRO SCREEN — BLACKOUT + NAME + START -->
+<!-- ======================================= -->
 
-        <audio id="intro-music" src="assets/music/intro_loop.mp3" loop></audio>
+<div id="intro-screen">
 
-        <button id="press-start">PRESS START</button>
+    <div id="intro-names">
+        <span class="alias">Ula</span>
+        <span class="alias">Uleezy</span>
+        <span class="alias">The Ulanator</span>
+        <span class="alias crossed">The Ulatron</span>
     </div>
 
+    <button id="press-start-btn">Press Start</button>
+</div>
 
-    <!-- ===================== MAIN GAME UI ===================== -->
-    <div id="game-container" class="hidden">
+<!-- ================================ -->
+<!--  MAIN SITE WRAPPER (HIDDEN INIT) -->
+<!-- ================================ -->
 
-        <!-- CRT EFFECT OVERLAY -->
-        <div id="crt-overlay"></div>
+<div id="site-wrapper">
 
-        <!-- HEADER TITLE -->
-        <header id="site-title">
-            <h1 id="cutout-title" class="main-font">
-                <span class="cutout-letter">U</span>
-                <span class="cutout-letter">l</span>
-                <span class="cutout-letter">a</span>
-            </h1>
-            <h2 id="sub-title">so cal samoan — half nerd / half ghetto fabulous</h2>
-        </header>
+    <!-- ========================= -->
+    <!--  GAMEBOY SP CONSOLE FRAME -->
+    <!-- ========================= -->
 
-        <!-- MAIN CONTENT -->
-        <div id="content-area">
+    <div id="gba-container">
 
-            <!-- ABOUT ME -->
-            <section id="about-me">
-                <h2 class="section-title main-font">Meet The Ulanator…</h2>
-                <p class="about-text">
-                    I’m just me — I be making sounds and stuff.  
-                    I make all kinds of sounds, but I’m rooted in G-funk, glitch-hop,  
-                    and whatever else I wanna do.  
-                    I started back in 2017–2018 and now I feel I got the experience  
-                    to properly debut and do my thang.  
-                    <br><br>
-                    I produce, I compose, I sing a bit…  
-                    but don’t get it twisted…  
-                    I'm not a poet...I'm a  
-                    <span id="censored-word" class="shake">m#$%&@!(%g</span>  
-                    rapper.
-                </p>
-            </section>
+        <!-- TOP LID / SCREEN -->
+        <div id="gba-screen">
 
-            <!-- GALLERY -->
-            <section id="gallery">
-                <img id="gallery-img" src="https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg" alt="Gallery Image">
-            </section>
+            <!-- GOLD TRIM FRAME -->
+            <div id="screen-frame"></div>
 
+            <!-- CONTENT INSIDE SCREEN -->
+            <div id="screen-content">
+
+                <!-- ===== NAME AFTER REVEAL (MAGAZINE STYLE) ===== -->
+                <h1 id="ula-title">
+                    <span class="cutout">U</span>
+                    <span class="cutout">L</span>
+                    <span class="cutout">A</span>
+                </h1>
+
+                <!-- ===== SUBTITLE TEXT ===== -->
+                <h2 id="ula-sub">so cal samoan • half nerd / half ghetto fabulous</h2>
+
+                <!-- ===== ABOUT ME SECTION ===== -->
+                <section id="about">
+
+                    <h3>Meet The Ulanator…</h3>
+
+                    <p class="about-text">
+                        I’m just me — I be making sounds and stuff.  
+                        I make all kinds of sounds, but I’m rooted in G-funk, glitch-hop, and whatever else I’m rocking with in that moment.  
+                        I started around 2017–2018 and now I finally feel like I got the experience… I’m ready to do my thang.  
+                        <br><br>
+                        I produce, I compose, I sing a bit — but don’t get it twisted…  
+                        I ain’t no poet, I’m a <span id="censor-word">m@$%&*!#(%g</span> rapper.
+                    </p>
+
+                </section>
+
+                <!-- ===== GALLERY SECTION ===== -->
+                <section id="gallery">
+                    <img id="gallery-img" src="https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg">
+                </section>
+
+                <!-- ===== MENU TABS ===== -->
+                <nav id="menu-tabs">
+                    <a href="#" class="menu-link">Home</a>
+                    <a href="#" class="menu-link">Music</a>
+                    <a href="#" class="menu-link">Gallery</a>
+                    <a href="#" class="menu-link">Contact</a>
+                </nav>
+
+            </div>
         </div>
 
-        <!-- KAOMOJI DRIFT LAYER -->
-        <div id="kaomoji-layer"></div>
-
-
-        <!-- ========== MUSIC HUD (SLIDE UP) ========== -->
-        <div id="music-hud">
-
-            <!-- PIXEL VISUALIZER -->
-            <canvas id="visualizer"></canvas>
-
-            <!-- PLAYER LABEL -->
-            <div id="player-label">
-                Rocking w the music? Tap in.  
-                <br>
-                <a href="https://linktr.ee/uleezy" target="_blank" class="player-link">Ula / Uleezy / The Ulanator</a>
-            </div>
-
-            <!-- PLAYER CONTROLS -->
-            <div id="player-controls">
-                <button id="play-btn">▶</button>
-                <button id="pause-btn">⏸</button>
-                <button id="skip-btn">⏭</button>
-                <input type="range" id="volume-slider" min="0" max="1" step="0.01">
-            </div>
-
-            <!-- AUDIO ELEMENT -->
-            <audio id="music-player"></audio>
-
+        <!-- BOTTOM BUTTONS (FAKE GBA SP BUTTONS) -->
+        <div id="gba-bottom">
+            <div class="gba-btn" id="gba-a">A</div>
+            <div class="gba-btn" id="gba-b">B</div>
         </div>
-
-        <!-- MUSIC HUD TOGGLE ICON -->
-        <button id="music-toggle">♫</button>
 
     </div>
 
+    <!-- ===================== -->
+    <!--  MUSIC PLAYER (PANEL) -->
+    <!-- ===================== -->
 
-    <!-- MAIN SCRIPT -->
-    <script src="script.js"></script>
+    <div id="music-player">
+
+        <div id="music-visualizer"></div>
+
+        <div id="music-info">
+            <span id="music-status">Rocking w the music? Tap in.</span>
+            <a id="music-artist" href="https://linktr.ee/uleezy" target="_blank">Ula</a>
+        </div>
+
+        <div id="music-controls">
+            <button id="play-btn">▶</button>
+            <button id="pause-btn">⏸</button>
+            <button id="skip-btn">⏭</button>
+        </div>
+
+        <input type="range" id="volume-slider" min="0" max="1" step="0.01">
+
+    </div>
+
+</div>
+
+<!-- ================= -->
+<!--  KAOMOJI OVERLAYS -->
+<!-- ================= -->
+<div id="kaomoji-layer"></div>
+
+<!-- ======================== -->
+<!-- HIDDEN FETU EASTER EGG -->
+<!-- ======================== -->
+<div id="fetu-egg">★</div>
+
+<!-- ================= -->
+<!--  YOUR SCRIPT FILE -->
+<!-- ================= -->
+<script src="script.js"></script>
 
 </body>
 </html>
-
-
-
-
