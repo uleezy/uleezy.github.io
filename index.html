@@ -1,1006 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ula / Uleezy • Dagorilla Academy Alumni</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    /* === BASIC RESET === */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: #020617;
-      color: #f9fafb;
-      scroll-behavior: smooth;
-    }
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ula / Uleezy / The Ulanator</title>
 
-    /* === HERO SECTION === */
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      overflow: hidden;
-    }
+    <!-- CSS FILE -->
+    <link rel="stylesheet" href="style.css">
 
-    /* Smooth animated gradient: blue → purple → pink → red → back (slow) */
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, #1d2a6a, #020617);
-      z-index: 0;
-      background-size: 250% 250%;
-      animation: heroGradient 80s linear infinite;
-    }
-
-    @keyframes heroGradient {
-      0% {
-        background-position: 50% 0%;
-        background-image: radial-gradient(circle at center, #1d2a6a, #020617);
-      }
-      25% {
-        background-position: 100% 50%;
-        background-image: radial-gradient(circle at top, #3b1f6a, #050013);
-      }
-      50% {
-        background-position: 50% 100%;
-        background-image: radial-gradient(circle at center, #5b1b6a, #0b0218);
-      }
-      75% {
-        background-position: 0% 50%;
-        background-image: radial-gradient(circle at bottom, #7a1234, #050013);
-      }
-      100% {
-        background-position: 50% 0%;
-        background-image: radial-gradient(circle at center, #1d2a6a, #020617);
-      }
-    }
-
-    /* Floating kaomoji background layer */
-    .kaomoji-layer {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      opacity: 0.4;
-      z-index: 1;
-    }
-    .kaomoji {
-      position: absolute;
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 1.1rem;
-      user-select: none;
-      will-change: transform, opacity;
-      animation: floatUp linear infinite;
-    }
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-120vh) scale(0.6);
-        opacity: 0;
-      }
-    }
-
-    .title-container {
-      position: relative;
-      z-index: 2;
-      padding: 0 1.5rem;
-    }
-
-    .typing-name {
-      font-size: clamp(2.6rem, 7vw, 4rem);
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      color: transparent;
-      -webkit-text-stroke: 1px #ffffff;
-      text-shadow: 0 0 10px rgba(129, 140, 248, 0.6);
-      white-space: nowrap;
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* Glitch effect for "The Ulatron" */
-    .typing-name.glitch {
-      animation: glitchShake 0.25s infinite;
-    }
-    .typing-name.glitch::before,
-    .typing-name.glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      overflow: hidden;
-      opacity: 0.8;
-    }
-    .typing-name.glitch::before {
-      text-shadow: -2px 0 rgba(56, 189, 248, 0.9);
-      clip-path: inset(0 0 60% 0);
-      animation: glitchSlice1 0.35s infinite;
-    }
-    .typing-name.glitch::after {
-      text-shadow: 2px 0 rgba(244, 63, 94, 0.9);
-      clip-path: inset(40% 0 0 0);
-      animation: glitchSlice2 0.35s infinite;
-    }
-
-    @keyframes glitchShake {
-      0% { transform: translate(0, 0); }
-      20% { transform: translate(-1px, 1px); }
-      40% { transform: translate(1px, -1px); }
-      60% { transform: translate(-1px, -1px); }
-      80% { transform: translate(1px, 1px); }
-      100% { transform: translate(0, 0); }
-    }
-    @keyframes glitchSlice1 {
-      0%   { clip-path: inset(0 0 60% 0); }
-      50%  { clip-path: inset(20% 0 30% 0); }
-      100% { clip-path: inset(50% 0 0 0); }
-    }
-    @keyframes glitchSlice2 {
-      0%   { clip-path: inset(40% 0 0 0); }
-      50%  { clip-path: inset(30% 0 20% 0); }
-      100% { clip-path: inset(0 0 50% 0); }
-    }
-
-    .tagline {
-      margin-top: 1rem;
-      font-size: 1.1rem;
-      color: #d1d5db;
-    }
-
-    .buttons {
-      margin-top: 2.2rem;
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      position: relative;
-      padding: 0.9rem 1.8rem;
-      border-radius: 999px;
-      border: 2px solid rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 0.9);
-      color: #f9fafb;
-      font-size: 0.95rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      cursor: pointer;
-      overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease,
-        border-color 0.2s ease, background 0.2s ease;
-    }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.85);
-      border-color: #22c55e;
-      background: rgba(15, 23, 42, 1);
-    }
-
-    .btn-kao {
-      display: inline-block;
-      margin-left: 0.35rem;
-      min-width: 3ch;
-      text-align: left;
-      font-size: 0.98rem;
-      opacity: 0.9;
-    }
-
-    /* === OVERLAYS === */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.9);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-    }
-    .overlay.show {
-      display: flex;
-    }
-
-    /* Music Console Overlay */
-    .music-console {
-      width: 90%;
-      max-width: 520px;
-      padding: 2rem;
-      background: radial-gradient(circle at top, #111827, #020617);
-      border-radius: 18px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.9);
-      color: #e5e7eb;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .music-console h2 {
-      font-size: 1.4rem;
-      margin-bottom: 0.25rem;
-    }
-    .music-console-sub {
-      font-size: 0.86rem;
-      color: #9ca3af;
-      margin-bottom: 1.2rem;
-    }
-    .music-meta {
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
-    }
-    .music-meta strong {
-      color: #f97316;
-      font-weight: 600;
-    }
-    .music-controls {
-      display: flex;
-      justify-content: center;
-      gap: 0.6rem;
-      margin-bottom: 1.1rem;
-      flex-wrap: wrap;
-    }
-    .music-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 0.5rem 1.1rem;
-      font-size: 0.85rem;
-      cursor: pointer;
-      background: #111827;
-      color: #f9fafb;
-      border: 1px solid rgba(75, 85, 99, 0.9);
-      transition: transform 0.15s ease, box-shadow 0.15s ease,
-        background 0.15s ease, border-color 0.15s ease;
-    }
-    .music-btn:hover {
-      background: #1f2937;
-      border-color: #22c55e;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.8);
-    }
-    .music-volume-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 1.1rem;
-      font-size: 0.85rem;
-      color: #9ca3af;
-    }
-    .music-volume-row input[type="range"] {
-      width: 180px;
-    }
-
-    /* Kaomoji "pets" inside music console */
-    .music-kaomoji-row {
-      display: flex;
-      justify-content: center;
-      gap: 0.75rem;
-      margin-bottom: 1.2rem;
-      flex-wrap: wrap;
-    }
-    .pet-kao {
-      font-size: 1.2rem;
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.15s ease, filter 0.15s ease;
-    }
-    .pet-kao:hover {
-      transform: translateY(-2px) scale(1.05);
-      filter: drop-shadow(0 0 6px rgba(248, 250, 252, 0.85));
-    }
-    .music-console-footer {
-      font-size: 0.78rem;
-      color: #6b7280;
-    }
-    .music-close {
-      position: absolute;
-      top: 0.6rem;
-      right: 0.8rem;
-      border: none;
-      background: transparent;
-      color: #9ca3af;
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
-    .music-close:hover {
-      color: #f9fafb;
-    }
-
-    /* 360° viewer overlay */
-    #viewer {
-      position: fixed;
-      inset: 0;
-      background: black;
-      display: none;
-      z-index: 20;
-    }
-
-    /* === ABOUT SECTION === */
-    .about-section {
-      padding: 4rem 1.5rem;
-      background: radial-gradient(circle at top, rgba(30, 64, 175, 0.35), #020617);
-      color: #e5e7eb;
-    }
-    .about-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 2.5rem;
-      align-items: center;
-    }
-    .about-text h2 {
-      font-size: clamp(2rem, 4vw, 2.6rem);
-      margin-bottom: 1rem;
-    }
-    .about-text p {
-      margin-bottom: 1rem;
-      line-height: 1.6;
-      font-size: 1rem;
-    }
-    .about-media {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .about-slideshow {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #020617;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
-    }
-    .about-slideshow img,
-    .about-slideshow video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .about-slideshow video {
-      background: black;
-    }
-    .about-media-note {
-      font-size: 0.85rem;
-      color: #9ca3af;
-    }
-
-    /* Shaking censored word */
-    .shake-censored {
-      display: inline-block;
-      position: relative;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-shadow: 0 0 4px rgba(248, 250, 252, 0.6),
-        0 0 10px rgba(244, 114, 182, 0.8);
-      filter: blur(0.3px);
-      animation: censoredShake 0.35s infinite;
-    }
-    @keyframes censoredShake {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
-      50% { transform: translate(1px, -1px) rotate(0.5deg); }
-      75% { transform: translate(-1px, -0.5px) rotate(0deg); }
-      100% { transform: translate(0.5px, 1px) rotate(0.5deg); }
-    }
-
-    /* === CONTACT SECTION === */
-    .contact-section {
-      padding: 3.5rem 1.5rem 4.5rem;
-      background: #020617;
-      border-top: 1px solid rgba(31, 41, 55, 0.9);
-    }
-    .contact-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      text-align: left;
-    }
-    .contact-inner h2 {
-      font-size: clamp(2rem, 3.5vw, 2.4rem);
-      margin-bottom: 0.75rem;
-      color: #f9fafb;
-    }
-    .contact-inner p {
-      margin-bottom: 1rem;
-      color: #d1d5db;
-    }
-    .contact-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      gap: 0.5rem;
-    }
-    .contact-list li {
-      font-size: 0.98rem;
-      color: #e5e7eb;
-    }
-    .contact-list strong {
-      color: #f97316;
-      font-weight: 600;
-    }
-    .contact-list a {
-      text-decoration: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 3px;
-    }
-    .contact-list a:hover {
-      text-decoration-thickness: 2px;
-      color: #bfdbfe;
-    }
-
-    /* Responsive layout */
-    @media (max-width: 768px) {
-      .about-inner {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .music-console {
-        padding: 1.5rem;
-      }
-    }
-  </style>
+    <!-- Google Fonts (temporary until we swap to custom fonts per artist) -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Anton&family=Rubik+Mono+One&display=swap" rel="stylesheet">
 </head>
+
 <body>
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-bg"></div>
-    <div class="kaomoji-layer" id="kaomojiLayer"></div>
 
-    <div class="title-container">
-      <div id="typing" class="typing-name"></div>
-      <div class="tagline">I make sounds and stuff.</div>
-      <div class="buttons">
-        <button id="musicBtn" class="btn">
-          Press Start
-          <span id="musicBtnKao" class="btn-kao">___</span>
+    <!-- 🌈 BACKGROUND GRADIENT + KAOMOJI LAYER -->
+    <div id="background-gradient"></div>
+    <div id="kaomoji-container"></div>
+
+    <!-- 🔊 INTRO MUSIC -->
+    <audio id="introLoop" src="assets/music/intro_loop.mp3" loop></audio>
+    <audio id="introEcho" src=""></audio> <!-- echo generated in JS -->
+
+    <!-- 🔊 SOUND EFFECTS -->
+    <audio id="sfx-click" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
+    <audio id="sfx-chrono" src="https://assets.mixkit.co/sfx/preview/mixkit-cool-interface-click-tone-2566.mp3"></audio>
+    <audio id="sfx-whoosh" src="https://assets.mixkit.co/sfx/preview/mixkit-fast-small-swoosh-1535.mp3"></audio>
+    <audio id="sfx-shimmer" src="https://assets.mixkit.co/sfx/preview/mixkit-game-magic-shimmer-2591.mp3"></audio>
+
+    <!-- 📺 CRT OVERLAY -->
+    <div id="crt-overlay"></div>
+
+    <!-- 🎮 STARTUP SCREEN -->
+    <div id="startup-screen">
+        <h1 id="startup-name">Ula / Uleezy / The Ulanator</h1>
+
+        <button id="press-start">
+            PRESS START <span id="pressKaomoji">(◕‿◕✿)</span>
         </button>
-        <button id="mapBtn" class="btn">
-          Step inside Ulaville
-          <span id="mapBtnKao" class="btn-kao">___</span>
-        </button>
-      </div>
     </div>
-  </div>
 
-  <!-- ABOUT SECTION -->
-  <section id="about" class="about-section">
-    <div class="about-inner">
-      <div class="about-text">
-        <h2>Meet The Ulanator...</h2>
-        <p>
-          I'm just me, I be making sounds and stuff. I make all kinds of sounds but I'm deeply rooted in G-funk and glitch-hop and then whatever else I'm listening to at that time. I started making music back in 2017 and now I finally feel confident enough to properly make my debut.
-        </p>
-        <p>
-          Anything and everything feeds into what I do. I'm half nerd, half ghetto fabulous — a So-Cal Samoan out of San Diego. I produce, compose and sing a bit, but don't get it twisted... I ain't no poet, I'm a
-          <span class="shake-censored">m**********g</span> rapper.
-        </p>
-      </div>
+    <!-- 🎮 HANDHELD UI (HIDDEN UNTIL START) -->
+    <div id="handheld-ui">
 
-      <div class="about-media">
-        <div id="aboutSlideshow" class="about-slideshow">
-          <!-- JS injects media here -->
+        <div id="handheld-screen">
+
+            <!-- HEADER CUTOUT NAME (TRANSFORMS AFTER EXPANSION) -->
+            <h1 id="main-cutout-name">Ula / Uleezy / The Ulanator</h1>
+
+            <!-- SUBTITLE -->
+            <h2 id="tagline-cutout">so cal samoan • half nerd / half ghetto fabulous</h2>
+
+            <!-- NAV BUTTONS -->
+            <div id="nav-buttons">
+                <button id="music-btn">Press Start <span class="btnKao"></span></button>
+                <button id="ulaville-btn">Ulaville <span class="btnKao"></span></button>
+            </div>
+
+            <!-- MAIN CONTENT AREA -->
+            <div id="content-wrapper">
+
+                <!-- ABOUT ME -->
+                <div id="about-section">
+                    <h3>Meet The Ulanator...</h3>
+
+                    <p id="about-text">
+                        I’m just me — I be making sounds and stuff.  
+                        I make all kinds of sounds, but I’m rooted in 
+                        <span class="cutout">G-funk</span>, 
+                        <span class="cutout">glitch-hop</span>, 
+                        and whatever else I’m rocking with in that moment.  
+
+                        I started back in 
+                        <span class="cutout">2017–2018</span>  
+                        and now I finally feel I got the experience —  
+                        I'm ready to 
+                        <span class="cutout">do my thang</span>.  
+
+                        I 
+                        <span class="cutout">produce</span>, 
+                        <span class="cutout">compose</span>, 
+                        <span class="cutout">sing a bit</span>  
+                        ...but don’t get it twisted...  
+                        I ain’t no poet...  
+                        I’m a <span id="censored-rapper" class="cutout censor-shake">m#$%&@!*(%g rapper</span>.
+                    </p>
+                </div>
+
+                <!-- GALLERY (RANDOM PINTEREST IMAGES) -->
+                <div id="gallery">
+                    <img id="gallery-image" src="" alt="Gallery Image">
+                </div>
+
+            </div>
+
+            <!-- CONTACT SECTION -->
+            <div id="contact-section">
+                <h3>Contact & Music</h3>
+
+                <ul>
+                    <li><a href="https://www.instagram.com/uleezy4sheezy/" target="_blank">Instagram: @Uleezy4sheezy</a></li>
+                    <li><a href="https://www.youtube.com/@ula619" target="_blank">YouTube: @Ula619</a></li>
+                    <li><a href="https://soundcloud.com/la_the_anda" target="_blank">SoundCloud: Ula</a></li>
+                    <li><a href="https://open.spotify.com/artist/2xfdMTaWnH1kgowZNwnWT5" target="_blank">Spotify: Ula</a></li>
+                </ul>
+            </div>
+
         </div>
-        <p class="about-media-note">
-          Slideshow cycles through your photos every 5 seconds.
-        </p>
-      </div>
     </div>
-  </section>
 
-  <!-- CONTACT SECTION -->
-  <section id="contact" class="contact-section">
-    <div class="contact-inner">
-      <h2>Contact &amp; Links</h2>
-      <p>
-        Booking, beats, collabs, or just to tap in — reach out and we’ll build.
-      </p>
-      <ul class="contact-list">
-        <li>
-          <strong>Streaming:</strong>
-          <span>Ula on Spotify, Apple Music, Pandora &amp; more</span>
-        </li>
-        <li>
-          <strong>Instagram:</strong>
-          <span>
-            <a href="https://www.instagram.com/uleezy4sheezy/" target="_blank" rel="noopener">
-              @Uleezy4sheezy
-            </a>
-          </span>
-        </li>
-        <li>
-          <strong>YouTube:</strong>
-          <span>
-            <a href="https://www.youtube.com/@ula619" target="_blank" rel="noopener">
-              @Ula619
-            </a>
-          </span>
-        </li>
-        <li>
-          <strong>SoundCloud:</strong>
-          <span>
-            <a href="https://soundcloud.com/la_the_anda" target="_blank" rel="noopener">
-              Ula
-            </a>
-          </span>
-        </li>
-      </ul>
+    <!-- 🎵 MUSIC PLAYER (TAMAGOTCHI STYLE) -->
+    <div id="music-player">
+        <div id="music-frame">
+
+            <h3 id="now-playing">Now Playing:</h3>
+            <div id="artist-style"></div>
+
+            <iframe id="music-embed" src="" frameborder="0"></iframe>
+
+            <!-- VISUALIZER -->
+            <canvas id="visualizer"></canvas>
+
+            <div id="music-controls">
+                <button id="pausePlay">▶/⏸</button>
+                <button id="skip">⏭</button>
+
+                <input id="volume" type="range" min="0" max="1" step="0.01" value="0.4">
+            </div>
+
+        </div>
     </div>
-  </section>
 
-  <!-- MUSIC CONSOLE OVERLAY -->
-  <div id="musicOverlay" class="overlay">
-    <div class="music-console">
-      <button class="music-close" onclick="closeMusic()">✕</button>
-      <h2>Music Console</h2>
-      <div class="music-console-sub">
-        Prototype player — hook it up to your tracks later.
-      </div>
+    <!-- JS FILE -->
+    <script src="script.js"></script>
 
-      <div class="music-meta">
-        <div><strong>Now Playing:</strong> <span id="trackTitle">No track loaded</span></div>
-        <div><strong>Artist:</strong> <span id="trackArtist">—</span></div>
-      </div>
-
-      <div class="music-controls">
-        <button class="music-btn" id="prevTrack">Prev</button>
-        <button class="music-btn" id="playPause">Play</button>
-        <button class="music-btn" id="nextTrack">Next</button>
-      </div>
-
-      <div class="music-volume-row">
-        <span>Volume</span>
-        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.7" />
-      </div>
-
-      <div class="music-kaomoji-row" id="musicPets">
-        <span class="pet-kao" data-state="neutral">(・ω・)</span>
-        <span class="pet-kao" data-state="neutral">(＾▽＾)</span>
-        <span class="pet-kao" data-state="neutral">(=^‥^=)</span>
-      </div>
-
-      <div class="music-console-footer">
-        Hover the little guys to pet them. Move away to see how they feel about it.
-      </div>
-
-      <!-- AUDIO (placeholder – set src later) -->
-      <audio id="musicAudio"></audio>
-    </div>
-  </div>
-
-  <!-- 360° VIEWER OVERLAY (ULAVILLE PROTOTYPE) -->
-  <div id="viewer"></div>
-
-  <!-- A-Frame for 360° video -->
-  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-
-  <script>
-    // ======== Typing + name cycling logic ========
-    const names = ["Ula", "Uleezy", "The Ulanator", "The Ulatron"];
-    let currentIndex = 0;
-    const typingEl = document.getElementById("typing");
-
-    function typeOut(text, callback) {
-      let i = 0;
-      typingEl.textContent = "";
-      typingEl.style.color = "transparent";
-      typingEl.style.webkitTextStroke = "1px #ffffff";
-      typingEl.dataset.text = text;
-
-      const interval = setInterval(() => {
-        i++;
-        typingEl.textContent = text.slice(0, i);
-
-        const progress = i / text.length;
-        const r = 140 + (255 - 140) * progress;
-        const g = 130 - 80 * progress;
-        const b = 255 - 100 * progress;
-        typingEl.style.color = `rgb(${r}, ${g}, ${b})`;
-        typingEl.style.textShadow = `
-          0 0 8px rgba(129,140,248,${0.4 + 0.4 * progress}),
-          0 0 18px rgba(244,114,182,${0.2 + 0.6 * progress})
-        `;
-
-        if (i >= text.length) {
-          clearInterval(interval);
-          callback && callback();
-        }
-      }, 80);
-    }
-
-    function erase(callback) {
-      const text = typingEl.textContent;
-      let i = text.length;
-      const original = text;
-
-      const interval = setInterval(() => {
-        i--;
-        typingEl.textContent = original.slice(0, i);
-        typingEl.style.opacity = i / text.length;
-        if (i <= 0) {
-          clearInterval(interval);
-          typingEl.style.opacity = 1;
-          callback && callback();
-        }
-      }, 40);
-    }
-
-    function cycleNames() {
-      const name = names[currentIndex];
-
-      if (name === "The Ulatron") {
-        typingEl.classList.add("glitch");
-      } else {
-        typingEl.classList.remove("glitch");
-      }
-
-      typeOut(name, () => {
-        const wait = 8000 + Math.random() * 6000; // 8–14 seconds
-        setTimeout(() => {
-          erase(() => {
-            currentIndex = (currentIndex + 1) % names.length;
-            cycleNames();
-          });
-        }, wait);
-      });
-    }
-    cycleNames();
-
-    // ======== Floating background kaomoji ========
-    const kaomojiLayer = document.getElementById("kaomojiLayer");
-    const backgroundKaos = [
-      "(◕‿◕✿)", "(ᵔᴥᵔ)", "(¬‿¬ )", "(≖‿≖ )", "(｡•́︿•̀｡)",
-      "(ಥ﹏ಥ)", "(；ω；)", "(._.)", "(｡♥‿♥｡)", "¯\\\\_(ツ)_/¯",
-      "(ノ・∀・)ノ", "(ﾉ´ヮ`)ﾉ*:･ﾟ✧", "(；￣Д￣)", "(⊙_☉)",
-      "(-_-;)", "(ง'̀-'́)ง", "(´･ω･`)", "(⌒‿⌒)", "(>_<)", "(✧ω✧)"
-    ];
-
-    function spawnKaomoji() {
-      const span = document.createElement("div");
-      span.className = "kaomoji";
-      span.textContent =
-        backgroundKaos[Math.floor(Math.random() * backgroundKaos.length)];
-      span.style.left = Math.random() * 100 + "vw";
-      span.style.top = "110vh";
-      span.style.fontSize = 10 + Math.random() * 22 + "px";
-      span.style.animationDuration = 22 + Math.random() * 14 + "s";
-      kaomojiLayer.appendChild(span);
-      span.addEventListener("animationend", () => span.remove());
-    }
-    setInterval(spawnKaomoji, 900);
-
-    // ======== Button kaomoji: timed + hover states ========
-    const musicBtn = document.getElementById("musicBtn");
-    const mapBtn = document.getElementById("mapBtn");
-    const musicBtnKao = document.getElementById("musicBtnKao");
-    const mapBtnKao = document.getElementById("mapBtnKao");
-
-    const neutralKaos = [
-      "(・ω・)", "(･ω･)", "(￣ω￣)", "(＾▽＾)", "(◕‿◕✿)",
-      "(=^‥^=)", "(´･ω･`)", "(・_・;)", "(￣▽￣)", "(⌒‿⌒)"
-    ];
-    const fearKaos = [
-      "(◎﹏◎;)", "(ﾟдﾟ；)", "(；ﾟДﾟ)", "(⊙﹏⊙✿)", "(；￣Д￣)",
-      "(╯°□°）╯︵ ┻━┻"
-    ];
-    const loveKaos = [
-      "(｡♥‿♥｡)", "(づ｡◕‿‿◕｡)づ", "(*´▽`*)", "(♡＾▽＾♡)",
-      "(´｡• ᵕ •｡`)", "(✿˶˘ ³˘)♡"
-    ];
-    const sadKaos = [
-      "(｡•́︿•̀｡)", "(ಥ﹏ಥ)", "(；ω；)", "(._.)", "(╥﹏╥)", "(ノ_<。)"
-    ];
-
-    function rand(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    let musicState = "neutral";
-    let mapState = "neutral";
-
-    function setMusicState(state) {
-      musicState = state;
-      if (state === "neutral") musicBtnKao.textContent = rand(neutralKaos);
-      if (state === "fear") musicBtnKao.textContent = rand(fearKaos);
-      if (state === "love") musicBtnKao.textContent = rand(loveKaos);
-      if (state === "sad") musicBtnKao.textContent = rand(sadKaos);
-    }
-
-    function setMapState(state) {
-      mapState = state;
-      if (state === "neutral") mapBtnKao.textContent = rand(neutralKaos);
-      if (state === "fear") mapBtnKao.textContent = rand(fearKaos);
-      if (state === "love") mapBtnKao.textContent = rand(loveKaos);
-      if (state === "sad") mapBtnKao.textContent = rand(sadKaos);
-    }
-
-    // Initial neutral faces
-    setMusicState("neutral");
-    setMapState("neutral");
-
-    // Timed alternation: every 5s, only if that button is neutral
-    function startButtonKaomojiLoop() {
-      let toggle = true;
-      function step() {
-        if (toggle && musicState === "neutral") {
-          setMusicState("neutral");
-        } else if (!toggle && mapState === "neutral") {
-          setMapState("neutral");
-        }
-        toggle = !toggle;
-        setTimeout(step, 5000);
-      }
-      step();
-    }
-    startButtonKaomojiLoop();
-
-    // Hover behavior:
-    // - Hover button → fear
-    // - Hover kaomoji itself → love
-    // - Leave kaomoji/button → sad, then back to neutral
-
-    // MUSIC BUTTON hover
-    musicBtn.addEventListener("mouseenter", () => {
-      if (musicState !== "love") setMusicState("fear");
-    });
-    musicBtn.addEventListener("mouseleave", () => {
-      if (musicState !== "love") setMusicState("sad");
-      setTimeout(() => {
-        if (musicState !== "love") setMusicState("neutral");
-      }, 3000);
-    });
-    musicBtnKao.addEventListener("mouseenter", (e) => {
-      e.stopPropagation();
-      setMusicState("love");
-    });
-    musicBtnKao.addEventListener("mouseleave", (e) => {
-      e.stopPropagation();
-      setMusicState("sad");
-      setTimeout(() => {
-        if (musicState !== "love") setMusicState("neutral");
-      }, 3000);
-    });
-
-    // MAP BUTTON hover
-    mapBtn.addEventListener("mouseenter", () => {
-      if (mapState !== "love") setMapState("fear");
-    });
-    mapBtn.addEventListener("mouseleave", () => {
-      if (mapState !== "love") setMapState("sad");
-      setTimeout(() => {
-        if (mapState !== "love") setMapState("neutral");
-      }, 3000);
-    });
-    mapBtnKao.addEventListener("mouseenter", (e) => {
-      e.stopPropagation();
-      setMapState("love");
-    });
-    mapBtnKao.addEventListener("mouseleave", (e) => {
-      e.stopPropagation();
-      setMapState("sad");
-      setTimeout(() => {
-        if (mapState !== "love") setMapState("neutral");
-      }, 3000);
-    });
-
-    // ======== Music Console Overlay Logic ========
-    const musicOverlay = document.getElementById("musicOverlay");
-    const musicAudio = document.getElementById("musicAudio");
-    const trackTitleEl = document.getElementById("trackTitle");
-    const trackArtistEl = document.getElementById("trackArtist");
-    const playPauseBtn = document.getElementById("playPause");
-    const prevTrackBtn = document.getElementById("prevTrack");
-    const nextTrackBtn = document.getElementById("nextTrack");
-    const volumeSlider = document.getElementById("volumeSlider");
-
-    // Placeholder track list (replace with your own later)
-    const tracks = [
-      {
-        title: "Prototype Track 1",
-        artist: "Ula",
-        src: "" // set to your audio file later
-      }
-    ];
-    let currentTrack = 0;
-
-    function loadTrack(index) {
-      const t = tracks[index];
-      trackTitleEl.textContent = t.title || "Unknown";
-      trackArtistEl.textContent = t.artist || "Unknown";
-      if (t.src) {
-        musicAudio.src = t.src;
-      }
-    }
-
-    function openMusic() {
-      musicOverlay.classList.add("show");
-      if (!tracks[currentTrack].src) {
-        trackTitleEl.textContent = "No track loaded yet";
-        trackArtistEl.textContent = "—";
-      } else {
-        loadTrack(currentTrack);
-      }
-    }
-    function closeMusic() {
-      musicOverlay.classList.remove("show");
-      musicAudio.pause();
-      playPauseBtn.textContent = "Play";
-    }
-
-    musicBtn.addEventListener("click", openMusic);
-
-    playPauseBtn.addEventListener("click", () => {
-      if (!tracks[currentTrack].src) return;
-      if (musicAudio.paused) {
-        musicAudio.play();
-        playPauseBtn.textContent = "Pause";
-      } else {
-        musicAudio.pause();
-        playPauseBtn.textContent = "Play";
-      }
-    });
-
-    prevTrackBtn.addEventListener("click", () => {
-      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-      loadTrack(currentTrack);
-      if (tracks[currentTrack].src) {
-        musicAudio.play();
-        playPauseBtn.textContent = "Pause";
-      }
-    });
-
-    nextTrackBtn.addEventListener("click", () => {
-      currentTrack = (currentTrack + 1) % tracks.length;
-      loadTrack(currentTrack);
-      if (tracks[currentTrack].src) {
-        musicAudio.play();
-        playPauseBtn.textContent = "Pause";
-      }
-    });
-
-    volumeSlider.addEventListener("input", () => {
-      musicAudio.volume = volumeSlider.value;
-    });
-
-    // Kaomoji pets logic
-    const petKaos = document.querySelectorAll(".pet-kao");
-
-    petKaos.forEach((el) => {
-      let timeouts = [];
-      el.addEventListener("mouseenter", () => {
-        timeouts.forEach(clearTimeout);
-        timeouts = [];
-        el.dataset.state = "happy";
-        el.textContent = "(ﾉ´ヮ`)ﾉ*:･ﾟ✧";
-      });
-
-      el.addEventListener("mouseleave", () => {
-        el.dataset.state = "upset";
-        el.textContent = "(◎﹏◎;)";
-        const t1 = setTimeout(() => {
-          el.dataset.state = "sad";
-          el.textContent = "(｡•́︿•̀｡)";
-        }, 2500);
-        const t2 = setTimeout(() => {
-          el.dataset.state = "neutral";
-          el.textContent = "(・ω・)";
-        }, 2500 + 3000);
-        timeouts.push(t1, t2);
-      });
-    });
-
-    // Make closeMusic accessible globally
-    window.closeMusic = closeMusic;
-
-    // ======== MAP BUTTON → 360° VIEWER (prototype) ========
-    const viewer = document.getElementById("viewer");
-
-    function launchViewer() {
-      viewer.innerHTML = `
-        <a-scene embedded vr-mode-ui="enabled: false">
-          <a-assets>
-            <video id="worldvideo" autoplay loop="true" crossorigin="anonymous"
-              src="https://videos.pexels.com/video-files/2583496/2583496-sd_640_360_30fps.mp4">
-            </video>
-          </a-assets>
-          <a-videosphere src="#worldvideo"></a-videosphere>
-          <a-entity camera look-controls wasd-controls></a-entity>
-        </a-scene>
-      `;
-      viewer.style.display = "block";
-    }
-
-    mapBtn.addEventListener("click", launchViewer);
-
-    // Close viewer on Escape
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        viewer.style.display = "none";
-        viewer.innerHTML = "";
-      }
-    });
-
-    // ======== ABOUT SECTION SLIDESHOW (URL version) ========
-    const aboutSlideshowEl = document.getElementById("aboutSlideshow");
-
-    const aboutMediaItems = [
-      {
-        type: "image",
-        src: "https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg",
-        alt: "Ula photo 1"
-      },
-      {
-        type: "image",
-        src: "https://i.pinimg.com/736x/43/fe/d2/43fed25a912fd4e44af1d35b9aac6a01.jpg",
-        alt: "Ula photo 2"
-      },
-      {
-        type: "image",
-        src: "https://i.pinimg.com/736x/4a/90/45/4a9045416707ca4f825c70cb81079ebb.jpg",
-        alt: "Ula photo 3"
-      },
-      {
-        type: "image",
-        src: "https://i.pinimg.com/736x/68/d8/e6/68d8e6a18aac67bb0b47c8ec77ec1cd2.jpg",
-        alt: "Ula photo 4"
-      },
-      {
-        type: "image",
-        src: "https://i.pinimg.com/736x/86/6d/22/866d220dbf59a6aee104196a586c0832.jpg",
-        alt: "Ula photo 5"
-      }
-    ];
-
-    let aboutIndex = 0;
-
-    function renderAboutMedia() {
-      if (!aboutSlideshowEl || aboutMediaItems.length === 0) return;
-
-      const item = aboutMediaItems[aboutIndex];
-      aboutSlideshowEl.innerHTML = "";
-
-      if (item.type === "image") {
-        const img = document.createElement("img");
-        img.src = item.src;
-        img.alt = item.alt || "Main media";
-        aboutSlideshowEl.appendChild(img);
-      } else if (item.type === "video") {
-        const vid = document.createElement("video");
-        vid.src = item.src;
-        vid.autoplay = true;
-        vid.loop = true;
-        vid.muted = true;
-        vid.playsInline = true;
-        aboutSlideshowEl.appendChild(vid);
-      }
-
-      aboutIndex = (aboutIndex + 1) % aboutMediaItems.length;
-    }
-
-    renderAboutMedia();
-    setInterval(renderAboutMedia, 5000);
-  </script>
 </body>
 </html>
