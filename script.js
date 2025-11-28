@@ -1,211 +1,58 @@
-/* ---------------------------------------------------------
-   ELEMENT GRABS
---------------------------------------------------------- */
-const introLoop = document.getElementById("introLoop");
-const introEcho = document.getElementById("introEcho");
+/* =========================================================
+   INTRO NAME CYCLING + GLITCH ULATRON
+========================================================= */
+const line1Names = ["Ula", "Uleezy", "The Ulanator"];
+let nameIndex = 0;
 
-const sfxClick = document.getElementById("sfx-click");
-const sfxChrono = document.getElementById("sfx-chrono");
-const sfxWhoosh = document.getElementById("sfx-whoosh");
-const sfxShimmer = document.getElementById("sfx-shimmer");
+const nameLine1 = document.getElementById("name-line-1");
+const nameLine2 = document.getElementById("name-line-2");
 
-const startupScreen = document.getElementById("startup-screen");
-const pressStartBtn = document.getElementById("press-start");
-const crtOverlay = document.getElementById("crt-overlay");
+function cycleNames() {
+    nameIndex = (nameIndex + 1) % line1Names.length;
+    nameLine1.textContent = line1Names[nameIndex];
+}
+setInterval(cycleNames, 6000); // stays ~5–6 seconds per name
 
-const handheldUI = document.getElementById("handheld-ui");
-const handheldScreen = document.getElementById("handheld-screen");
-
-const mainCutoutName = document.getElementById("main-cutout-name");
-const taglineCutout = document.getElementById("tagline-cutout");
-
-const galleryImage = document.getElementById("gallery-image");
-
-const musicPlayer = document.getElementById("music-player");
-const pausePlayBtn = document.getElementById("pausePlay");
-const skipBtn = document.getElementById("skip");
-const volumeSlider = document.getElementById("volume");
-
-const musicEmbed = document.getElementById("music-embed");
-const nowPlaying = document.getElementById("now-playing");
-const artistStyleBox = document.getElementById("artist-style");
-
-const kaomojiContainer = document.getElementById("kaomoji-container");
+// Random glitch on crossed-out Ulatron
+setInterval(() => {
+    if (Math.random() < 0.3) {
+        nameLine2.style.transform = "rotate(" + (Math.random() * 6 - 3) + "deg)";
+        nameLine2.style.opacity = 0.7 + Math.random() * 0.3;
+    }
+}, 200);
 
 
-/* ---------------------------------------------------------
-   INTRO LOOP START IMMEDIATELY
---------------------------------------------------------- */
-window.onload = () => {
-    introLoop.volume = 0.45;
-    introLoop.play().catch(()=>{});
-};
+/* =========================================================
+   PRESS START → INTRO LOOP FADE → TRANSITION
+========================================================= */
+const introScreen = document.getElementById("intro-screen");
+const pressStart = document.getElementById("press-start");
+const introMusic = document.getElementById("intro-music");
+const gameContainer = document.getElementById("game-container");
 
-
-/* ---------------------------------------------------------
-   PRESS START → INTRO SEQUENCE
---------------------------------------------------------- */
-pressStartBtn.addEventListener("click", () => {
-
-    sfxClick.volume = 0.25;
-    sfxWhoosh.volume = 0.20;
-    sfxChrono.volume = 0.20;
-
-    sfxClick.play();
-
-    /* fade out intro loop */
-    let fadeOut = setInterval(() => {
-        if (introLoop.volume > 0.02) {
-            introLoop.volume -= 0.015;
-        } else {
+pressStart.addEventListener("click", () => {
+    introMusic.volume = 1;
+    const fadeOut = setInterval(() => {
+        introMusic.volume -= 0.05;
+        if (introMusic.volume <= 0) {
             clearInterval(fadeOut);
-            introLoop.pause();
-
-            /* echo tail */
-            introEcho.volume = 0.15;
-            introEcho.src = "https://assets.mixkit.co/sfx/preview/mixkit-small-hit-in-a-game-2072.mp3";
-            introEcho.play();
-
+            introMusic.pause();
         }
-    }, 50);
+    }, 80);
 
-    /* CRT fade in */
-    crtOverlay.style.opacity = 1;
+    introScreen.style.animation = "fadeOutIntro 1s forwards";
 
-    /* Start transition sequence */
     setTimeout(() => {
-        startupScreen.style.opacity = 0;
-
-        setTimeout(() => {
-            startupScreen.style.display = "none";
-            handheldUI.style.display = "block";
-            sfxChrono.play();
-
-            /* slide up */
-            handheldScreen.style.transition = "all 1s ease";
-            handheldScreen.style.top = "60%";
-
-            /* zoom to center */
-            setTimeout(() => {
-                handheldScreen.classList.add("handheld-active");
-                sfxWhoosh.play();
-            }, 900);
-
-            /* After animation → change to cutout name */
-            setTimeout(() => {
-                activateCutoutTitle();
-                taglineCutout.style.opacity = 1;
-            }, 1600);
-
-        }, 300);
-
-    }, 800);
+        introScreen.style.display = "none";
+        gameContainer.classList.remove("hidden");
+    }, 1200);
 });
 
 
-/* ---------------------------------------------------------
-   CUTOUT MAGAZINE TITLE ACTIVATION
---------------------------------------------------------- */
-function activateCutoutTitle() {
-    let text = "Ula • Uleezy • The Ulanator";
-    mainCutoutName.innerHTML = "";
-
-    let textures = [
-        "#fff", "#eee", "#f8f8f8",
-        "linear-gradient(#fff, #ccc)", 
-        "linear-gradient(#f2e9ff, #ccbaff)",
-        "linear-gradient(#ffe1f7, #ffc8ff)"
-    ];
-
-    [...text].forEach((letter, i) => {
-        let span = document.createElement("span");
-        span.textContent = letter;
-
-        span.style.display = "inline-block";
-        span.style.margin = "0 2px";
-        span.style.padding = "5px 6px";
-        span.style.color = "black";
-
-        span.style.background = textures[Math.floor(Math.random()*textures.length)];
-        span.style.transform = `rotate(${Math.random()*20 - 10}deg)`;
-
-        span.style.opacity = 0;
-        span.style.transition = "opacity 0.5s ease";
-
-        setTimeout(() => { span.style.opacity = 1; }, 80*i);
-
-        mainCutoutName.appendChild(span);
-    });
-
-    mainCutoutName.style.opacity = 1;
-}
-
-
-/* ---------------------------------------------------------
-   KAOMOJI SPAWNING (LIMITED)
---------------------------------------------------------- */
-let kaomojiList = [
-    "(๑˃ᴗ˂)ﻭ", "(•́⌄•́๑)", "(｡>﹏<｡)", "(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄)",
-    "(╥﹏╥)", "(☆▽☆)", "( •̀ᴗ•́ )و ̑̑", "(｡•̀ᴗ-)✧",
-    "(≧◡≦)", "(⁎˃ᆺ˂)", "(∩˃o˂∩)♡"
-];
-
-const MAX_KAOMOJI = 12;
-
-function spawnKaomoji() {
-    if (kaomojiContainer.childElementCount >= MAX_KAOMOJI) return;
-
-    let span = document.createElement("div");
-    span.className = "kaomoji";
-    span.textContent = kaomojiList[Math.floor(Math.random()*kaomojiList.length)];
-
-    span.style.left = Math.random()*100 + "%";
-    span.style.top = "100%";
-
-    kaomojiContainer.appendChild(span);
-
-    /* remove when animation ends */
-    setTimeout(() => span.remove(), 12000);
-}
-setInterval(spawnKaomoji, 1500);
-
-
-/* ---------------------------------------------------------
-   KAOMOJI BUTTON REACTIONS
---------------------------------------------------------- */
-function createBtnReaction(btn) {
-    let kao = btn.querySelector(".btnKao");
-
-    let normal = "(◕‿◕✿)";
-    let scared = "(⊙﹏⊙ )";
-    let happy = "(♡˙︶˙♡)";
-    let sad = "(｡•́︿•̀｡)";
-
-    kao.textContent = normal;
-
-    btn.addEventListener("mousemove", () => {
-        kao.textContent = scared;
-    });
-
-    btn.addEventListener("mouseenter", () => {
-        kao.textContent = happy;
-    });
-
-    btn.addEventListener("mouseleave", () => {
-        kao.textContent = sad;
-        setTimeout(()=> kao.textContent = normal, 2500);
-    });
-}
-
-document.querySelectorAll("#nav-buttons button").forEach(btn => {
-    createBtnReaction(btn);
-});
-
-
-/* ---------------------------------------------------------
-   GALLERY RANDOMIZER (PINTEREST IMAGES)
---------------------------------------------------------- */
-let galleryImages = [
+/* =========================================================
+   GALLERY ROTATOR
+========================================================= */
+const galleryImages = [
     "https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg",
     "https://i.pinimg.com/736x/43/fe/d2/43fed25a912fd4e44af1d35b9aac6a01.jpg",
     "https://i.pinimg.com/736x/4a/90/45/4a9045416707ca4f825c70cb81079ebb.jpg",
@@ -213,146 +60,173 @@ let galleryImages = [
     "https://i.pinimg.com/736x/86/6d/22/866d220dbf59a6aee104196a586c0832.jpg"
 ];
 
-function updateGallery() {
-    let r = Math.floor(Math.random()*galleryImages.length);
-    galleryImage.style.opacity = 0;
+const galleryImg = document.getElementById("gallery-img");
+let galleryIndex = 0;
 
+function changeGallery() {
+    galleryIndex = (galleryIndex + 1) % galleryImages.length;
+    galleryImg.style.opacity = 0;
     setTimeout(() => {
-        galleryImage.src = galleryImages[r];
-        galleryImage.style.opacity = 1;
-    }, 500);
+        galleryImg.src = galleryImages[galleryIndex];
+        galleryImg.style.opacity = 1;
+    }, 400);
 }
-
-setInterval(updateGallery, 5000);
-updateGallery();
+setInterval(changeGallery, 5000);
 
 
-/* ---------------------------------------------------------
-   MUSIC PLAYER LOGIC
---------------------------------------------------------- */
-let playlist = [
-    /* ULA */
-    {
-        artist: "Ula",
-        embed: "https://open.spotify.com/embed/artist/2xfdMTaWnH1kgowZNwnWT5",
-        style: {color: "#7af", glow: "0 0 12px #7af"}
-    },
+/* =========================================================
+   KAOMOJI DRIFT SYSTEM (LIMITED POPULATION)
+========================================================= */
+const kaomojiLayer = document.getElementById("kaomoji-layer");
+const kaomojiFaces = [
+    "(^_^)", "(•‿•)", "(✿◠‿◠)", "(｡♥‿♥｡)", "(⚆_⚆)",
+    "(⊙_⊙)", "(◕‿◕)", "(✧ω✧)", "(≧◡≦)", "(；▽；)",
+    "(｡•́︿•̀｡)", "(ಥ_ಥ)", "(´･ω･`)", "(='X'=)", "(>_<)"
+];
+let maxKaomoji = 12;
 
-    /* MOON36 */
-    {
-        artist: "Moon36",
-        embed: "https://open.spotify.com/embed/artist/6BNvTEwAr0fK0eCGAv4Cbg",
-        style: {color: "#b3e3ff", glow: "0 0 15px #b3e3ff"}
-    },
+function spawnKaomoji() {
+    if (kaomojiLayer.children.length >= maxKaomoji) return;
 
-    /* ETHAN KREM */
-    {
-        artist: "Ethan Krem",
-        embed: "https://open.spotify.com/embed/artist/6tGewkCfNGfYQRQqFe0d3X",
-        style: {color: "#e2ffe2", glow: "0 0 12px #e2ffe2"}
-    },
+    const k = document.createElement("div");
+    k.className = "kaomoji";
+    k.textContent = kaomojiFaces[Math.floor(Math.random() * kaomojiFaces.length)];
 
-    /* COZEY */
-    {
-        artist: "Cozey 👑",
-        embed: "https://open.spotify.com/embed/album/26oXyzfdLf9R1663xtHkfu",
-        style: {color: "gold", glow: "0 0 15px gold"}
-    },
+    k.style.left = Math.random() * 90 + "%";
+    k.style.bottom = "-40px";
 
-    /* NUR */
-    {
-        artist: "Nur 👑",
-        embed: "https://open.spotify.com/embed/artist/1wk6uAGsywbHw0NDbzsZR0",
-        style: {color: "gold", glow: "0 0 18px gold"}
-    },
+    kaomojiLayer.appendChild(k);
 
-    /* CHXMPLOO */
-    {
-        artist: "Chxmploo",
-        embed: "https://www.youtube.com/embed/?listType=search&list=chxmploo",
-        style: {color: "#ff9fe8", glow: "0 0 12px #ff9fe8"}
-    },
+    setTimeout(() => k.remove(), 12000);
+}
+setInterval(spawnKaomoji, 2000);
 
-    /* KILLEDOFFSIN */
-    {
-        artist: "KilledOffSin",
-        embed: "https://soundcloud.com/officialkilledoffsin",
-        style: {color: "#ff4444", glow: "0 0 12px #ff4444"}
-    }
+
+/* =========================================================
+   MUSIC PLAYER — RANDOM SHUFFLE SYSTEM
+========================================================= */
+const musicPlayer = document.getElementById("music-player");
+const playBtn = document.getElementById("play-btn");
+const pauseBtn = document.getElementById("pause-btn");
+const skipBtn = document.getElementById("skip-btn");
+const volumeSlider = document.getElementById("volume-slider");
+
+const songs = [
+    "assets/music/song1.mp3",
+    "assets/music/song2.mp3",
+    "assets/music/song3.mp3",
+    "assets/music/song4.mp3",
+    "assets/music/song5.mp3",
+    "assets/music/song6.mp3",
+    "assets/music/song7.mp3"
 ];
 
 let currentSong = null;
 
-/* random shuffle */
+function getRandomSong() {
+    let pick = songs[Math.floor(Math.random() * songs.length)];
+    if (pick === currentSong) return getRandomSong();
+    return pick;
+}
+
 function playRandomSong() {
-    let pick = playlist[Math.floor(Math.random()*playlist.length)];
+    let next = getRandomSong();
+    currentSong = next;
 
-    currentSong = pick;
-
-    musicEmbed.src = pick.embed;
-    nowPlaying.textContent = pick.artist;
-
-    artistStyleBox.style.color = pick.style.color;
-    artistStyleBox.style.textShadow = pick.style.glow;
-    artistStyleBox.textContent = pick.artist;
+    // crossfade
+    let fade = setInterval(() => {
+        musicPlayer.volume -= 0.05;
+        if (musicPlayer.volume <= 0) {
+            clearInterval(fade);
+            musicPlayer.src = next;
+            musicPlayer.play();
+            fadeIn();
+        }
+    }, 50);
 }
 
-skipBtn.addEventListener("click", () => {
-    sfxChrono.play();
-    playRandomSong();
-});
+function fadeIn() {
+    musicPlayer.volume = 0;
+    let up = setInterval(() => {
+        musicPlayer.volume += 0.05;
+        if (musicPlayer.volume >= volumeSlider.value) {
+            clearInterval(up);
+        }
+    }, 50);
+}
 
-/* PLAY/PAUSE EMBED NEEDS TOGGLE HACK */
-pausePlayBtn.addEventListener("click", () => {
-    sfxClick.play();
-    /* embeds cannot be paused normally, so we reload src */
-    musicEmbed.src = currentSong.embed;
-});
+// AUTOSTART music after transition
+setTimeout(() => {
+    musicPlayer.src = getRandomSong();
+    currentSong = musicPlayer.src;
+    musicPlayer.play();
+}, 1800);
 
+// Buttons
+playBtn.addEventListener("click", () => musicPlayer.play());
+pauseBtn.addEventListener("click", () => musicPlayer.pause());
 
-/* OPEN MUSIC PLAYER */
-document.getElementById("music-btn").addEventListener("click", () => {
-    musicPlayer.classList.toggle("open");
-    sfxShimmer.volume = 0.2;
-    sfxShimmer.play();
-    if (!currentSong) playRandomSong();
-});
+skipBtn.addEventListener("click", () => playRandomSong());
 
-
-/* VOLUME SLIDER */
 volumeSlider.addEventListener("input", () => {
-    introLoop.volume = volumeSlider.value;
+    musicPlayer.volume = volumeSlider.value;
 });
 
 
-/* ---------------------------------------------------------
-   ULAVILLE BUTTON (PIXEL WIPE TRANSITION)
---------------------------------------------------------- */
-document.getElementById("ulaville-btn").addEventListener("click", () => {
-    sfxShimmer.play();
+/* =========================================================
+   MUSIC HUD — SLIDE UP / DOWN
+========================================================= */
+const musicHUD = document.getElementById("music-hud");
+const musicToggle = document.getElementById("music-toggle");
+let hudOpen = false;
 
-    /* For prototype: Just shimmer and alert */
-    alert("ULAVILLE is under construction! (Pixel Wipe will go here)");
+musicToggle.addEventListener("click", () => {
+    hudOpen = !hudOpen;
+    musicHUD.style.bottom = hudOpen ? "20px" : "-260px";
 });
 
 
-/* ---------------------------------------------------------
-   VISUALIZER (FAKE ANIMATION)
---------------------------------------------------------- */
-let canvas = document.getElementById("visualizer");
-let ctx = canvas.getContext("2d");
+/* =========================================================
+   SNES PIXEL VISUALIZER
+========================================================= */
+const canvas = document.getElementById("visualizer");
+const ctx = canvas.getContext("2d");
 
-function drawVisualizer() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+let audioCtx, analyser, bufferLength, dataArray;
 
-    let bars = 20;
-    for (let i=0; i<bars; i++) {
-        let h = Math.random()*60 + 10;
-        ctx.fillStyle = "#ffccff";
-        ctx.fillRect(i*15+10, 80-h, 10, h);
-    }
+function setupVisualizer() {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const source = audioCtx.createMediaElementSource(musicPlayer);
 
-    requestAnimationFrame(drawVisualizer);
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 64;
+
+    bufferLength = analyser.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
+
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+
+    animateVisualizer();
 }
-drawVisualizer();
 
+function animateVisualizer() {
+    requestAnimationFrame(animateVisualizer);
+
+    analyser.getByteFrequencyData(dataArray);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const barWidth = canvas.width / bufferLength;
+
+    for (let i = 0; i < bufferLength; i++) {
+        const barHeight = dataArray[i] / 2;
+
+        ctx.fillStyle = "#ff77ff";
+        ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 2, barHeight);
+    }
+}
+
+musicPlayer.addEventListener("play", () => {
+    if (!audioCtx) setupVisualizer();
+});
