@@ -1,3 +1,43 @@
+/* ============================================================
+   INTRO SCREEN FIX — MATCHING YOUR EXACT HTML
+   ============================================================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const introScreen = document.getElementById("intro-screen");
+    const pressStart = document.getElementById("press-start-btn");
+    const nameAliases = document.querySelectorAll("#intro-names .alias");
+
+    // Simple cycling effect
+    let aliasIndex = 0;
+    function cycleAliases() {
+        nameAliases.forEach((a, i) => {
+            a.style.opacity = i === aliasIndex ? "1" : "0";
+        });
+        aliasIndex = (aliasIndex + 1) % nameAliases.length;
+    }
+
+    // Start cycling every 1.5 sec
+    cycleAliases();
+    setInterval(cycleAliases, 1500);
+
+    // When user presses Start
+    pressStart.addEventListener("click", () => {
+        introScreen.classList.add("fade-out");
+
+        // After fade, hide intro & show site
+        setTimeout(() => {
+            introScreen.style.display = "none";
+
+            const mainSite = document.getElementById("main-site");
+            if (mainSite) mainSite.classList.remove("hidden");
+
+            // Start music AFTER intro
+            const music = document.getElementById("site-music-player");
+            if (music) music.play();
+
+        }, 800);
+    });
+});
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -142,3 +182,4 @@
 
 </body>
 </html>
+
