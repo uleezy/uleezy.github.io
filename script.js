@@ -8,9 +8,11 @@ const introLoop = document.getElementById("intro-loop");
 const glitchOverlay = document.getElementById("glitch-overlay");
 const mainSite = document.getElementById("main-site");
 
-introLoop.volume = 0.8;
-introLoop.play().catch(() => {
-    // Autoplay might get blocked until user interacts
+// Force safe autoplay settings
+introLoop.volume = 0.0;          // start muted for browser autoplay
+introLoop.muted = true;          // allow autoplay
+introLoop.play().catch(() => {   // in case autoplay still blocked
+    console.log("Autoplay blocked until click");
 });
 
 /* ====================================================== */
@@ -37,28 +39,57 @@ function spawnKaomoji() {
 setInterval(spawnKaomoji, 1200);
 
 
+/* ====================================================== */
+/*          PRESS START → FADE-IN → GLITCH → MAIN SITE    */
+/* ====================================================== */
 
-/* ====================================================== */
-/*          PRESS START → GLITCH → MAIN SITE              */
-/* ====================================================== */
+function fadeInIntroLoop() {
+    introLoop.muted = false; // unmute on click
+    let vol = 0.0;
+
+    const fade = setInterval(() => {
+        vol += 0.05;
+        introLoop.volume = vol;
+
+        if (vol >= 0.8) {
+            clearInterval(fade);
+        }
+    }, 60);
+}
 
 pressStartBtn.addEventListener("click", () => {
-    introLoop.pause();
-    introLoop.currentTime = 0;
+    fadeInIntroLoop();
 
-    glitchOverlay.classList.add("glitch-active");
-
+    // Let the intro loop be heard for ~800ms
     setTimeout(() => {
-        introScreen.classList.add("hidden");
-        mainSite.classList.remove("hidden");
-        startPlaylist();
-    }, 1600); // matches glitch animation duration
+        glitchOverlay.classList.add("glitch-active");
+
+        // Fade out intro audio before switching
+        let fadeOutVol = introLoop.volume;
+        const fadeOut = setInterval(() => {
+            fadeOutVol -= 0.1;
+            introLoop.volume = Math.max(0, fadeOutVol);
+
+            if (fadeOutVol <= 0) {
+                clearInterval(fadeOut);
+                introLoop.pause();
+                introLoop.currentTime = 0;
+            }
+        }, 50);
+
+        setTimeout(() => {
+            introScreen.classList.add("hidden");
+            mainSite.classList.remove("hidden");
+            startPlaylist();
+        }, 1600);
+
+    }, 800);
 });
 
 
 
 /* ====================================================== */
-/*                  GALLERY (IMAGES + VIDEOS)             */
+/*          GALLERY (IMAGES + .MOV VIDEOS FIXED)          */
 /* ====================================================== */
 
 const galleryImages = [
@@ -86,27 +117,32 @@ const galleryVideos = [
 const galleryImageElement = document.getElementById("gallery-image");
 const galleryVideoElement = document.getElementById("gallery-video");
 
+// Add browser-required attributes
+galleryVideoElement.setAttribute("playsinline", "");
+galleryVideoElement.setAttribute("autoplay", "");
+galleryVideoElement.setAttribute("muted", "");
+galleryVideoElement.setAttribute("loop", "");
+
 let galleryIndex = 0;
-let allGalleryItems = [];
+let allGalleryItems = [...galleryImages, ...galleryVideos];
 
-// combine image + video lists into a single sequence
-allGalleryItems = [...galleryImages, ...galleryVideos];
-
-// shuffle
+// Shuffle
 allGalleryItems.sort(() => Math.random() - 0.5);
 
 function showGalleryItem() {
     const item = allGalleryItems[galleryIndex];
-
-    // If item ends with video type → show video
     const isVideo = item.endsWith(".mov") || item.endsWith(".MOV") || item.endsWith(".mp4");
 
     if (isVideo) {
         galleryVideoElement.src = item;
-        galleryVideoElement.style.opacity = 1;
 
+        // FORCE LOAD + PLAY (fixes Brave/Opera autoplay block)
+        galleryVideoElement.load();
+        galleryVideoElement.play().catch(() => {});
+
+        galleryVideoElement.style.opacity = 1;
         galleryImageElement.style.opacity = 0;
-        galleryVideoElement.play();
+
     } else {
         galleryImageElement.src = item;
         galleryImageElement.style.opacity = 1;
@@ -119,19 +155,18 @@ function showGalleryItem() {
 }
 
 setInterval(showGalleryItem, 6000);
-showGalleryItem(); // initial load
+showGalleryItem();
 
 
 
 /* ====================================================== */
-/*                 MUSIC PLAYER LOGIC                     */
+/*                 MUSIC PLAYER + PLAYLIST                */
 /* ====================================================== */
 
 const bgMusic = document.getElementById("bg-music");
 const playPauseBtn = document.getElementById("play-pause-btn");
 const volumeSlider = document.getElementById("volume-slider");
 
-// full playlist
 const playlist = [
     "assets/music/song1.mp3",
     "assets/music/song2.mp3",
@@ -147,7 +182,7 @@ let currentTrack = 0;
 function startPlaylist() {
     bgMusic.src = playlist[currentTrack];
     bgMusic.volume = 0.8;
-    bgMusic.play();
+    bgMusic.play().catch(() => {});
 }
 
 playPauseBtn.addEventListener("click", () => {
@@ -164,23 +199,21 @@ volumeSlider.addEventListener("input", () => {
     bgMusic.volume = volumeSlider.value;
 });
 
-// when a song ends → go to next
 bgMusic.addEventListener("ended", () => {
     currentTrack++;
-
     if (currentTrack >= playlist.length) {
-        currentTrack = 0; // reset to beginning
+        currentTrack = 0;
     }
 
     bgMusic.src = playlist[currentTrack];
-    bgMusic.play();
+    bgMusic.play().catch(() => {});
     playPauseBtn.textContent = "❚❚";
 });
 
 
 
 /* ====================================================== */
-/*            CENSORED WORD ANIMATION MAP                */
+/*            CENSORED WORD RANDOM SYMBOLS                */
 /* ====================================================== */
 
 const censoredWord = document.getElementById("censored-word");
@@ -188,11 +221,9 @@ const symbols = ["$", "@", "%", "!", "#", "&", ")", "(", "*"];
 
 function randomizeCensoredWord() {
     let result = "";
-
     for (let i = 0; i < 10; i++) {
         result += symbols[Math.floor(Math.random() * symbols.length)];
     }
-
     censoredWord.textContent = result + "G";
 }
 
