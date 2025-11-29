@@ -89,71 +89,42 @@ pressStartBtn.addEventListener("click", () => {
 
 
 /* ====================================================== */
-/*          GALLERY (IMAGES + .MOV VIDEOS FIXED)          */
+/*          GALLERY (PINTEREST IMAGES ONLY + FADE)        */
 /* ====================================================== */
 
+// ONLY IMAGES — (ADD AS MANY PINTEREST LINKS AS YOU WANT)
 const galleryImages = [
-    "assets/images/main-image-1.jpg",
-    "assets/images/main-image-2.png",
-    "assets/images/main-image-3.webp",
-    "assets/images/main-image-4.webp",
-    "assets/images/main-image-5.jpg",
-    "assets/images/main-image-6.jpg",
-    "assets/images/main-image-7.jpg",
-    "assets/images/main-image-8.jpg",
+    "https://i.pinimg.com/your-link-1.jpg",
+    "https://i.pinimg.com/your-link-2.jpg",
+    "https://i.pinimg.com/your-link-3.jpg",
+    "https://i.pinimg.com/your-link-4.jpg",
+    "https://i.pinimg.com/your-link-5.jpg",
 ];
 
-const galleryVideos = [
-    "assets/videos/main-video-1.mov",
-    "assets/videos/main-video-2.mov",
-    "assets/videos/main-video-3.MOV",
-    "assets/videos/main-video-4.mov",
-    "assets/videos/main-video-5.mov",
-    "assets/videos/main-video-6.mov",
-    "assets/videos/main-video-7.mov",
-    "assets/videos/main-video-8.mov",
-];
-
+// your gallery elements
 const galleryImageElement = document.getElementById("gallery-image");
 const galleryVideoElement = document.getElementById("gallery-video");
 
-// Add browser-required attributes
-galleryVideoElement.setAttribute("playsinline", "");
-galleryVideoElement.setAttribute("autoplay", "");
-galleryVideoElement.setAttribute("muted", "");
-galleryVideoElement.setAttribute("loop", "");
+// hide video permanently
+galleryVideoElement.style.display = "none";
 
 let galleryIndex = 0;
-let allGalleryItems = [...galleryImages, ...galleryVideos];
 
-// Shuffle
-allGalleryItems.sort(() => Math.random() - 0.5);
+// shuffle images so order is random
+galleryImages.sort(() => Math.random() - 0.5);
 
 function showGalleryItem() {
-    const item = allGalleryItems[galleryIndex];
-    const isVideo = item.endsWith(".mov") || item.endsWith(".MOV") || item.endsWith(".mp4");
+    galleryImageElement.style.opacity = 0; // fade out
 
-    if (isVideo) {
-        galleryVideoElement.src = item;
+    setTimeout(() => {
+        galleryImageElement.src = galleryImages[galleryIndex];
+        galleryImageElement.style.opacity = 1; // fade in
+    }, 400); // fade transition timing
 
-        // FORCE LOAD + PLAY (fixes Brave/Opera autoplay block)
-        galleryVideoElement.load();
-        galleryVideoElement.play().catch(() => {});
-
-        galleryVideoElement.style.opacity = 1;
-        galleryImageElement.style.opacity = 0;
-
-    } else {
-        galleryImageElement.src = item;
-        galleryImageElement.style.opacity = 1;
-
-        galleryVideoElement.pause();
-        galleryVideoElement.style.opacity = 0;
-    }
-
-    galleryIndex = (galleryIndex + 1) % allGalleryItems.length;
+    galleryIndex = (galleryIndex + 1) % galleryImages.length;
 }
 
+// every 6 seconds → next image
 setInterval(showGalleryItem, 6000);
 showGalleryItem();
 
@@ -228,3 +199,4 @@ function randomizeCensoredWord() {
 }
 
 setInterval(randomizeCensoredWord, 150);
+
