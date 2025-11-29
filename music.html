@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Ula • Music Timeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- use the same styles as your main page -->
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="music-page-body">
+    <div id="music-page">
+        <header class="music-header">
+            <a href="index.html" class="music-back-link">⟵ Back to main page</a>
+            <h1 class="music-page-title">The Ula Music Timeline</h1>
+        </header>
+
+        <main class="music-main">
+            <!-- JRPG map wrapper (we’ll fill this in next) -->
+            <section id="music-map-section">
+                <div id="music-map-gradient">
+                    <div id="music-map">
+                        <!-- avatar -->
+                        <div id="ula-avatar">(•‿•)</div>
+
+                        <!-- project “nodes” (just visual for now) -->
+                        <button class="map-node" data-release="morning">Morning<br><span>2020</span></button>
+                        <button class="map-node" data-release="bilingual">Bilingual<br><span>2021</span></button>
+                        <button class="map-node" data-release="another-castle">another castle<br><span>2022</span></button>
+                        <button class="map-node" data-release="another-castle-2">another castle II<br><span>2023</span></button>
+                        <button class="map-node" data-release="another-castle-3">another castle III<br><span>2023</span></button>
+                        <button class="map-node" data-release="superlame-boy">SUPERLAME BOY<br><span>2023</span></button>
+                        <button class="map-node" data-release="home">home<br><span>2024</span></button>
+                        <button class="map-node" data-release="modern-day-glitch-hop">Modern Day Glitch Hop<br><span>2025</span></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- info panel -->
+            <section id="release-info">
+                <h2 id="release-title">Pick a stop on the map</h2>
+                <p id="release-date"></p>
+
+                <h3>Ula said:</h3>
+                <!-- leave this blank in JS; you’ll fill notes later if you want -->
+                <p id="release-note"></p>
+            </section>
+        </main>
+
+        <!-- loop track just for this page -->
+        <audio id="music-loop" src="assets/music/intro_loop.mp3" loop></audio>
+    </div>
+
+    <!-- tiny script just to start the loop at 58% volume -->
+    <script>
+        const loopEl = document.getElementById('music-loop');
+
+        if (loopEl) {
+            loopEl.volume = 0.58;
+
+            // browsers often block autoplay – start on first click anywhere
+            const startLoop = () => {
+                loopEl.play().catch(() => {});
+                window.removeEventListener('click', startLoop);
+            };
+
+            window.addEventListener('click', startLoop);
+        }
+    </script>
+</body>
+</html>
