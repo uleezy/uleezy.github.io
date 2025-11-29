@@ -3,66 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ula / Music Timeline</title>
+    <title>Music | Ula / Uleezy</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="music.css">
 </head>
 <body>
 
-    <!-- BACKGROUND GLOW CANVAS -->
-    <canvas id="bg-canvas"></canvas>
+<!-- BACKGROUND -->
+<div id="bg-stars"></div>
 
-    <!-- ULAVATAR -->
-    <div id="ula-avatar">
-        <img id="ula-img" src="assets/images/main-logo-1.png" alt="Ula Avatar">
-        <div id="ula-kaomoji">(•‿•)</div>
-    </div>
+<!-- AVATAR + KAOMOJI -->
+<div id="avatar-wrapper">
+    <img id="avatar" src="assets/images/main-logo-1.png">
+    <div id="kaomoji">(=＾ᗜ＾=)</div>
+</div>
 
-    <!-- TITLE -->
-    <h1 id="music-title">Music</h1>
+<!-- PAGE TITLE -->
+<h1 id="music-title">MUSIC</h1>
 
-    <!-- TIMELINE MAP -->
-    <div id="timeline">
+<!-- TIMELINE WRAPPER -->
+<div id="timeline">
 
-        <!-- LEVEL 0 -->
-        <div class="node" data-kao="(ᵔ◡ᵔ)">
-            <div class="circle"></div>
+    <!-- Morning -->
+    <div class="entry">
+        <div class="dot"></div>
+        <div class="entry-content">
             <h2>Morning (2020)</h2>
             <p>Ula’s first unofficial track on everything.</p>
-            <a href="https://open.spotify.com/track/4eGkQixQ791wNMycBTtPlq" target="_blank">Listen</a>
+            <a href="https://open.spotify.com/track/1EBt7RmNlKGdeUMJIcv475?si=3d46329943394159" target="_blank">Listen</a>
         </div>
+    </div>
 
-        <!-- LEVEL 1 -->
-        <div class="node" data-kao="(★‿★)">
-            <div class="circle"></div>
+    <!-- Bilingual -->
+    <div class="entry">
+        <div class="dot"></div>
+        <div class="entry-content">
             <h2>Bilingual (2021)</h2>
             <p>Ula’s first official release.</p>
-            <a href="https://open.spotify.com/album/4oYy4fQy4qzyBbs6k8ZZr2" target="_blank">Listen</a>
+            <a href="https://open.spotify.com/track/2K3TQnUiW1LoyuQGzXT0RF?si=c4614f368b084c06" target="_blank">Listen</a>
         </div>
+    </div>
 
-        <!-- TAPES / MIXTAPES -->
-        <div class="node" data-kao="(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧">
-            <div class="circle"></div>
-            <h2>another castle (2022)</h2>
+    <!-- Another Castle I -->
+    <div class="entry">
+        <div class="dot"></div>
+        <div class="entry-content">
+            <h2>Another Castle (2022)</h2>
             <p>The beginning of the Castle Saga.</p>
-            <a href="https://ula.bandcamp.com/album/another-castle" target="_blank">Bandcamp</a>
+            <a href="https://ulamusic.bandcamp.com/album/another-castle" target="_blank">Bandcamp</a>
         </div>
+    </div>
 
-        <div class="node" data-kao="(•̀ᴗ•́)و">
-            <div class="circle"></div>
-            <h2>another castle II (2023)</h2>
+    <!-- Another Castle II -->
+    <div class="entry">
+        <div class="dot"></div>
+        <div class="entry-content">
+            <h2>Another Castle II (2023)</h2>
             <p>The sequel — deeper, darker, glitchier.</p>
-            <a href="https://ula.bandcamp.com/album/another-castle-ii" target="_blank">Bandcamp</a>
+            <a href="https://ulamusic.bandcamp.com/album/another-castle-ii" target="_blank">Bandcamp</a>
         </div>
+    </div>
 
-        <div class="node" data-kao="(づ｡◕‿‿◕｡)づ">
-            <div class="circle"></div>
-            <h2>another castle III (2023)</h2>
+    <!-- Another Castle III -->
+    <div class="entry">
+        <div class="dot"></div>
+        <div class="entry-content">
+            <h2>Another Castle III (2023)</h2>
             <p>The trilogy closes with emotional weight.</p>
-            <a href="https://ula.bandcamp.com/album/another-castle-iii" target="_blank">Bandcamp</a>
+            <a href="https://ulamusic.bandcamp.com/album/another-castle-iii" target="_blank">Bandcamp</a>
         </div>
+    </div>
 
-        <div class="node" data-kao="(⌐■_■)">
-            <div class="circle"
+    <!-- Super Lame Boy -->
+    <div class="entry">
+        <div class="dot"></div>
+        <div class="entry-content">
+            <h2>Super Lame Boy (2023)</h2>
+            <p>The retro glitch-hop handheld adventure.</p>
+            <a href="https://open.spotify.com/album/4ZnnELgsAEDfw7YSAYyKXK?si=pr_gG061Sea4GfqXQWHONA" target="_blank">Listen</a>
+        </div>
+    </div>
+
+    <!-- home -->
+    <div class="entry">
+        <div class="dot"></div>
+        <div class="entry-content">
+            <h2>home (2024)</h2>
+            <p>Atmospheric, warm, and nostalgic — a reset button.</p>
+            <a href="https://ulamusic.bandcamp.com/album/home" target="_blank">Bandcamp</a>
+        </div>
+    </div>
+
+    <!-- Modern Day Glitch Hop -->
+    <div class="entry">
+        <div class="dot"></div>
+        <div class="entry-content">
+            <h2>Modern Day Glitch Hop (2024)</h2>
+            <p>Ula’s newest album — glitch-hop, west coast, and soul.</p>
+            <a href="https://open.spotify.com/album/3uozD70paVdKuIRL7Y0r5H?si=aq6VmZaCStuaE9f1efZFjg" target="_blank">Listen</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- MUSIC -->
+<audio id="music" src="assets/music/intro_loop.mp3" loop></audio>
+
+<script src="music.js"></script>
+</body>
+</html>
