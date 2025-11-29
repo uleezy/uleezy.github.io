@@ -292,6 +292,33 @@ h1, h2 {
     100% { transform: translateX(0px); }
 }
 
+.music-page-button {
+    margin-top: 1.75rem;
+    padding: 0.85rem 1.8rem;
+    border-radius: 999px;
+    border: 2px solid var(--accent-color, #ffcc4d);
+    background: transparent;
+    color: #ffffff;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+    display: inline-block;
+}
+
+.music-page-button:hover {
+    background: rgba(255, 204, 77, 0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px rgba(255, 204, 77, 0.6);
+}
+
+
+
+#press-start-btn:hover {
+    background: #00ffc8;
+    color: black;
+}
 
 
 /* =============================================== */
@@ -340,6 +367,7 @@ a:hover {
         height: 350px;
     }
 }
+
 
 
 
