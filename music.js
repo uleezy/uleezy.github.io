@@ -1,120 +1,87 @@
-/* =============================================== */
-/*               BACKGROUND MUSIC LOOP             */
-/* =============================================== */
+/* =============================== */
+/*  BACKGROUND MUSIC (LOOP BGM)    */
+/* =============================== */
 
-const bgLoop = document.getElementById("bg-loop");
+const bgm = document.getElementById("bgm");
 
-bgLoop.volume = 0.0;
-bgLoop.play().catch(() => {});
+window.addEventListener("click", () => {
+    bgm.volume = 0.75;
+    bgm.play().catch(() => {});
+}, { once: true });
 
-let fadeVol = 0.0;
 
-const fadeIn = setInterval(() => {
-    fadeVol += 0.02;
 
-    if (fadeVol >= 0.58) {
-        fadeVol = 0.58;
-        clearInterval(fadeIn);
-    }
+/* =============================== */
+/*  AVATAR FOLLOWING + KAOMOJI     */
+/* =============================== */
 
-    bgLoop.volume = fadeVol;
-}, 120);
+const ulaAvatar = document.getElementById("ula-avatar");
+const ulaKao = document.getElementById("ula-kaomoji");
+const timeline = document.getElementById("timeline");
 
-/* =============================================== */
-/*               MAP INTERACTIVITY                 */
-/* =============================================== */
+const nodes = document.querySelectorAll(".node");
 
-const avatar = document.getElementById("avatar");
-const islands = document.querySelectorAll(".island");
+window.addEventListener("scroll", () => {
+    const rect = timeline.getBoundingClientRect();
+    const yOffset = window.scrollY;
 
-const projectData = {
-    morning: {
-        title: "Morning",
-        date: "July 20, 2020",
-        spotify: "https://open.spotify.com/track/...",
-        bandcamp: "https://ulamusic.bandcamp.com/track/morning",
-        happy: "(^ワ^)"
-    },
-    bilingual: {
-        title: "Bilingual",
-        date: "Dec 31, 2021",
-        spotify: "https://open.spotify.com/track/...",
-        bandcamp: "https://ulamusic.bandcamp.com/track/bilingual",
-        happy: "(*^▽^*)"
-    },
-    ac1: {
-        title: "Another Castle (Vol. 1)",
-        date: "Oct 1, 2022",
-        spotify: "",
-        bandcamp: "https://ulamusic.bandcamp.com/album/another-castle",
-        happy: "(•̀ᴗ•́)و ̑̑"
-    },
-    ac2: {
-        title: "Another Castle II",
-        date: "Jan 10, 2023",
-        spotify: "",
-        bandcamp: "https://ulamusic.bandcamp.com/album/another-castle-ii",
-        happy: "＼(^o^)／"
-    },
-    ac3: {
-        title: "Another Castle III",
-        date: "May 5, 2023",
-        spotify: "",
-        bandcamp: "https://ulamusic.bandcamp.com/album/another-castle-iii",
-        happy: "(*≧∀≦*)"
-    },
-    slb: {
-        title: "SUPERLAME BOY (EP)",
-        date: "July 7, 2023",
-        spotify: "https://open.spotify.com/album/...",
-        bandcamp: "https://ulamusic.bandcamp.com/album/superlame-boy",
-        happy: "(ﾉ>ω<)ﾉ"
-    },
-    home: {
-        title: "home",
-        date: "Jan 3, 2024",
-        spotify: "",
-        bandcamp: "https://ulamusic.bandcamp.com/album/home",
-        happy: "٩(˘◡˘)۶"
-    },
-    mdgh: {
-        title: "Modern Day Glitch Hop",
-        date: "July 4, 2025",
-        spotify: "https://open.spotify.com/album/...",
-        bandcamp: "https://ulamusic.bandcamp.com/album/modern-day-glitch-hop",
-        happy: "☆*:.｡.o(≧▽≦)o.｡.:*☆"
-    }
-};
+    // Avatar moves down with scrolling
+    ulaAvatar.style.top = (120 + yOffset * 0.25) + "px";
 
-const panelTitle = document.getElementById("proj-title");
-const panelDate = document.getElementById("proj-date");
-const spotifyLink = document.getElementById("spotify-link");
-const bandcampLink = document.getElementById("bandcamp-link");
+    // Detect which node is currently closest
+    let closest = null;
+    let closestDist = Infinity;
 
-islands.forEach(island => {
-    island.addEventListener("click", e => {
+    nodes.forEach(node => {
+        const box = node.getBoundingClientRect();
+        const dist = Math.abs(box.top - window.innerHeight * 0.4);
 
-        // Move Avatar To Island
-        const rect = island.getBoundingClientRect();
-        avatar.style.top = rect.top + window.scrollY - 20 + "px";
-        avatar.style.left = rect.left + window.scrollX + "px";
-
-        // Load Project Data
-        const id = island.getAttribute("data-project");
-        const info = projectData[id];
-
-        panelTitle.textContent = info.title;
-        panelDate.textContent = info.date;
-
-        spotifyLink.href = info.spotify;
-        bandcampLink.href = info.bandcamp;
-
-        // Change Avatar to Happy Kaomoji
-        avatar.textContent = info.happy;
-
-        // After 3 seconds, go back to neutral
-        setTimeout(() => {
-            avatar.textContent = "(・‿・)";
-        }, 3000);
+        if (dist < closestDist) {
+            closestDist = dist;
+            closest = node;
+        }
     });
+
+    if (closest) {
+        ulaKao.textContent = closest.dataset.kao;
+    }
 });
+
+
+
+/* =============================== */
+/*  BACKGROUND GLOW VISUALIZER     */
+/* =============================== */
+
+const canvas = document.getElementById("bg-canvas");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+let glow = 0;
+
+function draw() {
+    glow += 0.03;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const gradient = ctx.createRadialGradient(
+        canvas.width/2, canvas.height/2, 50,
+        canvas.width/2, canvas.height/2, canvas.width * 0.8
+    );
+
+    gradient.addColorStop(0, `rgba(255,255,150,${0.14 + Math.sin(glow)*0.04})`);
+    gradient.addColorStop(1, "rgba(0,0,0,0)");
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    requestAnimationFrame(draw);
+}
+
+draw();
