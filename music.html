@@ -2,50 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ula — Discography</title>
-    <link rel="stylesheet" href="music.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+    <title>Ula / Music Timeline</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="music.css">
+</head>
 <body>
 
-    <!-- Background Dynamic Gradient -->
-    <div id="dynamic-bg"></div>
+    <!-- BACKGROUND GLOW CANVAS -->
+    <canvas id="bg-canvas"></canvas>
 
-    <!-- Background Music -->
-    <audio id="bg-loop" src="assets/music/intro_loop.mp3" loop></audio>
-
-    <!-- MAP CONTAINER -->
-    <div id="map-container">
-
-        <!-- Floating Islands (one per project) -->
-        <div class="island" data-project="morning" style="top: 10%; left: 15%;">Morning</div>
-        <div class="island" data-project="bilingual" style="top: 30%; left: 35%;">Bilingual</div>
-        <div class="island" data-project="ac1" style="top: 50%; left: 20%;">Another Castle I</div>
-        <div class="island" data-project="ac2" style="top: 58%; left: 50%;">Another Castle II</div>
-        <div class="island" data-project="ac3" style="top: 70%; left: 30%;">Another Castle III</div>
-        <div class="island" data-project="slb" style="top: 35%; left: 70%;">SuperLame Boy</div>
-        <div class="island" data-project="home" style="top: 15%; left: 60%;">home</div>
-        <div class="island" data-project="mdgh" style="top: 75%; left: 65%;">Modern Day Glitch Hop</div>
-
-        <!-- Avatar -->
-        <div id="avatar">(・‿・)</div>
-
+    <!-- ULAVATAR -->
+    <div id="ula-avatar">
+        <img id="ula-img" src="assets/images/main-logo-1.png" alt="Ula Avatar">
+        <div id="ula-kaomoji">(•‿•)</div>
     </div>
 
-    <!-- PROJECT INFO PANEL -->
-    <div id="project-panel">
-        <h2 id="proj-title">Select a Release</h2>
-        <p id="proj-date"></p>
-        <h3>Ula said:</h3>
-        <p id="proj-artist-note" class="note-placeholder">(You will edit this yourself)</p>
+    <!-- TITLE -->
+    <h1 id="music-title">Music</h1>
 
-        <div id="proj-links">
-            <a id="spotify-link" href="#" target="_blank">Spotify</a>
-            <a id="bandcamp-link" href="#" target="_blank">Bandcamp</a>
+    <!-- TIMELINE MAP -->
+    <div id="timeline">
+
+        <!-- LEVEL 0 -->
+        <div class="node" data-kao="(ᵔ◡ᵔ)">
+            <div class="circle"></div>
+            <h2>Morning (2020)</h2>
+            <p>Ula’s first unofficial track on everything.</p>
+            <a href="https://open.spotify.com/track/4eGkQixQ791wNMycBTtPlq" target="_blank">Listen</a>
         </div>
-    </div>
 
-    <script src="music.js"></script>
-</body>
-</html>
+        <!-- LEVEL 1 -->
+        <div class="node" data-kao="(★‿★)">
+            <div class="circle"></div>
+            <h2>Bilingual (2021)</h2>
+            <p>Ula’s first official release.</p>
+            <a href="https://open.spotify.com/album/4oYy4fQy4qzyBbs6k8ZZr2" target="_blank">Listen</a>
+        </div>
+
+        <!-- TAPES / MIXTAPES -->
+        <div class="node" data-kao="(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧">
+            <div class="circle"></div>
+            <h2>another castle (2022)</h2>
+            <p>The beginning of the Castle Saga.</p>
+            <a href="https://ula.bandcamp.com/album/another-castle" target="_blank">Bandcamp</a>
+        </div>
+
+        <div class="node" data-kao="(•̀ᴗ•́)و">
+            <div class="circle"></div>
+            <h2>another castle II (2023)</h2>
+            <p>The sequel — deeper, darker, glitchier.</p>
+            <a href="https://ula.bandcamp.com/album/another-castle-ii" target="_blank">Bandcamp</a>
+        </div>
+
+        <div class="node" data-kao="(づ｡◕‿‿◕｡)づ">
+            <div class="circle"></div>
+            <h2>another castle III (2023)</h2>
+            <p>The trilogy closes with emotional weight.</p>
+            <a href="https://ula.bandcamp.com/album/another-castle-iii" target="_blank">Bandcamp</a>
+        </div>
+
+        <div class="node" data-kao="(⌐■_■)">
+            <div class="circle"
