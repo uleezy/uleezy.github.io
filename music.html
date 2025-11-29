@@ -1,71 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Ula • Music Timeline</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- use the same styles as your main page -->
-    <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <title>Ula — Discography</title>
+    <link rel="stylesheet" href="music.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body class="music-page-body">
-    <div id="music-page">
-        <header class="music-header">
-            <a href="index.html" class="music-back-link">⟵ Back to main page</a>
-            <h1 class="music-page-title">The Ula Music Timeline</h1>
-        </header>
 
-        <main class="music-main">
-            <!-- JRPG map wrapper (we’ll fill this in next) -->
-            <section id="music-map-section">
-                <div id="music-map-gradient">
-                    <div id="music-map">
-                        <!-- avatar -->
-                        <div id="ula-avatar">(•‿•)</div>
+<body>
 
-                        <!-- project “nodes” (just visual for now) -->
-                        <button class="map-node" data-release="morning">Morning<br><span>2020</span></button>
-                        <button class="map-node" data-release="bilingual">Bilingual<br><span>2021</span></button>
-                        <button class="map-node" data-release="another-castle">another castle<br><span>2022</span></button>
-                        <button class="map-node" data-release="another-castle-2">another castle II<br><span>2023</span></button>
-                        <button class="map-node" data-release="another-castle-3">another castle III<br><span>2023</span></button>
-                        <button class="map-node" data-release="superlame-boy">SUPERLAME BOY<br><span>2023</span></button>
-                        <button class="map-node" data-release="home">home<br><span>2024</span></button>
-                        <button class="map-node" data-release="modern-day-glitch-hop">Modern Day Glitch Hop<br><span>2025</span></button>
-                    </div>
-                </div>
-            </section>
+    <!-- Background Dynamic Gradient -->
+    <div id="dynamic-bg"></div>
 
-            <!-- info panel -->
-            <section id="release-info">
-                <h2 id="release-title">Pick a stop on the map</h2>
-                <p id="release-date"></p>
+    <!-- Background Music -->
+    <audio id="bg-loop" src="assets/music/intro_loop.mp3" loop></audio>
 
-                <h3>Ula said:</h3>
-                <!-- leave this blank in JS; you’ll fill notes later if you want -->
-                <p id="release-note"></p>
-            </section>
-        </main>
+    <!-- MAP CONTAINER -->
+    <div id="map-container">
 
-        <!-- loop track just for this page -->
-        <audio id="music-loop" src="assets/music/intro_loop.mp3" loop></audio>
+        <!-- Floating Islands (one per project) -->
+        <div class="island" data-project="morning" style="top: 10%; left: 15%;">Morning</div>
+        <div class="island" data-project="bilingual" style="top: 30%; left: 35%;">Bilingual</div>
+        <div class="island" data-project="ac1" style="top: 50%; left: 20%;">Another Castle I</div>
+        <div class="island" data-project="ac2" style="top: 58%; left: 50%;">Another Castle II</div>
+        <div class="island" data-project="ac3" style="top: 70%; left: 30%;">Another Castle III</div>
+        <div class="island" data-project="slb" style="top: 35%; left: 70%;">SuperLame Boy</div>
+        <div class="island" data-project="home" style="top: 15%; left: 60%;">home</div>
+        <div class="island" data-project="mdgh" style="top: 75%; left: 65%;">Modern Day Glitch Hop</div>
+
+        <!-- Avatar -->
+        <div id="avatar">(・‿・)</div>
+
     </div>
 
-    <!-- tiny script just to start the loop at 58% volume -->
-    <script>
-        const loopEl = document.getElementById('music-loop');
+    <!-- PROJECT INFO PANEL -->
+    <div id="project-panel">
+        <h2 id="proj-title">Select a Release</h2>
+        <p id="proj-date"></p>
+        <h3>Ula said:</h3>
+        <p id="proj-artist-note" class="note-placeholder">(You will edit this yourself)</p>
 
-        if (loopEl) {
-            loopEl.volume = 0.58;
+        <div id="proj-links">
+            <a id="spotify-link" href="#" target="_blank">Spotify</a>
+            <a id="bandcamp-link" href="#" target="_blank">Bandcamp</a>
+        </div>
+    </div>
 
-            // browsers often block autoplay – start on first click anywhere
-            const startLoop = () => {
-                loopEl.play().catch(() => {});
-                window.removeEventListener('click', startLoop);
-            };
-
-            window.addEventListener('click', startLoop);
-        }
-    </script>
+    <script src="music.js"></script>
 </body>
 </html>
