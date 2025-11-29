@@ -89,16 +89,13 @@ pressStartBtn.addEventListener("click", () => {
 
 
 /* ====================================================== */
-/*          GALLERY (LOCAL IMAGES ONLY + FADE)            */
+/*          GALLERY (ONLY SELECT IMAGES + FADE)           */
 /* ====================================================== */
 
 const galleryImages = [
-    "assets/images/main-image-1.jpg",
-    "assets/images/main-image-2.png",
-    "assets/images/main-image-3.webp",
-    "assets/images/main-image-4.webp",
-    "assets/images/main-image-5.jpg",
-    "assets/images/main-image-6.jpg",
+    "assets/images/main-image-2.jpg",
+    "assets/images/main-image-3.jpg",
+    "assets/images/main-image-4.jpg",
     "assets/images/main-image-7.jpg",
     "assets/images/main-image-8.jpg"
 ];
@@ -116,18 +113,22 @@ let galleryIndex = 0;
 galleryImages.sort(() => Math.random() - 0.5);
 
 function showGalleryItem() {
-    galleryImageElement.style.opacity = 0;
+    galleryImageElement.style.opacity = 0; // fade out
 
     setTimeout(() => {
         galleryImageElement.src = galleryImages[galleryIndex];
-        galleryImageElement.style.opacity = 1;
+        galleryImageElement.style.opacity = 1; // fade in
     }, 400);
 
     galleryIndex = (galleryIndex + 1) % galleryImages.length;
 }
 
+// rotate every 6s
 setInterval(showGalleryItem, 6000);
+
+// load first image immediately
 showGalleryItem();
+
 
 
 
@@ -278,6 +279,7 @@ function randomizeCensoredWord() {
 }
 
 setInterval(randomizeCensoredWord, 150);
+
 
 
 
