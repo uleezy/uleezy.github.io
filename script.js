@@ -89,15 +89,18 @@ pressStartBtn.addEventListener("click", () => {
 
 
 /* ====================================================== */
-/*          GALLERY (PINTEREST IMAGES ONLY + FADE)        */
+/*          GALLERY (LOCAL IMAGES ONLY + FADE)            */
 /* ====================================================== */
 
 const galleryImages = [
-    "https://i.pinimg.com/736x/4a/90/45/4a9045416707ca4f825c70cb81079ebb.jpg",
-    "https://i.pinimg.com/736x/43/fe/d2/43fed25a912fd4e44af1d35b9aac6a01.jpg",
-    "https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg",
-    "https://i.pinimg.com/736x/68/d8/e6/68d8e6a18aac67bb0b47c8ec77ec1cd2.jpg",
-    "https://i.pinimg.com/736x/86/6d/22/866d220dbf59a6aee104196a586c0832.jpg"
+    "assets/images/main-image-1.jpg",
+    "assets/images/main-image-2.png",
+    "assets/images/main-image-3.webp",
+    "assets/images/main-image-4.webp",
+    "assets/images/main-image-5.jpg",
+    "assets/images/main-image-6.jpg",
+    "assets/images/main-image-7.jpg",
+    "assets/images/main-image-8.jpg"
 ];
 
 // gallery element
@@ -113,22 +116,19 @@ let galleryIndex = 0;
 galleryImages.sort(() => Math.random() - 0.5);
 
 function showGalleryItem() {
-    // fade out
     galleryImageElement.style.opacity = 0;
 
     setTimeout(() => {
         galleryImageElement.src = galleryImages[galleryIndex];
-        galleryImageElement.style.opacity = 1; // fade in
+        galleryImageElement.style.opacity = 1;
     }, 400);
 
     galleryIndex = (galleryIndex + 1) % galleryImages.length;
 }
 
-// rotate every 6 seconds
 setInterval(showGalleryItem, 6000);
-
-// load first image immediately
 showGalleryItem();
+
 
 
 
@@ -201,5 +201,6 @@ function randomizeCensoredWord() {
 }
 
 setInterval(randomizeCensoredWord, 150);
+
 
 
