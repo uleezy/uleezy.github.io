@@ -10,8 +10,8 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="styles.css" />
-
 </head>
+
 <body>
 
     <!-- ========================= -->
@@ -19,7 +19,6 @@
     <!-- ========================= -->
     <div id="intro-screen">
 
-        <!-- Kaomoji Background -->
         <div id="kaomoji-container"></div>
 
         <div id="intro-content">
@@ -33,25 +32,20 @@
             <button id="press-start-btn">Press Start</button>
         </div>
 
-        <!-- Intro Loop Audio -->
         <audio id="intro-loop" src="assets/music/intro_loop.mp3" loop></audio>
     </div>
 
-
-
-    <!-- ========================= -->
-    <!--   GLITCH TRANSITION FX    -->
-    <!-- ========================= -->
+    <!-- Glitch -->
     <div id="glitch-overlay"></div>
 
-
-
     <!-- ========================= -->
-    <!--    MAIN PAGE CONTENT      -->
+    <!--       MAIN CONTENT        -->
     <!-- ========================= -->
     <div id="main-site" class="hidden">
 
-        <!-- === TOP FLOATING MUSIC PLAYER === -->
+        <!-- ========================= -->
+        <!--   FLOATING MUSIC PLAYER   -->
+        <!-- ========================= -->
         <div id="music-player">
             <button id="play-pause-btn">▶</button>
 
@@ -64,44 +58,45 @@
 
         <audio id="bg-music"></audio>
 
-
-
-        <!-- === WELCOME TEXT === -->
+        <!-- ========================= -->
+        <!--        WELCOME TEXT       -->
+        <!-- ========================= -->
         <section id="welcome-section">
             <h1>Welcome to Ulaville! :3</h1>
         </section>
 
-
-
-        <!-- === CENTERED CONTENT WRAPPER === -->
+        <!-- ========================= -->
+        <!--      CONTENT WRAPPER      -->
+        <!-- ========================= -->
         <section id="content-wrapper">
 
-            <!-- === GALLERY === -->
-          <div id="gallery-container">
-    <canvas id="visualizer-canvas"></canvas>
-    <img id="gallery-image" src="" alt="Gallery Visual">
-    <video id="gallery-video" muted loop></video>
-</div>
+            <!-- ==== GALLERY ==== -->
+            <div id="gallery-container">
+                <canvas id="visualizer-canvas"></canvas>
+                <img id="gallery-image" src="" alt="Gallery">
+            </div>
 
-            <!-- === ABOUT / BIO === -->
+            <!-- ==== BIO ==== -->
             <div id="bio-section">
-                <h2>i make music and stuff 	(*￣▽￣)b</h2>
+                <h2>i make music and stuff (*￣▽￣)b</h2>
                 <p id="short-bio">
                     so cal samoan.<br>
                     half nerd ghetto fabulous.<br>
                     I sing, produce and compose but don't get it twisted...<br>
                     I'm a <span id="censored-word">M$@#%^$&*(*%G</span> RAPPER!
                 </p>
+
+                <!-- === MUSIC PAGE BUTTON === -->
+                <button id="music-page-button" class="music-page-button">
+                    Music →
+                </button>
             </div>
 
         </section>
 
-<button id="music-page-button" class="music-page-button">
-    Explore My Discography →
-</button>
-
-
-        <!-- === CONTACT SECTION === -->
+        <!-- ========================= -->
+        <!--        CONTACT SECTION    -->
+        <!-- ========================= -->
         <section id="contact-section">
             <p>Rockin with the music? Tap in.</p>
             <a href="https://linktr.ee/uleezy" target="_blank" class="contact-link">Ula / Uleezy</a>
@@ -109,17 +104,7 @@
 
     </div>
 
-
-
-    <!-- ========================= -->
-    <!--          JS FILE          -->
-    <!-- ========================= -->
+    <!-- JS -->
     <script src="script.js"></script>
-
 </body>
 </html>
-
-
-
-
-
