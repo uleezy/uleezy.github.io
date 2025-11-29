@@ -296,6 +296,18 @@ if (musicPageButton) {
     });
 }
 
+/* ====================================================== */
+/*            MUSIC PAGE BUTTON — REDIRECT                */
+/* ====================================================== */
+
+const musicPageButton = document.getElementById("music-page-button");
+
+if (musicPageButton) {
+    musicPageButton.addEventListener("click", () => {
+        window.location.href = "music.html";
+    });
+}
+
 
 
 
