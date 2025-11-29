@@ -284,17 +284,6 @@ function randomizeCensoredWord() {
 
 setInterval(randomizeCensoredWord, 150);
 
-/* ====================================================== */
-/*            MUSIC PAGE BUTTON — REDIRECT                */
-/* ====================================================== */
-
-const musicPageButton = document.getElementById("music-page-button");
-
-if (musicPageButton) {
-    musicPageButton.addEventListener("click", () => {
-        window.location.href = "music.html";
-    });
-}
 
 /* ====================================================== */
 /*            MUSIC PAGE BUTTON — REDIRECT                */
@@ -307,6 +296,7 @@ if (musicPageButton) {
         window.location.href = "music.html";
     });
 }
+
 
 
 
