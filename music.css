@@ -1,98 +1,94 @@
-/* RESET */
-* {
+body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: black;
     font-family: 'VT323', monospace;
-    color: white;
+    color: #fff;
+    background: black;
     overflow-x: hidden;
 }
 
-/* BACKGROUND CANVAS */
-#bg-canvas {
+/* STAR FIELD BACKGROUND */
+#bg-stars {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 0;
+    inset: 0;
+    background: radial-gradient(circle at 50% 30%, #222, #000 70%);
+    z-index: -1;
 }
 
-/* TITLE */
+/* AVATAR FOLLOWER */
+#avatar-wrapper {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    text-align: center;
+    pointer-events: none;
+}
+
+#avatar {
+    width: 140px;
+}
+
+#kaomoji {
+    font-size: 28px;
+    color: #a8f7ff;
+    margin-top: 5px;
+    opacity: 1;
+    animation: blink 3s infinite;
+}
+
+@keyframes blink {
+    0%, 92%, 100% { opacity: 1; }
+    96% { opacity: 0; }
+}
+
+/* PAGE TITLE */
 #music-title {
+    font-family: 'Press Start 2P', cursive;
     text-align: center;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    font-size: 46px;
-    font-family: "Press Start 2P", monospace;
-    z-index: 5;
-    position: relative;
-    color: #00ffe0;
-    text-shadow: 0px 0px 8px #00ffe0;
-}
-
-/* ULA AVATAR */
-#ula-avatar {
-    position: fixed;
-    top: 120px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    text-align: center;
-}
-
-#ula-img {
-    width: 120px;
-    image-rendering: pixelated;
-}
-
-#ula-kaomoji {
+    margin-top: 180px;
+    margin-bottom: 40px;
     font-size: 32px;
-    margin-top: -10px;
-    transition: 0.3s ease;
+    text-shadow: 0 0 10px #ffe28a;
 }
 
 /* TIMELINE */
 #timeline {
-    width: 90%;
-    max-width: 600px;
-    margin: 220px auto 100px auto;
+    width: 85%;
+    max-width: 900px;
+    margin: auto;
+}
+
+.entry {
     display: flex;
-    flex-direction: column;
-    gap: 70px;
-    z-index: 5;
-    position: relative;
+    margin: 50px 0;
 }
 
-.node {
-    position: relative;
-    padding-left: 40px;
-}
-
-.node .circle {
-    width: 18px;
-    height: 18px;
+.dot {
+    width: 22px;
+    height: 22px;
+    background: #5fffd3;
     border-radius: 50%;
-    background: #00fff2;
-    box-shadow: 0 0 12px #00fff2;
-    position: absolute;
-    left: 0;
-    top: 5px;
+    margin-right: 20px;
+    box-shadow: 0 0 12px #5fffd3;
 }
 
-.node h2 {
-    font-size: 28px;
-    color: #ffeea6;
-    text-shadow: 0 0 6px #ffeea6;
+.entry-content h2 {
+    font-family: 'Press Start 2P';
+    color: #ffe28a;
+    margin: 0 0 6px 0;
 }
 
-.node p {
-    font-size: 20px;
-    margin-top: 5px;
+.entry-content p {
+    margin: 0 0 6px 0;
+    font-size: 18px;
 }
 
-.node a
+.entry-content a {
+    color: #80c0ff;
+    font-size: 18px;
+    text-decoration: underline;
+}
+
+.entry-content a:hover {
+    color: #d4f0ff;
+}
