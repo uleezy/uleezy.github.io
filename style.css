@@ -1,337 +1,199 @@
-/* =============================== */
-/*        GLOBAL SETTINGS          */
-/* =============================== */
+/* ====================================================== */
+/*                INTRO SCREEN + AUDIO                    */
+/* ====================================================== */
 
-body {
-    margin: 0;
-    padding: 0;
-    background: black;
-    color: white;
-    font-family: "VT323", monospace;
-    overflow-x: hidden;
+const introScreen = document.getElementById("intro-screen");
+const pressStartBtn = document.getElementById("press-start-btn");
+const introLoop = document.getElementById("intro-loop");
+const glitchOverlay = document.getElementById("glitch-overlay");
+const mainSite = document.getElementById("main-site");
+
+introLoop.volume = 0.8;
+introLoop.play().catch(() => {
+    // Autoplay might get blocked until user interacts
+});
+
+/* ====================================================== */
+/*                KAOMOJI BACKGROUND FLOAT                */
+/* ====================================================== */
+
+const kaomojiList = ["(｡•́‿•̀｡)", "(╥﹏╥)", "(>_<)", "(¬‿¬)", "(◕‿◕)", "(✿◠‿◠)", "(ﾉ◕ヮ◕)ﾉ*", "(ಠ_ಠ)"];
+const kaomojiContainer = document.getElementById("kaomoji-container");
+
+function spawnKaomoji() {
+    const span = document.createElement("span");
+    span.classList.add("kaomoji");
+    span.textContent = kaomojiList[Math.floor(Math.random() * kaomojiList.length)];
+
+    span.style.left = Math.random() * 100 + "%";
+    span.style.top = Math.random() * 100 + "%";
+    span.style.animationDuration = (8 + Math.random() * 8) + "s";
+
+    kaomojiContainer.appendChild(span);
+
+    setTimeout(() => span.remove(), 15000);
 }
 
-.hidden {
-    display: none !important;
-}
-
-h1, h2 {
-    font-family: "Press Start 2P", cursive;
-    letter-spacing: 2px;
-}
-
-
-
-/* =============================================== */
-/*                START SCREEN                      */
-/* =============================================== */
-
-#intro-screen {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 9999;
-    overflow: hidden;
-}
-
-#intro-content {
-    text-align: center;
-}
-
-#intro-names {
-    display: flex;
-    flex-direction: column;
-    font-family: "Press Start 2P", cursive;
-    font-size: 18px;
-    margin-bottom: 30px;
-}
-
-.alias {
-    margin: 5px 0;
-}
-
-.crossed {
-    text-decoration: line-through;
-    opacity: 0.6;
-}
-
-#press-start-btn {
-    font-family: "Press Start 2P", cursive;
-    padding: 12px 22px;
-    font-size: 16px;
-    color: #00ffc8;
-    background: transparent;
-    border: 2px solid #00ffc8;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: 0.3s;
-}
-
-#press-start-btn:hover {
-    background: #00ffc8;
-    color: black;
-}
-
-
-
-/* =============================================== */
-/*                KAOMOJI PARTICLES                */
-/* =============================================== */
-
-#kaomoji-container {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: -1;
-}
-
-.kaomoji {
-    position: absolute;
-    font-size: 28px;
-    opacity: 0.15;
-    animation: floatAround 12s infinite linear;
-}
-
-@keyframes floatAround {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    25% { transform: translate(40px, -60px) rotate(10deg); }
-    50% { transform: translate(-20px, -30px) rotate(-10deg); }
-    75% { transform: translate(30px, 20px) rotate(5deg); }
-    100% { transform: translate(0, 0) rotate(0deg); }
-}
-
-
-
-/* =============================================== */
-/*               GLITCH TRANSITION                 */
-/* =============================================== */
-
-#glitch-overlay {
-    position: fixed;
-    inset: 0;
-    background: black;
-    display: none;
-    z-index: 20000;
-    pointer-events: none;
-}
-
-.glitch-active {
-    display: block !important;
-    animation: glitchFX 1.6s ease-in-out forwards;
-}
-
-@keyframes glitchFX {
-    0% { opacity: 0; }
-    10% { opacity: 1; background: #111; }
-    25% { background: #ff00c8; }
-    40% { background: #00eaff; }
-    55% { background: #111; }
-    70% { background: #ffcc00; }
-    90% { background: #000; }
-    100% { opacity: 0; display: none; }
-}
-
-
-
-/* =============================================== */
-/*               MAIN SITE STYLING                 */
-/* =============================================== */
-
-#main-site {
-    background: #0a0a0a;
-    min-height: 100vh;
-    padding-top: 70px;
-    animation: fadeIn 1.2s ease-in forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-
-
-/* =============================================== */
-/*                 MUSIC PLAYER                    */
-/* =============================================== */
-
-#music-player {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 55px;
-    background: rgba(20, 20, 20, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
-    z-index: 5000;
-    border-bottom: 2px solid #ffd966;
-}
-
-#play-pause-btn {
-    font-size: 20px;
-    background: transparent;
-    border: none;
-    color: #ffd966;
-    cursor: pointer;
-}
-
-#player-name {
-    font-family: "Press Start 2P", cursive;
-    font-size: 14px;
-    color: #00c8ff;
-    text-decoration: none;
-    transition: 0.25s;
-}
-
-#player-name:hover {
-    color: #82efff;
-    text-shadow: 0 0 8px #82efff;
-}
-
-#volume-slider {
-    width: 150px;
-}
-
-
-
-/* =============================================== */
-/*                  WELCOME TEXT                   */
-/* =============================================== */
-
-#welcome-section {
-    text-align: center;
-    margin-top: 40px;
-}
-
-
-
-/* =============================================== */
-/*          CENTERED CONTENT LAYOUT WRAPPER        */
-/* =============================================== */
-
-#content-wrapper {
-    width: 85%;
-    max-width: 1200px;
-    margin: 60px auto 40px auto;
-    background: rgba(255, 255, 255, 0.06);
-    border: 2px solid #ffd966;
-    padding: 35px;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-
-/* =============================================== */
-/*                    GALLERY                      */
-/* =============================================== */
-
-#gallery-container {
-    width: 100%;
-    max-width: 900px;
-    height: 500px;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 40px;
-    border-radius: 14px;
-    border: 2px solid #ffd966;
-}
-
-#gallery-image,
-#gallery-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: opacity 0.6s ease;
-}
-
-
-
-/* =============================================== */
-/*                    BIO SECTION                  */
-/* =============================================== */
-
-#bio-section {
-    text-align: center;
-    color: #fff;
-    margin-top: 25px;
-}
-
-#short-bio {
-    font-size: 22px;
-    line-height: 1.5;
-}
-
-#censored-word {
-    display: inline-block;
-    animation: censorMove 0.6s infinite linear;
-}
-
-@keyframes censorMove {
-    0% { transform: translateX(0px); }
-    25% { transform: translateX(2px); }
-    50% { transform: translateX(-2px); }
-    75% { transform: translateX(1px); }
-    100% { transform: translateX(0px); }
-}
-
-
-
-/* =============================================== */
-/*                   CONTACT SECTION               */
-/* =============================================== */
-
-#contact-section {
-    text-align: center;
-    margin: 60px 0;
-}
-
-.contact-link {
-    font-family: "Press Start 2P", cursive;
-    color: #00c8ff;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-.contact-link:hover {
-    text-shadow: 0 0 8px #82efff;
-}
-
-
-
-/* =============================================== */
-/*                 HOVER GLOW LINKS                */
-/* =============================================== */
-
-a:hover {
-    text-decoration: underline;
-}
-
-
-
-/* =============================================== */
-/*                RESPONSIVE DESIGN                */
-/* =============================================== */
-
-@media (max-width: 768px) {
-    #content-wrapper {
-        width: 94%;
-        padding: 20px;
+setInterval(spawnKaomoji, 1200);
+
+
+
+/* ====================================================== */
+/*          PRESS START → GLITCH → MAIN SITE              */
+/* ====================================================== */
+
+pressStartBtn.addEventListener("click", () => {
+    introLoop.pause();
+    introLoop.currentTime = 0;
+
+    glitchOverlay.classList.add("glitch-active");
+
+    setTimeout(() => {
+        introScreen.classList.add("hidden");
+        mainSite.classList.remove("hidden");
+        startPlaylist();
+    }, 1600); // matches glitch animation duration
+});
+
+
+
+/* ====================================================== */
+/*                  GALLERY (IMAGES + VIDEOS)             */
+/* ====================================================== */
+
+const galleryImages = [
+    "assets/images/main-image-1.jpg",
+    "assets/images/main-image-2.png",
+    "assets/images/main-image-3.webp",
+    "assets/images/main-image-4.webp",
+    "assets/images/main-image-5.jpg",
+    "assets/images/main-image-6.jpg",
+    "assets/images/main-image-7.jpg",
+    "assets/images/main-image-8.jpg",
+];
+
+const galleryVideos = [
+    "assets/videos/main-video-1.mov",
+    "assets/videos/main-video-2.mov",
+    "assets/videos/main-video-3.MOV",
+    "assets/videos/main-video-4.mov",
+    "assets/videos/main-video-5.mov",
+    "assets/videos/main-video-6.mov",
+    "assets/videos/main-video-7.mov",
+    "assets/videos/main-video-8.mov",
+];
+
+const galleryImageElement = document.getElementById("gallery-image");
+const galleryVideoElement = document.getElementById("gallery-video");
+
+let galleryIndex = 0;
+let allGalleryItems = [];
+
+// combine image + video lists into a single sequence
+allGalleryItems = [...galleryImages, ...galleryVideos];
+
+// shuffle
+allGalleryItems.sort(() => Math.random() - 0.5);
+
+function showGalleryItem() {
+    const item = allGalleryItems[galleryIndex];
+
+    // If item ends with video type → show video
+    const isVideo = item.endsWith(".mov") || item.endsWith(".MOV") || item.endsWith(".mp4");
+
+    if (isVideo) {
+        galleryVideoElement.src = item;
+        galleryVideoElement.style.opacity = 1;
+
+        galleryImageElement.style.opacity = 0;
+        galleryVideoElement.play();
+    } else {
+        galleryImageElement.src = item;
+        galleryImageElement.style.opacity = 1;
+
+        galleryVideoElement.pause();
+        galleryVideoElement.style.opacity = 0;
     }
 
-    #gallery-container {
-        height: 350px;
-    }
+    galleryIndex = (galleryIndex + 1) % allGalleryItems.length;
 }
+
+setInterval(showGalleryItem, 6000);
+showGalleryItem(); // initial load
+
+
+
+/* ====================================================== */
+/*                 MUSIC PLAYER LOGIC                     */
+/* ====================================================== */
+
+const bgMusic = document.getElementById("bg-music");
+const playPauseBtn = document.getElementById("play-pause-btn");
+const volumeSlider = document.getElementById("volume-slider");
+
+// full playlist
+const playlist = [
+    "assets/music/song1.mp3",
+    "assets/music/song2.mp3",
+    "assets/music/song3.mp3",
+    "assets/music/song4.mp3",
+    "assets/music/song5.mp3",
+    "assets/music/song6.mp3",
+    "assets/music/song7.mp3",
+];
+
+let currentTrack = 0;
+
+function startPlaylist() {
+    bgMusic.src = playlist[currentTrack];
+    bgMusic.volume = 0.8;
+    bgMusic.play();
+}
+
+playPauseBtn.addEventListener("click", () => {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        playPauseBtn.textContent = "❚❚";
+    } else {
+        bgMusic.pause();
+        playPauseBtn.textContent = "▶";
+    }
+});
+
+volumeSlider.addEventListener("input", () => {
+    bgMusic.volume = volumeSlider.value;
+});
+
+// when a song ends → go to next
+bgMusic.addEventListener("ended", () => {
+    currentTrack++;
+
+    if (currentTrack >= playlist.length) {
+        currentTrack = 0; // reset to beginning
+    }
+
+    bgMusic.src = playlist[currentTrack];
+    bgMusic.play();
+    playPauseBtn.textContent = "❚❚";
+});
+
+
+
+/* ====================================================== */
+/*            CENSORED WORD ANIMATION MAP                */
+/* ====================================================== */
+
+const censoredWord = document.getElementById("censored-word");
+const symbols = ["$", "@", "%", "!", "#", "&", ")", "(", "*"];
+
+function randomizeCensoredWord() {
+    let result = "";
+
+    for (let i = 0; i < 10; i++) {
+        result += symbols[Math.floor(Math.random() * symbols.length)];
+    }
+
+    censoredWord.textContent = result + "G";
+}
+
+setInterval(randomizeCensoredWord, 150);
