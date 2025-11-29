@@ -295,7 +295,8 @@ if (musicPageButton) {
     musicPageButton.addEventListener("click", () => {
         window.location.href = "music.html";
     });
-]
+}
+
 
 
 
