@@ -92,40 +92,42 @@ pressStartBtn.addEventListener("click", () => {
 /*          GALLERY (PINTEREST IMAGES ONLY + FADE)        */
 /* ====================================================== */
 
-// ONLY IMAGES — (ADD AS MANY PINTEREST LINKS AS YOU WANT)
 const galleryImages = [
-    "https://i.pinimg.com/your-link-1.jpg",
-    "https://i.pinimg.com/your-link-2.jpg",
-    "https://i.pinimg.com/your-link-3.jpg",
-    "https://i.pinimg.com/your-link-4.jpg",
-    "https://i.pinimg.com/your-link-5.jpg",
+    "https://i.pinimg.com/736x/4a/90/45/4a9045416707ca4f825c70cb81079ebb.jpg",
+    "https://i.pinimg.com/736x/43/fe/d2/43fed25a912fd4e44af1d35b9aac6a01.jpg",
+    "https://i.pinimg.com/736x/4f/e4/d2/4fe4d27ec4e7beef97429f855383384c.jpg",
+    "https://i.pinimg.com/736x/68/d8/e6/68d8e6a18aac67bb0b47c8ec77ec1cd2.jpg",
+    "https://i.pinimg.com/736x/86/6d/22/866d220dbf59a6aee104196a586c0832.jpg"
 ];
 
-// your gallery elements
+// gallery element
 const galleryImageElement = document.getElementById("gallery-image");
-const galleryVideoElement = document.getElementById("gallery-video");
 
-// hide video permanently
+// permanently hide video
+const galleryVideoElement = document.getElementById("gallery-video");
 galleryVideoElement.style.display = "none";
 
 let galleryIndex = 0;
 
-// shuffle images so order is random
+// randomize order each visit
 galleryImages.sort(() => Math.random() - 0.5);
 
 function showGalleryItem() {
-    galleryImageElement.style.opacity = 0; // fade out
+    // fade out
+    galleryImageElement.style.opacity = 0;
 
     setTimeout(() => {
         galleryImageElement.src = galleryImages[galleryIndex];
         galleryImageElement.style.opacity = 1; // fade in
-    }, 400); // fade transition timing
+    }, 400);
 
     galleryIndex = (galleryIndex + 1) % galleryImages.length;
 }
 
-// every 6 seconds → next image
+// rotate every 6 seconds
 setInterval(showGalleryItem, 6000);
+
+// load first image immediately
 showGalleryItem();
 
 
@@ -199,4 +201,5 @@ function randomizeCensoredWord() {
 }
 
 setInterval(randomizeCensoredWord, 150);
+
 
