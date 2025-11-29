@@ -89,7 +89,8 @@ pressStartBtn.addEventListener("click", () => {
 
 
 /* ====================================================== */
-/*          GALLERY (SELECTED LOCAL IMAGES ONLY + FADE)   */
+/*                     GALLERY (FINAL)                    */
+/*          ONLY THESE 5 IMAGES — LOCAL + FADE            */
 /* ====================================================== */
 
 const galleryImages = [
@@ -100,35 +101,40 @@ const galleryImages = [
     "assets/images/main-image-8.jpg"
 ];
 
+// Elements
 const galleryImageElement = document.getElementById("gallery-image");
-
-// hide video permanently
 const galleryVideoElement = document.getElementById("gallery-video");
-galleryVideoElement.style.display = "none";
+
+// Permanently disable video
+if (galleryVideoElement) {
+    galleryVideoElement.style.display = "none";
+}
 
 let galleryIndex = 0;
 
-// randomize the order on each refresh
+// Random order each load
 galleryImages.sort(() => Math.random() - 0.5);
 
 function showGalleryItem() {
-    // fade out the current image
+    // fade out current image
     galleryImageElement.style.opacity = 0;
 
     setTimeout(() => {
-        // set new image and fade in
+        // switch to next image
         galleryImageElement.src = galleryImages[galleryIndex];
-        galleryImageElement.style.opacity = 1;
-    }, 400);
+        galleryImageElement.style.opacity = 1; // fade in
+    }, 400); // time before new image fades in
 
+    // move to next index
     galleryIndex = (galleryIndex + 1) % galleryImages.length;
 }
 
-// rotate every 6 seconds
+// cycle every 6 seconds
 setInterval(showGalleryItem, 6000);
 
-// display first image immediately
+// load first image immediately
 showGalleryItem();
+
 
 
 
@@ -281,6 +287,7 @@ function randomizeCensoredWord() {
 }
 
 setInterval(randomizeCensoredWord, 150);
+
 
 
 
