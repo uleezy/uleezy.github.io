@@ -8,30 +8,41 @@ const introLoop = document.getElementById("intro-loop");
 const glitchOverlay = document.getElementById("glitch-overlay");
 const mainSite = document.getElementById("main-site");
 
-// Force safe autoplay settings
-introLoop.volume = 0.0;          // start muted for browser autoplay
-introLoop.muted = true;          // allow autoplay
-introLoop.play().catch(() => {   // in case autoplay still blocked
-    console.log("Autoplay blocked until click");
-});
+// Autoplay-safe setup
+introLoop.volume = 0.0;
+introLoop.muted = true;
+introLoop.play().catch(() => {});
+
+/* Fade in intro loop after click */
+function fadeInIntroLoop() {
+    introLoop.muted = false;
+    let vol = 0;
+    const fade = setInterval(() => {
+        vol += 0.05;
+        introLoop.volume = vol;
+        if (vol >= 0.8) clearInterval(fade);
+    }, 60);
+}
 
 /* ====================================================== */
-/*                KAOMOJI BACKGROUND FLOAT                */
+/*         KAOMOJI FLOAT PARTICLES                        */
 /* ====================================================== */
 
-const kaomojiList = ["(｡•́‿•̀｡)", "(╥﹏╥)", "(>_<)", "(¬‿¬)", "(◕‿◕)", "(✿◠‿◠)", "(ﾉ◕ヮ◕)ﾉ*", "(ಠ_ಠ)"];
-const kaomojiContainer = document.getElementById("kaomoji-container");
+const kaomojiList = [
+    "(｡•́‿•̀｡)", "(╥﹏╥)", "(>_<)", "(¬‿¬)", 
+    "(◕‿◕)", "(✿◠‿◠)", "(ﾉ◕ヮ◕)ﾉ*", "(ಠ_ಠ)"
+];
 
 function spawnKaomoji() {
+    const container = document.getElementById("kaomoji-container");
     const span = document.createElement("span");
+
     span.classList.add("kaomoji");
     span.textContent = kaomojiList[Math.floor(Math.random() * kaomojiList.length)];
-
     span.style.left = Math.random() * 100 + "%";
     span.style.top = Math.random() * 100 + "%";
-    span.style.animationDuration = (8 + Math.random() * 8) + "s";
 
-    kaomojiContainer.appendChild(span);
+    container.appendChild(span);
 
     setTimeout(() => span.remove(), 15000);
 }
@@ -40,40 +51,23 @@ setInterval(spawnKaomoji, 1200);
 
 
 /* ====================================================== */
-/*          PRESS START → FADE-IN → GLITCH → MAIN SITE    */
+/*   PRESS START → GLITCH → LOAD MAIN SITE                */
 /* ====================================================== */
 
-function fadeInIntroLoop() {
-    introLoop.muted = false; // unmute on click
-    let vol = 0.0;
-
-    const fade = setInterval(() => {
-        vol += 0.05;
-        introLoop.volume = vol;
-
-        if (vol >= 0.8) {
-            clearInterval(fade);
-        }
-    }, 60);
-}
-
 pressStartBtn.addEventListener("click", () => {
+
     fadeInIntroLoop();
 
-    // Let the intro loop be heard for ~800ms
     setTimeout(() => {
         glitchOverlay.classList.add("glitch-active");
 
-        // Fade out intro audio before switching
-        let fadeOutVol = introLoop.volume;
+        let vol = introLoop.volume;
         const fadeOut = setInterval(() => {
-            fadeOutVol -= 0.1;
-            introLoop.volume = Math.max(0, fadeOutVol);
-
-            if (fadeOutVol <= 0) {
+            vol -= 0.08;
+            introLoop.volume = Math.max(0, vol);
+            if (vol <= 0) {
                 clearInterval(fadeOut);
                 introLoop.pause();
-                introLoop.currentTime = 0;
             }
         }, 50);
 
@@ -87,10 +81,8 @@ pressStartBtn.addEventListener("click", () => {
 });
 
 
-
 /* ====================================================== */
-/*                     GALLERY (FINAL)                    */
-/*     
+/*                        GALLERY                         */
 /* ====================================================== */
 
 const galleryImages = [
@@ -101,44 +93,26 @@ const galleryImages = [
     "assets/images/main-image-8.jpg"
 ];
 
-// Elements
-const galleryImageElement = document.getElementById("gallery-image");
-const galleryVideoElement = document.getElementById("gallery-video");
-
-// Permanently hide video
-if (galleryVideoElement) {
-    galleryVideoElement.style.display = "none";
-}
+const galleryImage = document.getElementById("gallery-image");
 
 let galleryIndex = 0;
-
-// Randomize order
 galleryImages.sort(() => Math.random() - 0.5);
 
 function showGalleryItem() {
-    galleryImageElement.style.opacity = 0;
-
+    galleryImage.style.opacity = 0;
     setTimeout(() => {
-        galleryImageElement.src = galleryImages[galleryIndex];
-        galleryImageElement.style.opacity = 1;
+        galleryImage.src = galleryImages[galleryIndex];
+        galleryImage.style.opacity = 1;
     }, 400);
-
     galleryIndex = (galleryIndex + 1) % galleryImages.length;
 }
 
-setInterval(showGalleryItem, 6000);
-
-// Load first image
 showGalleryItem();
-
-
-
-
-
+setInterval(showGalleryItem, 6000);
 
 
 /* ====================================================== */
-/*                 MUSIC PLAYER + PLAYLIST                */
+/*                MUSIC PLAYER + VISUALIZER               */
 /* ====================================================== */
 
 const bgMusic = document.getElementById("bg-music");
@@ -160,7 +134,7 @@ let currentTrack = 0;
 function startPlaylist() {
     bgMusic.src = playlist[currentTrack];
     bgMusic.volume = 0.8;
-    bgMusic.play().catch(() => {});
+    bgMusic.play().catch(()=>{});
 }
 
 playPauseBtn.addEventListener("click", () => {
@@ -178,133 +152,100 @@ volumeSlider.addEventListener("input", () => {
 });
 
 bgMusic.addEventListener("ended", () => {
-    currentTrack++;
-    if (currentTrack >= playlist.length) {
-        currentTrack = 0;
-    }
-
+    currentTrack = (currentTrack + 1) % playlist.length;
     bgMusic.src = playlist[currentTrack];
-    bgMusic.play().catch(() => {});
+    bgMusic.play();
     playPauseBtn.textContent = "❚❚";
 });
 
+
 /* ====================================================== */
-/*            AUDIO-REACTIVE VISUALIZER (SOFT GLOW)       */
+/*                  AUDIO GLOW VISUALIZER                 */
 /* ====================================================== */
 
 const canvas = document.getElementById("visualizer-canvas");
 const ctx = canvas.getContext("2d");
 
-function resizeCanvas() {
+function resize() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
+resize();
+window.addEventListener("resize", resize);
 
-// Audio analyzer setup
 let audioContext, analyser, dataArray;
 
 function setupVisualizer() {
-    if (audioContext) return; // already set
+    if (audioContext) return;
 
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    audioContext = new AudioContext();
     const source = audioContext.createMediaElementSource(bgMusic);
 
     analyser = audioContext.createAnalyser();
-    analyser.fftSize = 256; // smooth and soft
-    const bufferLength = analyser.frequencyBinCount;
+    analyser.fftSize = 256;
 
-    dataArray = new Uint8Array(bufferLength);
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
 
     source.connect(analyser);
     analyser.connect(audioContext.destination);
 }
 
-function drawGlowVisualizer() {
-    requestAnimationFrame(drawGlowVisualizer);
-
+function drawVisualizer() {
+    requestAnimationFrame(drawVisualizer);
     if (!analyser) return;
 
     analyser.getByteFrequencyData(dataArray);
 
-    // Soft bass pulse detection
     let bass = dataArray[1] + dataArray[2] + dataArray[3];
-    let intensity = bass / 4;
+    let intensity = bass / 5;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    // Create glow circle centered
     const gradient = ctx.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
-        50,
-        canvas.width / 2,
-        canvas.height / 2,
-        canvas.width / 1.2
+        canvas.width/2, canvas.height/2, 50,
+        canvas.width/2, canvas.height/2, canvas.width*0.8
     );
 
-    gradient.addColorStop(0, `rgba(255, 255, 0, ${0.15 + intensity / 900})`);
-    gradient.addColorStop(0.5, `rgba(255, 180, 0, ${0.1 + intensity / 1200})`);
+    gradient.addColorStop(0, `rgba(255,255,0,${0.15 + intensity/900})`);
+    gradient.addColorStop(0.5, `rgba(255,190,0,${0.10 + intensity/1200})`);
     gradient.addColorStop(1, "rgba(0,0,0,0)");
 
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0,0,canvas.width,canvas.height);
 }
 
-function startVisualizer() {
+bgMusic.addEventListener("play", () => {
     setupVisualizer();
-
-    // Required by browsers:
-    if (audioContext.state === "suspended") {
-        audioContext.resume();
-    }
-
-    drawGlowVisualizer();
-}
-
-// Start visualizer once playlist begins
-bgMusic.addEventListener("play", startVisualizer);
+    if (audioContext.state === "suspended") audioContext.resume();
+    drawVisualizer();
+});
 
 
 /* ====================================================== */
-/*            CENSORED WORD RANDOM SYMBOLS                */
+/*            CENSORED WORD + RANDOM SYMBOLS              */
 /* ====================================================== */
 
 const censoredWord = document.getElementById("censored-word");
 const symbols = ["$", "@", "%", "!", "#", "&", ")", "(", "*"];
 
-function randomizeCensoredWord() {
+function scramble() {
     let result = "";
-    for (let i = 0; i < 10; i++) {
+    for (let i=0;i<10;i++) {
         result += symbols[Math.floor(Math.random() * symbols.length)];
     }
     censoredWord.textContent = result + "G";
 }
 
-setInterval(randomizeCensoredWord, 150);
+setInterval(scramble,150);
 
 
 /* ====================================================== */
-/*            MUSIC PAGE BUTTON — REDIRECT                */
+/*               MUSIC PAGE REDIRECT BUTTON               */
 /* ====================================================== */
 
 const musicPageButton = document.getElementById("music-page-button");
-
 if (musicPageButton) {
     musicPageButton.addEventListener("click", () => {
         window.location.href = "music.html";
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
