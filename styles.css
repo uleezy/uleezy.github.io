@@ -11,9 +11,7 @@ body {
     overflow-x: hidden;
 }
 
-.hidden {
-    display: none !important;
-}
+.hidden { display: none !important; }
 
 h1, h2 {
     font-family: "Press Start 2P", cursive;
@@ -21,10 +19,9 @@ h1, h2 {
 }
 
 
-
-/* =============================================== */
-/*                START SCREEN                      */
-/* =============================================== */
+/* =============================== */
+/*         START SCREEN            */
+/* =============================== */
 
 #intro-screen {
     position: fixed;
@@ -38,10 +35,6 @@ h1, h2 {
     overflow: hidden;
 }
 
-#intro-content {
-    text-align: center;
-}
-
 #intro-names {
     display: flex;
     flex-direction: column;
@@ -50,14 +43,8 @@ h1, h2 {
     margin-bottom: 30px;
 }
 
-.alias {
-    margin: 5px 0;
-}
-
-.crossed {
-    text-decoration: line-through;
-    opacity: 0.6;
-}
+.alias { margin: 5px 0; }
+.crossed { text-decoration: line-through; opacity: 0.6; }
 
 #press-start-btn {
     font-family: "Press Start 2P", cursive;
@@ -67,16 +54,18 @@ h1, h2 {
     background: transparent;
     border: 2px solid #00ffc8;
     cursor: pointer;
-    text-transform: uppercase;
     transition: 0.3s;
-   }
-   
+}
+
+#press-start-btn:hover {
+    background: #00ffc8;
+    color: black;
+}
 
 
-
-/* =============================================== */
-/*                KAOMOJI PARTICLES                */
-/* =============================================== */
+/* =============================== */
+/*         KAOMOJI FLOAT           */
+/* =============================== */
 
 #kaomoji-container {
     position: absolute;
@@ -94,18 +83,17 @@ h1, h2 {
 }
 
 @keyframes floatAround {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    25% { transform: translate(40px, -60px) rotate(10deg); }
-    50% { transform: translate(-20px, -30px) rotate(-10deg); }
-    75% { transform: translate(30px, 20px) rotate(5deg); }
-    100% { transform: translate(0, 0) rotate(0deg); }
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(40px, -60px); }
+    50% { transform: translate(-20px, -30px); }
+    75% { transform: translate(30px, 20px); }
+    100% { transform: translate(0, 0); }
 }
 
 
-
-/* =============================================== */
-/*               GLITCH TRANSITION                 */
-/* =============================================== */
+/* =============================== */
+/*            GLITCH FX            */
+/* =============================== */
 
 #glitch-overlay {
     position: fixed;
@@ -129,14 +117,13 @@ h1, h2 {
     55% { background: #111; }
     70% { background: #ffcc00; }
     90% { background: #000; }
-    100% { opacity: 0; display: none; }
+    100% { opacity: 0; }
 }
 
 
-
-/* =============================================== */
-/*               MAIN SITE STYLING                 */
-/* =============================================== */
+/* =============================== */
+/*            MAIN SITE            */
+/* =============================== */
 
 #main-site {
     background: #0a0a0a;
@@ -151,10 +138,9 @@ h1, h2 {
 }
 
 
-
-/* =============================================== */
-/*                 MUSIC PLAYER                    */
-/* =============================================== */
+/* =============================== */
+/*          MUSIC PLAYER           */
+/* =============================== */
 
 #music-player {
     position: fixed;
@@ -181,7 +167,6 @@ h1, h2 {
 
 #player-name {
     font-family: "Press Start 2P", cursive;
-    font-size: 14px;
     color: #00c8ff;
     text-decoration: none;
     transition: 0.25s;
@@ -192,15 +177,12 @@ h1, h2 {
     text-shadow: 0 0 8px #82efff;
 }
 
-#volume-slider {
-    width: 150px;
-}
+#volume-slider { width: 150px; }
 
 
-
-/* =============================================== */
-/*                  WELCOME TEXT                   */
-/* =============================================== */
+/* =============================== */
+/*           WELCOME TEXT          */
+/* =============================== */
 
 #welcome-section {
     text-align: center;
@@ -208,29 +190,27 @@ h1, h2 {
 }
 
 
-
-/* =============================================== */
-/*          CENTERED CONTENT LAYOUT WRAPPER        */
-/* =============================================== */
+/* =============================== */
+/*         CONTENT WRAPPER         */
+/* =============================== */
 
 #content-wrapper {
     width: 85%;
     max-width: 1200px;
-    margin: 60px auto 40px auto;
-    background: rgba(255, 255, 255, 0.06);
-    border: 2px solid #ffd966;
+    margin: 60px auto;
     padding: 35px;
     border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid #ffd966;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 
-
-/* =============================================== */
-/*                    GALLERY                      */
-/* =============================================== */
+/* =============================== */
+/*             GALLERY             */
+/* =============================== */
 
 #gallery-container {
     width: 100%;
@@ -238,18 +218,18 @@ h1, h2 {
     height: 650px;
     position: relative;
     overflow: hidden;
-    margin-bottom: 40px;
     border-radius: 14px;
     border: 2px solid #ffd966;
+    margin-bottom: 40px;
 }
 
-#gallery-image,
-#gallery-video {
+#gallery-image {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 1;
     transition: opacity 0.6s ease;
 }
 
@@ -258,19 +238,17 @@ h1, h2 {
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;              /* behind the images */
-    opacity: 0.45;           /* softness */
-    mix-blend-mode: screen;  /* glow effect */
+    opacity: 0.45;
+    mix-blend-mode: screen;
 }
 
 
-/* =============================================== */
-/*                    BIO SECTION                  */
-/* =============================================== */
+/* =============================== */
+/*               BIO               */
+/* =============================== */
 
 #bio-section {
     text-align: center;
-    color: #fff;
     margin-top: 25px;
 }
 
@@ -279,51 +257,28 @@ h1, h2 {
     line-height: 1.5;
 }
 
-#censored-word {
-    display: inline-block;
-    animation: censorMove 0.6s infinite linear;
-}
-
-@keyframes censorMove {
-    0% { transform: translateX(0px); }
-    25% { transform: translateX(2px); }
-    50% { transform: translateX(-2px); }
-    75% { transform: translateX(1px); }
-    100% { transform: translateX(0px); }
-}
-
 .music-page-button {
-    margin-top: 1.75rem;
-    padding: 0.85rem 1.8rem;
+    margin-top: 1.8rem;
+    padding: 0.9rem 2rem;
     border-radius: 999px;
-    border: 2px solid var(--accent-color, #ffcc4d);
+    border: 2px solid #ffd966;
     background: transparent;
-    color: #ffffff;
-    font-size: 0.95rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    color: white;
+    font-family: "Press Start 2P";
     cursor: pointer;
-    transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
-    display: inline-block;
+    transition: 0.25s ease;
 }
 
 .music-page-button:hover {
     background: rgba(255, 204, 77, 0.18);
-    transform: translateY(-2px);
     box-shadow: 0 0 12px rgba(255, 204, 77, 0.6);
+    transform: translateY(-2px);
 }
 
 
-
-#press-start-btn:hover {
-    background: #00ffc8;
-    color: black;
-}
-
-
-/* =============================================== */
-/*                   CONTACT SECTION               */
-/* =============================================== */
+/* =============================== */
+/*             CONTACT             */
+/* =============================== */
 
 #contact-section {
     text-align: center;
@@ -334,7 +289,6 @@ h1, h2 {
     font-family: "Press Start 2P", cursive;
     color: #00c8ff;
     text-decoration: none;
-    font-size: 16px;
 }
 
 .contact-link:hover {
@@ -342,32 +296,12 @@ h1, h2 {
 }
 
 
-
-/* =============================================== */
-/*                 HOVER GLOW LINKS                */
-/* =============================================== */
-
-a:hover {
-    text-decoration: underline;
-}
-
-
-
-/* =============================================== */
-/*                RESPONSIVE DESIGN                */
-/* =============================================== */
+/* =============================== */
+/*          RESPONSIVE             */
+/* =============================== */
 
 @media (max-width: 768px) {
-    #content-wrapper {
-        width: 94%;
-        padding: 20px;
-    }
-
     #gallery-container {
         height: 350px;
     }
 }
-
-
-
-
