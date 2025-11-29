@@ -183,6 +183,83 @@ bgMusic.addEventListener("ended", () => {
     playPauseBtn.textContent = "❚❚";
 });
 
+/* ====================================================== */
+/*            AUDIO-REACTIVE VISUALIZER (SOFT GLOW)       */
+/* ====================================================== */
+
+const canvas = document.getElementById("visualizer-canvas");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+// Audio analyzer setup
+let audioContext, analyser, dataArray;
+
+function setupVisualizer() {
+    if (audioContext) return; // already set
+
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const source = audioContext.createMediaElementSource(bgMusic);
+
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256; // smooth and soft
+    const bufferLength = analyser.frequencyBinCount;
+
+    dataArray = new Uint8Array(bufferLength);
+
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
+}
+
+function drawGlowVisualizer() {
+    requestAnimationFrame(drawGlowVisualizer);
+
+    if (!analyser) return;
+
+    analyser.getByteFrequencyData(dataArray);
+
+    // Soft bass pulse detection
+    let bass = dataArray[1] + dataArray[2] + dataArray[3];
+    let intensity = bass / 4;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Create glow circle centered
+    const gradient = ctx.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        50,
+        canvas.width / 2,
+        canvas.height / 2,
+        canvas.width / 1.2
+    );
+
+    gradient.addColorStop(0, `rgba(255, 255, 0, ${0.15 + intensity / 900})`);
+    gradient.addColorStop(0.5, `rgba(255, 180, 0, ${0.1 + intensity / 1200})`);
+    gradient.addColorStop(1, "rgba(0,0,0,0)");
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function startVisualizer() {
+    setupVisualizer();
+
+    // Required by browsers:
+    if (audioContext.state === "suspended") {
+        audioContext.resume();
+    }
+
+    drawGlowVisualizer();
+}
+
+// Start visualizer once playlist begins
+bgMusic.addEventListener("play", startVisualizer);
 
 
 /* ====================================================== */
@@ -201,6 +278,7 @@ function randomizeCensoredWord() {
 }
 
 setInterval(randomizeCensoredWord, 150);
+
 
 
 
