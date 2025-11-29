@@ -90,13 +90,13 @@ pressStartBtn.addEventListener("click", () => {
 
 /* ====================================================== */
 /*                     GALLERY (FINAL)                    */
-/*          ONLY THESE 5 IMAGES — LOCAL + FADE            */
+/*     
 /* ====================================================== */
 
 const galleryImages = [
-    "assets/images/main-image-2.jpg",
-    "assets/images/main-image-3.jpg",
-    "assets/images/main-image-4.jpg",
+    "assets/images/main-image-2.png",
+    "assets/images/main-image-3.webp",
+    "assets/images/main-image-4.webp",
     "assets/images/main-image-7.jpg",
     "assets/images/main-image-8.jpg"
 ];
@@ -105,34 +105,30 @@ const galleryImages = [
 const galleryImageElement = document.getElementById("gallery-image");
 const galleryVideoElement = document.getElementById("gallery-video");
 
-// Permanently disable video
+// Permanently hide video
 if (galleryVideoElement) {
     galleryVideoElement.style.display = "none";
 }
 
 let galleryIndex = 0;
 
-// Random order each load
+// Randomize order
 galleryImages.sort(() => Math.random() - 0.5);
 
 function showGalleryItem() {
-    // fade out current image
     galleryImageElement.style.opacity = 0;
 
     setTimeout(() => {
-        // switch to next image
         galleryImageElement.src = galleryImages[galleryIndex];
-        galleryImageElement.style.opacity = 1; // fade in
-    }, 400); // time before new image fades in
+        galleryImageElement.style.opacity = 1;
+    }, 400);
 
-    // move to next index
     galleryIndex = (galleryIndex + 1) % galleryImages.length;
 }
 
-// cycle every 6 seconds
 setInterval(showGalleryItem, 6000);
 
-// load first image immediately
+// Load first image
 showGalleryItem();
 
 
@@ -287,6 +283,7 @@ function randomizeCensoredWord() {
 }
 
 setInterval(randomizeCensoredWord, 150);
+
 
 
 
