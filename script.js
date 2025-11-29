@@ -1,122 +1,199 @@
-// =============================
-// INTRO + PRESS START SEQUENCE
-// =============================
+/* ====================================================== */
+/*                INTRO SCREEN + AUDIO                    */
+/* ====================================================== */
 
-// Get elements safely
 const introScreen = document.getElementById("intro-screen");
 const pressStartBtn = document.getElementById("press-start-btn");
-const siteWrapper = document.getElementById("site-wrapper");
+const introLoop = document.getElementById("intro-loop");
+const glitchOverlay = document.getElementById("glitch-overlay");
+const mainSite = document.getElementById("main-site");
 
-// Your audio files
-const introMusic = new Audio("assets/music/intro_loop.mp3");
-introMusic.loop = true;
-introMusic.volume = 0.45;
-
-// Game SFX (you can replace these later)
-const startSFX = new Audio("assets/music/start_sfx.mp3");
-startSFX.volume = 0.35;
-
-// -----------------------------
-// START INTRO MUSIC ON LOAD
-// -----------------------------
-window.addEventListener("load", () => {
-    introMusic.play().catch(() => {
-        console.log("Autoplay blocked until user presses something.");
-    });
+introLoop.volume = 0.8;
+introLoop.play().catch(() => {
+    // Autoplay might get blocked until user interacts
 });
 
-// -----------------------------
-// PRESS START BUTTON
-// -----------------------------
+/* ====================================================== */
+/*                KAOMOJI BACKGROUND FLOAT                */
+/* ====================================================== */
+
+const kaomojiList = ["(｡•́‿•̀｡)", "(╥﹏╥)", "(>_<)", "(¬‿¬)", "(◕‿◕)", "(✿◠‿◠)", "(ﾉ◕ヮ◕)ﾉ*", "(ಠ_ಠ)"];
+const kaomojiContainer = document.getElementById("kaomoji-container");
+
+function spawnKaomoji() {
+    const span = document.createElement("span");
+    span.classList.add("kaomoji");
+    span.textContent = kaomojiList[Math.floor(Math.random() * kaomojiList.length)];
+
+    span.style.left = Math.random() * 100 + "%";
+    span.style.top = Math.random() * 100 + "%";
+    span.style.animationDuration = (8 + Math.random() * 8) + "s";
+
+    kaomojiContainer.appendChild(span);
+
+    setTimeout(() => span.remove(), 15000);
+}
+
+setInterval(spawnKaomoji, 1200);
+
+
+
+/* ====================================================== */
+/*          PRESS START → GLITCH → MAIN SITE              */
+/* ====================================================== */
+
 pressStartBtn.addEventListener("click", () => {
+    introLoop.pause();
+    introLoop.currentTime = 0;
 
-    // Fade out intro loop
-    let fadeOut = setInterval(() => {
-        if (introMusic.volume > 0.02) {
-            introMusic.volume -= 0.02;
-        } else {
-            clearInterval(fadeOut);
-            introMusic.pause();
-        }
-    }, 120);
-
-    // Play SFX
-    startSFX.play();
-
-    // Fade out intro screen
-    introScreen.style.opacity = "0";
-    introScreen.style.transition = "opacity 1.2s ease";
+    glitchOverlay.classList.add("glitch-active");
 
     setTimeout(() => {
-        introScreen.style.display = "none";
-
-        // Reveal site wrapper
-        siteWrapper.style.display = "block";
-
-        // CRT flash effect
-        document.body.classList.add("crt-start");
-
-        setTimeout(() => {
-            document.body.classList.remove("crt-start");
-
-            // Trigger HUD animation (GBA zoom + slide)
-            const gba = document.getElementById("gba-container");
-            if (gba) {
-                gba.classList.add("gba-animate");
-            }
-
-        }, 900);
-
-    }, 1200);
+        introScreen.classList.add("hidden");
+        mainSite.classList.remove("hidden");
+        startPlaylist();
+    }, 1600); // matches glitch animation duration
 });
 
-// =============================
-// MUSIC PLAYER (LOCAL FILES)
-// =============================
 
-let tracks = [
+
+/* ====================================================== */
+/*                  GALLERY (IMAGES + VIDEOS)             */
+/* ====================================================== */
+
+const galleryImages = [
+    "assets/images/main-image-1.jpg",
+    "assets/images/main-image-2.png",
+    "assets/images/main-image-3.webp",
+    "assets/images/main-image-4.webp",
+    "assets/images/main-image-5.jpg",
+    "assets/images/main-image-6.jpg",
+    "assets/images/main-image-7.jpg",
+    "assets/images/main-image-8.jpg",
+];
+
+const galleryVideos = [
+    "assets/videos/main-video-1.mov",
+    "assets/videos/main-video-2.mov",
+    "assets/videos/main-video-3.MOV",
+    "assets/videos/main-video-4.mov",
+    "assets/videos/main-video-5.mov",
+    "assets/videos/main-video-6.mov",
+    "assets/videos/main-video-7.mov",
+    "assets/videos/main-video-8.mov",
+];
+
+const galleryImageElement = document.getElementById("gallery-image");
+const galleryVideoElement = document.getElementById("gallery-video");
+
+let galleryIndex = 0;
+let allGalleryItems = [];
+
+// combine image + video lists into a single sequence
+allGalleryItems = [...galleryImages, ...galleryVideos];
+
+// shuffle
+allGalleryItems.sort(() => Math.random() - 0.5);
+
+function showGalleryItem() {
+    const item = allGalleryItems[galleryIndex];
+
+    // If item ends with video type → show video
+    const isVideo = item.endsWith(".mov") || item.endsWith(".MOV") || item.endsWith(".mp4");
+
+    if (isVideo) {
+        galleryVideoElement.src = item;
+        galleryVideoElement.style.opacity = 1;
+
+        galleryImageElement.style.opacity = 0;
+        galleryVideoElement.play();
+    } else {
+        galleryImageElement.src = item;
+        galleryImageElement.style.opacity = 1;
+
+        galleryVideoElement.pause();
+        galleryVideoElement.style.opacity = 0;
+    }
+
+    galleryIndex = (galleryIndex + 1) % allGalleryItems.length;
+}
+
+setInterval(showGalleryItem, 6000);
+showGalleryItem(); // initial load
+
+
+
+/* ====================================================== */
+/*                 MUSIC PLAYER LOGIC                     */
+/* ====================================================== */
+
+const bgMusic = document.getElementById("bg-music");
+const playPauseBtn = document.getElementById("play-pause-btn");
+const volumeSlider = document.getElementById("volume-slider");
+
+// full playlist
+const playlist = [
     "assets/music/song1.mp3",
     "assets/music/song2.mp3",
     "assets/music/song3.mp3",
     "assets/music/song4.mp3",
     "assets/music/song5.mp3",
     "assets/music/song6.mp3",
-    "assets/music/song7.mp3"
+    "assets/music/song7.mp3",
 ];
-
-shuffleArray(tracks);
-
-// Player elements
-const audio = new Audio();
-audio.volume = 0.6;
 
 let currentTrack = 0;
 
-// Shuffle function
-function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+function startPlaylist() {
+    bgMusic.src = playlist[currentTrack];
+    bgMusic.volume = 0.8;
+    bgMusic.play();
+}
+
+playPauseBtn.addEventListener("click", () => {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        playPauseBtn.textContent = "❚❚";
+    } else {
+        bgMusic.pause();
+        playPauseBtn.textContent = "▶";
     }
+});
+
+volumeSlider.addEventListener("input", () => {
+    bgMusic.volume = volumeSlider.value;
+});
+
+// when a song ends → go to next
+bgMusic.addEventListener("ended", () => {
+    currentTrack++;
+
+    if (currentTrack >= playlist.length) {
+        currentTrack = 0; // reset to beginning
+    }
+
+    bgMusic.src = playlist[currentTrack];
+    bgMusic.play();
+    playPauseBtn.textContent = "❚❚";
+});
+
+
+
+/* ====================================================== */
+/*            CENSORED WORD ANIMATION MAP                */
+/* ====================================================== */
+
+const censoredWord = document.getElementById("censored-word");
+const symbols = ["$", "@", "%", "!", "#", "&", ")", "(", "*"];
+
+function randomizeCensoredWord() {
+    let result = "";
+
+    for (let i = 0; i < 10; i++) {
+        result += symbols[Math.floor(Math.random() * symbols.length)];
+    }
+
+    censoredWord.textContent = result + "G";
 }
 
-// Play next song
-function playNext() {
-    currentTrack = (currentTrack + 1) % tracks.length;
-    audio.src = tracks[currentTrack];
-    audio.play();
-}
-
-// Auto-next on finish
-audio.addEventListener("ended", playNext);
-
-// Expose controls to the page
-window.musicPlayer = {
-    play: () => {
-        audio.src = tracks[currentTrack];
-        audio.play();
-    },
-    pause: () => audio.pause(),
-    skip: playNext,
-    setVolume: (value) => audio.volume = value
-};
+setInterval(randomizeCensoredWord, 150);
