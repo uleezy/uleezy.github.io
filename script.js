@@ -89,7 +89,7 @@ pressStartBtn.addEventListener("click", () => {
 
 
 /* ====================================================== */
-/*          GALLERY (ONLY SELECT IMAGES + FADE)           */
+/*          GALLERY (SELECTED LOCAL IMAGES ONLY + FADE)   */
 /* ====================================================== */
 
 const galleryImages = [
@@ -100,34 +100,36 @@ const galleryImages = [
     "assets/images/main-image-8.jpg"
 ];
 
-// gallery element
 const galleryImageElement = document.getElementById("gallery-image");
 
-// permanently hide video
+// hide video permanently
 const galleryVideoElement = document.getElementById("gallery-video");
 galleryVideoElement.style.display = "none";
 
 let galleryIndex = 0;
 
-// randomize order each visit
+// randomize the order on each refresh
 galleryImages.sort(() => Math.random() - 0.5);
 
 function showGalleryItem() {
-    galleryImageElement.style.opacity = 0; // fade out
+    // fade out the current image
+    galleryImageElement.style.opacity = 0;
 
     setTimeout(() => {
+        // set new image and fade in
         galleryImageElement.src = galleryImages[galleryIndex];
-        galleryImageElement.style.opacity = 1; // fade in
+        galleryImageElement.style.opacity = 1;
     }, 400);
 
     galleryIndex = (galleryIndex + 1) % galleryImages.length;
 }
 
-// rotate every 6s
+// rotate every 6 seconds
 setInterval(showGalleryItem, 6000);
 
-// load first image immediately
+// display first image immediately
 showGalleryItem();
+
 
 
 
@@ -279,6 +281,7 @@ function randomizeCensoredWord() {
 }
 
 setInterval(randomizeCensoredWord, 150);
+
 
 
 
