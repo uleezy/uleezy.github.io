@@ -1,17 +1,12 @@
 // ============================================================
 // CRONO FOLLOW SYSTEM (Desktop Only)
-// Includes: delayed follow, direction detection, animation switching,
-// speed-based walk/run logic, idle system w/ random expressions.
 // ============================================================
 
 // Detect mobile
 const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-// If mobile → disable entirely
-if (isMobile) {
-    console.log("Crono disabled on mobile.");
-    return;
-}
+if (!isMobile) {
+
 
 // Create Crono follower element
 const crono = document.createElement("img");
@@ -177,3 +172,4 @@ function loop() {
 
 loop();
 resetIdle();
+}
