@@ -11,13 +11,8 @@ window.addEventListener("load", () => {
 });
 
 /* ============================================================
-   AVATAR FOLLOWING MOUSE
+   OLD MOUSE-FOLLOW AVATAR DISABLED
+   (Crono follower replaces this system)
 ============================================================ */
-const avatarWrapper = document.getElementById("avatar-wrapper");
-
-window.addEventListener("mousemove", (e) => {
-    const offsetX = 30;  // keeps avatar away from cursor
-    const offsetY = 30;
-
-    avatarWrapper.style.transform = `translate(${e.pageX + offsetX}px, ${e.pageY + offsetY}px)`;
-});
+// Removed: avatar following mouse
+// The Crono follower is now handled by crono.js instead.
