@@ -1,5 +1,7 @@
 // ============================================================
 // CRONO FOLLOW SYSTEM (Desktop Only)
+// Includes delayed follow, mouse-velocity animation logic,
+// direction detection, idle expressions, walk/run movement.
 // ============================================================
 
 // Detect mobile
@@ -7,169 +9,171 @@ const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 if (!isMobile) {
 
+    // Create Crono follower element
+    const crono = document.createElement("img");
+    crono.id = "crono-follower";
+    document.body.appendChild(crono);
 
-// Create Crono follower element
-const crono = document.createElement("img");
-crono.id = "crono-follower";
-document.body.appendChild(crono);
+    // File paths
+    const BASE = "assets/sprites/";
 
-// File paths
-const BASE = "assets/sprites/";
+    // Movement animations
+    const MOVE = {
+        idleFront: "Crono (Front).gif",
+        idleLeft: "Crono (Left).gif",
+        idleBack: "Crono (Back).gif",
 
-// Movement
-const MOVE = {
-    idleFront: "Crono (Front).gif",
-    idleLeft: "Crono (Left).gif",
-    idleBack: "Crono (Back).gif",
+        walkFront: "Crono - Walk (Front).gif",
+        walkLeft: "Crono - Walk (Left).gif",
+        walkBack: "Crono - Walk (Back).gif",
 
-    walkFront: "Crono - Walk (Front).gif",
-    walkLeft: "Crono - Walk (Left).gif",
-    walkBack: "Crono - Walk (Back).gif",
+        runFront: "Crono - Run (Front).gif",
+        runLeft: "Crono - Run (Left).gif",
+        runBack: "Crono - Run (Back).gif",
+    };
 
-    runFront: "Crono - Run (Front).gif",
-    runLeft: "Crono - Run (Left).gif",
-    runBack: "Crono - Run (Back).gif",
-};
+    // Idle Expressions
+    const EXPRESS = {
+        front: [
+            "Crono - Nod (Front).gif",
+            "Crono - Shake Head (Front).gif",
+            "Crono - Victory.gif"
+        ],
+        left: [
+            "Crono - Nod (Left).gif",
+            "Crono - Shake Head (Left).gif"
+        ],
+        back: [
+            "Crono - Nod (Back).gif",
+            "Crono - Shake Head (Back).gif"
+        ]
+    };
 
-// Idle Expressions
-const EXPRESS = {
-    front: [
-        "Crono - Nod (Front).gif",
-        "Crono - Shake Head (Front).gif",
-        "Crono - Victory.gif"
-    ],
-    left: [
-        "Crono - Nod (Left).gif",
-        "Crono - Shake Head (Left).gif"
-    ],
-    back: [
-        "Crono - Nod (Back).gif",
-        "Crono - Shake Head (Back).gif"
-    ]
-};
+    // Crono memory
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let cronoX = targetX;
+    let cronoY = targetY;
 
-// Crono movement memory
-let targetX = window.innerWidth / 2;
-let targetY = window.innerHeight / 2;
-let cronoX = targetX;
-let cronoY = targetY;
+    let lastDirection = "front";
+    let lastIdlePlayed = null;
+    let idleTimeout = null;
 
-let lastMoveTime = Date.now();
-let lastDirection = "front"; // "left", "right", "front", "back"
-let lastIdlePlayed = null;
-let idleTimeout = null;
+    // Mouse velocity tracking
+    let lastMouseX = null;
+    let lastMouseY = null;
+    let mouseSpeed = 0;
 
-const FOLLOW_DELAY = 0.1; // lower = slower follow
-const WALK_THRESHOLD = 3;
-const RUN_THRESHOLD = 15;
+    const FOLLOW_DELAY = 0.1;
+    const IDLE_DELAY = 6000 + Math.random() * 1000; // 6–7 seconds
 
-// Movement listener
-document.addEventListener("mousemove", (e) => {
-    targetX = e.clientX - 30;  // offset so Crono trails slightly behind
-    targetY = e.clientY - 30;
+    // Mouse movement listener
+    document.addEventListener("mousemove", (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
 
-    lastMoveTime = Date.now();
+        targetX = x - 30;
+        targetY = y - 30;
 
-    resetIdle();
-});
+        // Calculate mouse velocity
+        if (lastMouseX !== null && lastMouseY !== null) {
+            const dx = x - lastMouseX;
+            const dy = y - lastMouseY;
+            mouseSpeed = Math.sqrt(dx * dx + dy * dy);
+        }
 
-// Idle timer logic
-function resetIdle() {
-    if (idleTimeout) clearTimeout(idleTimeout);
+        lastMouseX = x;
+        lastMouseY = y;
 
-    idleTimeout = setTimeout(() => {
-        playIdleAnimation();
-    }, 6000 + Math.random() * 1000); // 6–7 seconds
-}
+        resetIdleTimer();
+    });
 
-function playIdleAnimation() {
-    let pool;
+    // Idle timer logic
+    function resetIdleTimer() {
+        if (idleTimeout) clearTimeout(idleTimeout);
 
-    if (lastDirection === "front") pool = EXPRESS.front;
-    else if (lastDirection === "left" || lastDirection === "right") pool = EXPRESS.left;
-    else pool = EXPRESS.back;
-
-    let choice = pool[Math.floor(Math.random() * pool.length)];
-
-    // Prevent repeating same animation
-    if (choice === lastIdlePlayed && pool.length > 1) {
-        choice = pool[(pool.indexOf(choice) + 1) % pool.length];
+        idleTimeout = setTimeout(() => {
+            playIdleAnimation();
+        }, IDLE_DELAY);
     }
 
-    lastIdlePlayed = choice;
+    // Play idle animation
+    function playIdleAnimation() {
+        let pool;
 
-    crono.src = BASE + "expressions/" + choice;
+        if (lastDirection === "front") pool = EXPRESS.front;
+        else if (lastDirection === "left" || lastDirection === "right") pool = EXPRESS.left;
+        else pool = EXPRESS.back;
 
-    // Flip if facing right
-    if (lastDirection === "right") {
-        crono.style.transform = "scaleX(-1)";
-    } else {
-        crono.style.transform = "scaleX(1)";
-    }
-}
+        let choice = pool[Math.floor(Math.random() * pool.length)];
 
-// Animation selection based on speed + direction
-function updateAnimation(dx, dy, speed) {
-    // Determine direction
-    if (Math.abs(dx) > Math.abs(dy)) {
-        if (dx < 0) lastDirection = "left";
-        else lastDirection = "right";
-    } else {
-        if (dy < 0) lastDirection = "back";
-        else lastDirection = "front";
+        if (choice === lastIdlePlayed && pool.length > 1) {
+            choice = pool[(pool.indexOf(choice) + 1) % pool.length];
+        }
+
+        lastIdlePlayed = choice;
+        crono.src = BASE + "expressions/" + choice;
+
+        crono.style.transform = (lastDirection === "right") ? "scaleX(-1)" : "scaleX(1)";
     }
 
-    // Choose animation by speed
-    let anim = "";
-    if (speed < WALK_THRESHOLD) {
-        // Idle
-        if (lastDirection === "front") anim = MOVE.idleFront;
-        else if (lastDirection === "left") anim = MOVE.idleLeft;
-        else if (lastDirection === "right") anim = MOVE.idleLeft; // flipped
-        else anim = MOVE.idleBack;
-    } else if (speed < RUN_THRESHOLD) {
-        // Walking
-        if (lastDirection === "front") anim = MOVE.walkFront;
-        else if (lastDirection === "left") anim = MOVE.walkLeft;
-        else if (lastDirection === "right") anim = MOVE.walkLeft;
-        else anim = MOVE.walkBack;
-    } else {
-        // Running
-        if (lastDirection === "front") anim = MOVE.runFront;
-        else if (lastDirection === "left") anim = MOVE.runLeft;
-        else if (lastDirection === "right") anim = MOVE.runLeft;
-        else anim = MOVE.runBack;
+    // Determine direction + choose animation based on mouse speed
+    function updateAnimation() {
+        const dx = targetX - cronoX;
+        const dy = targetY - cronoY;
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+            lastDirection = dx < 0 ? "left" : "right";
+        } else {
+            lastDirection = dy < 0 ? "back" : "front";
+        }
+
+        let anim = "";
+
+        if (mouseSpeed < 2) {
+            // Idle
+            anim =
+                lastDirection === "front" ? MOVE.idleFront :
+                lastDirection === "left"  ? MOVE.idleLeft :
+                lastDirection === "right" ? MOVE.idleLeft :
+                                            MOVE.idleBack;
+        }
+        else if (mouseSpeed < 15) {
+            // Walking
+            anim =
+                lastDirection === "front" ? MOVE.walkFront :
+                lastDirection === "left"  ? MOVE.walkLeft :
+                lastDirection === "right" ? MOVE.walkLeft :
+                                            MOVE.walkBack;
+        }
+        else {
+            // Running
+            anim =
+                lastDirection === "front" ? MOVE.runFront :
+                lastDirection === "left"  ? MOVE.runLeft :
+                lastDirection === "right" ? MOVE.runLeft :
+                                            MOVE.runBack;
+        }
+
+        crono.src = BASE + "movement/" + anim;
+
+        crono.style.transform =
+            lastDirection === "right" ? "scaleX(-1)" : "scaleX(1)";
     }
 
-    // Set path
-    crono.src = BASE + "movement/" + anim;
+    // Main Loop
+    function loop() {
+        requestAnimationFrame(loop);
 
-    // Flip if needed
-    if (lastDirection === "right") {
-        crono.style.transform = "scaleX(-1)";
-    } else {
-        crono.style.transform = "scaleX(1)";
+        cronoX += (targetX - cronoX) * FOLLOW_DELAY;
+        cronoY += (targetY - cronoY) * FOLLOW_DELAY;
+
+        updateAnimation();
+
+        crono.style.left = cronoX + "px";
+        crono.style.top = cronoY + "px";
     }
-}
 
-// Crono movement loop
-function loop() {
-    requestAnimationFrame(loop);
-
-    // Smooth follow interpolation
-    cronoX += (targetX - cronoX) * FOLLOW_DELAY;
-    cronoY += (targetY - cronoY) * FOLLOW_DELAY;
-
-    const dx = targetX - cronoX;
-    const dy = targetY - cronoY;
-    const speed = Math.sqrt(dx * dx + dy * dy);
-
-    updateAnimation(dx, dy, speed);
-
-    crono.style.left = cronoX + "px";
-    crono.style.top = cronoY + "px";
-}
-
-loop();
-resetIdle();
+    loop();
+    resetIdleTimer();
 }
