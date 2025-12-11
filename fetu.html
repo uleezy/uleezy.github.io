@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Fetu Prototype</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts to match your main site vibe -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --bg-main: #050509;
+            --accent: #ffdf6b;
+            --accent-soft: rgba(255, 223, 107, 0.15);
+            --grid: rgba(255, 255, 255, 0.03);
+            --text-main: #f4f4f4;
+            --text-soft: #9898aa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top, #1b1130 0, transparent 55%),
+                radial-gradient(circle at bottom, #130f26 0, transparent 55%),
+                linear-gradient(135deg, #050509 0, #05070f 45%, #050509 100%);
+            font-family: 'VT323', system-ui, monospace;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .shell {
+            width: 100%;
+            max-width: 1100px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background:
+                linear-gradient(145deg, rgba(255, 255, 255, 0.02), transparent),
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 55%);
+            padding: 18px 18px 22px;
+            box-shadow:
+                0 0 0 1px rgba(0, 0, 0, 0.7),
+                0 18px 45px rgba(0, 0, 0, 0.85);
+        }
+
+        .shell-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .shell-title-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .shell-kicker {
+            font-family: 'Press Start 2P', system-ui;
+            font-size: 10px;
+            letter-spacing: 0.11em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .shell-title {
+            font-size: 24px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .shell-sub {
+            font-size: 13px;
+            color: var(--text-soft);
+        }
+
+        .shell-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pill {
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            padding: 6px 11px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-soft);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: rgba(0, 0, 0, 0.35);
+        }
+
+        .pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background-color: var(--accent);
+            box-shadow: 0 0 10px rgba(255, 223, 107, 0.8);
+        }
+
+        .nav-link {
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--text-main);
+            text-decoration: none;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.7));
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-1px);
+            border-color: var(--accent);
+            box-shadow:
+                0 0 0 1px rgba(255, 223, 107, 0.3),
+                0 9px 18px rgba(0, 0, 0, 0.9);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 4fr) minmax(0, 3fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 880px) {
+            .layout {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .game-panel {
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background:
+                radial-gradient(circle at top, rgba(255, 255, 255, 0.06), transparent 60%),
+                linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(9, 9, 20, 0.96));
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-panel::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0, transparent 40%, rgba(255, 223, 107, 0.12) 60%, transparent 100%);
+            mix-blend-mode: soft-light;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+        }
+
+        .game-meta {
+            font-size: 11px;
+            color: var(--text-soft);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .game-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .game-meta-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .screen-wrap {
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background:
+                linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(14, 14, 26, 0.9)),
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 255, 255, 0.025),
+                    rgba(255, 255, 255, 0.025) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            padding: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .screen-inner {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        canvas#game-canvas {
+            width: 100%;
+            height: auto;
+            display: block;
+            image-rendering: pixelated;
+        }
+
+        .scanline-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.6) 0,
+                    transparent 1px,
+                    rgba(0, 0, 0, 0.7) 2px
+                );
+            background-size: 100% 3px;
+            mix-blend-mode: soft-light;
+            opacity: 0.6;
+        }
+
+        .ui-panel {
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: radial-gradient(circle at top, rgba(255, 255, 255, 0.04), transparent 60%),
+                        linear-gradient(145deg, rgba(0, 0, 0, 0.88), rgba(10, 10, 19, 0.96));
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ui-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at top right, rgba(255, 223, 107, 0.18), transparent 55%);
+            opacity: 0.5;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        .ui-section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+        }
+
+        .ui-section-sub {
+            font-size: 12px;
+            color: var(--text-soft);
+        }
+
+        .key-grid {
+            border-radius: 10px;
+            padding: 8px;
+            background-color: rgba(0, 0, 0, 0.56);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            position: relative;
+        }
+
+        .key-grid::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+            background-size: 14px 14px;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .key-row {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            font-size: 11px;
+        }
+
+        .key-label {
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .key-desc {
+            color: var(--text-soft);
+        }
+
+        .key-keys {
+            font-family: 'Press Start 2P', system-ui;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent);
+        }
+
+        .status-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 10px;
+        }
+
+        .status-chip {
+            border-radius: 999px;
+            padding: 4px 9px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: rgba(0, 0, 0, 0.7);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background-color: var(--accent);
+        }
+
+        .footnote {
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        .footnote strong {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <header class="shell-header">
+            <div class="shell-title-block">
+                <div class="shell-kicker">Prototype · Page 3</div>
+                <div class="shell-title">Fetu · Sandbox</div>
+                <div class="shell-sub">Early movement + animation testbed for the Fetu RPG.</div>
+            </div>
+            <div class="shell-nav">
+                <div class="pill">
+                    <span class="pill-dot"></span>
+                    build: proto-0.1
+                </div>
+                <a href="index.html" class="nav-link">Back to Start</a>
+            </div>
+        </header>
+
+        <main class="layout">
+            <section class="game-panel">
+                <div class="game-header">
+                    <div class="game-title">Fetu · Field Test</div>
+                    <div class="game-meta">
+                        <span>
+                            <span class="game-meta-label">Mode</span>
+                            <span>Free roam</span>
+                        </span>
+                        <span>
+                            <span class="game-meta-label">Input</span>
+                            <span>Keyboard</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="screen-wrap">
+                    <div class="screen-inner">
+                        <!-- GAME CANVAS -->
+                        <canvas id="game-canvas" width="320" height="192"></canvas>
+                        <div class="scanline-overlay"></div>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="ui-panel">
+                <div>
+                    <div class="ui-section-title">Controls</div>
+                    <div class="ui-section-sub">Walk around, feel the animation, break nothing. Yet.</div>
+                </div>
+
+                <div class="key-grid">
+                    <div class="key-row">
+                        <div class="key-label">Move</div>
+                        <div class="key-keys">W / A / S / D · Arrow Keys</div>
+                        <div class="key-desc">Walk in four directions. Sprite faces last input direction.</div>
+                    </div>
+
+                    <div class="key-row">
+                        <div class="key-label">Walk / Idle</div>
+                        <div class="key-keys">Auto</div>
+                        <div class="key-desc">Idle when no input, walking animation when moving.</div>
+                    </div>
+
+                    <div class="key-row">
+                        <div class="key-label">Parry (placeholder)</div>
+                        <div class="key-keys">J</div>
+                        <div class="key-desc">Hooks into your parry row later. Safe stub for now.</div>
+                    </div>
+
+                    <div class="key-row">
+                        <div class="key-label">KO (placeholder)</div>
+                        <div class="key-keys">K</div>
+                        <div class="key-desc">Plays front KO row when you decide to use it.</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="ui-section-title">Prototype Status</div>
+                    <div class="status-chip-row">
+                        <div class="status-chip">
+                            <span class="status-dot"></span>
+                            Core movement online
+                        </div>
+                        <div class="status-chip">
+                            <span class="status-dot"></span>
+                            Idle / walk animation hooks ready
+                        </div>
+                        <div class="status-chip">
+                            <span class="status-dot"></span>
+                            Parry / KO stubs waiting for sprites
+                        </div>
+                    </div>
+                </div>
+
+                <p class="footnote">
+                    <strong>Next upgrades:</strong> SNES filter on the actual sheet, collision tiles, and your hold-back meter HUD.
+                </p>
+            </aside>
+        </main>
+    </div>
+
+    <script>
+        // ============================
+        // FETU PROTOTYPE · GAME LOGIC
+        // ============================
+
+        // 👉 IMPORTANT: update this path to your real sprite sheet
+        // Example: "assets/images/fetu_spritesheet.png"
+        const SPRITE_SHEET_SRC = "assets/images/fetu_spritesheet.png";
+
+        // Sprite sheet layout assumptions (matching what you told me):
+        // - Frame size: 32 x 32
+        // - idle:
+        //     back:  row 0, col 0
+        //     left:  row 0, col 1
+        //     front: row 0, col 2
+        //     right: row 0, col 3
+        // - walk:
+        //     back:  row 8,  cols 1→7
+        //     left:  row 9,  cols 1→7
+        //     front: row 10, cols 1→7
+        //     right: row 11, cols 1→7
+
+        const FRAME_WIDTH = 32;
+        const FRAME_HEIGHT = 32;
+        const SCALE = 3; // how big Fetu looks on screen
+        const WALK_SPEED = 1.2; // pixels per frame at 60fps-ish
+        const ANIM_FRAME_DURATION = 90; // ms per walk frame
+
+        const canvas = document.getElementById("game-canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Pixel-art rendering
+        ctx.imageSmoothingEnabled = false;
+
+        const spriteSheet = new Image();
+        spriteSheet.src = SPRITE_SHEET_SRC;
+
+        const keys = {};
+        let lastTime = 0;
+
+        const state = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            dir: "down",         // "up" | "down" | "left" | "right"
+            moving: false,
+            mode: "normal",      // "normal" | "parry" | "ko"
+            walkFrame: 1,        // col index 1→7
+            walkFrameTimer: 0,
+            parryFrame: 1,
+            koFrame: 0
+        };
+
+        const directionData = {
+            up: {
+                walkRow: 8,
+                idleRow: 0,
+                idleCol: 0
+            },
+            left: {
+                walkRow: 9,
+                idleRow: 0,
+                idleCol: 1
+            },
+            down: {
+                walkRow: 10,
+                idleRow: 0,
+                idleCol: 2
+            },
+            right: {
+                walkRow: 11,
+                idleRow: 0,
+                idleCol: 3
+            }
+        };
+
+        const inputMap = {
+            ArrowUp: "up",
+            ArrowDown: "down",
+            ArrowLeft: "left",
+            ArrowRight: "right",
+            w: "up",
+            s: "down",
+            a: "left",
+            d: "right"
+        };
+
+        window.addEventListener("keydown", (e) => {
+            const key = e.key.toLowerCase();
+            keys[e.key] = true;
+            keys[key] = true;
+
+            if (e.key === "j" || e.key === "J") {
+                // Parry prototype trigger
+                if (state.mode === "normal") {
+                    state.mode = "parry";
+                    state.parryFrame = 1;
+                }
+            }
+
+            if (e.key === "k" || e.key === "K") {
+                // KO prototype trigger
+                if (state.mode === "normal") {
+                    state.mode = "ko";
+                    state.koFrame = 0;
+                }
+            }
+        });
+
+        window.addEventListener("keyup", (e) => {
+            delete keys[e.key];
+            delete keys[e.key.toLowerCase()];
+        });
+
+        function update(delta) {
+            if (state.mode === "parry") {
+                updateParry(delta);
+                return;
+            }
+
+            if (state.mode === "ko") {
+                updateKO(delta);
+                return;
+            }
+
+            updateMovement(delta);
+        }
+
+        function updateMovement(delta) {
+            let dx = 0;
+            let dy = 0;
+
+            // Priority: wasd / arrows, last pressed wins direction
+            if (keys["w"] || keys["ArrowUp"]) {
+                dy -= 1;
+                state.dir = "up";
+            }
+            if (keys["s"] || keys["ArrowDown"]) {
+                dy += 1;
+                state.dir = "down";
+            }
+            if (keys["a"] || keys["ArrowLeft"]) {
+                dx -= 1;
+                state.dir = "left";
+            }
+            if (keys["d"] || keys["ArrowRight"]) {
+                dx += 1;
+                state.dir = "right";
+            }
+
+            state.moving = dx !== 0 || dy !== 0;
+
+            if (state.moving) {
+                // Normalize diagonal
+                if (dx !== 0 && dy !== 0) {
+                    const inv = 1 / Math.sqrt(2);
+                    dx *= inv;
+                    dy *= inv;
+                }
+
+                state.x += dx * WALK_SPEED * (delta / 16.67);
+                state.y += dy * WALK_SPEED * (delta / 16.67);
+
+                // Clamp inside canvas
+                const halfW = (FRAME_WIDTH * SCALE) / 2;
+                const halfH = (FRAME_HEIGHT * SCALE) / 2;
+
+                state.x = Math.max(halfW, Math.min(canvas.width - halfW, state.x));
+                state.y = Math.max(halfH, Math.min(canvas.height - halfH, state.y));
+
+                // Walk animation
+                state.walkFrameTimer += delta;
+                if (state.walkFrameTimer >= ANIM_FRAME_DURATION) {
+                    state.walkFrameTimer -= ANIM_FRAME_DURATION;
+                    state.walkFrame += 1;
+                    if (state.walkFrame > 7) {
+                        state.walkFrame = 1;
+                    }
+                }
+            } else {
+                // Reset walk frame so the next move starts clean
+                state.walkFrame = 1;
+                state.walkFrameTimer = 0;
+            }
+        }
+
+        function updateParry(delta) {
+            // Parry uses rows:
+            // back:  row 0, col 1→6
+            // left:  row 1, col 1→6
+            // front: row 2, col 1→6
+            // right: row 3, col 1→6
+            // You can expand this later with timing rules; for now just cycle once and pop back to normal.
+
+            state.walkFrameTimer += delta;
+            if (state.walkFrameTimer >= ANIM_FRAME_DURATION) {
+                state.walkFrameTimer -= ANIM_FRAME_DURATION;
+                state.parryFrame += 1;
+                if (state.parryFrame > 6) {
+                    state.mode = "normal";
+                    state.parryFrame = 1;
+                }
+            }
+        }
+
+        function updateKO(delta) {
+            // KO uses front-only:
+            // row 20, col 0→5
+            // When it hits the last frame, it just stays there.
+            state.walkFrameTimer += delta;
+            if (state.walkFrameTimer >= ANIM_FRAME_DURATION) {
+                state.walkFrameTimer -= ANIM_FRAME_DURATION;
+                if (state.koFrame < 5) {
+                    state.koFrame += 1;
+                }
+            }
+        }
+
+        function clear() {
+            ctx.fillStyle = "#04040a";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Simple fake ground grid for now
+            ctx.save();
+            ctx.globalAlpha = 0.18;
+            const gridSize = 16;
+            ctx.strokeStyle = "#1a1a30";
+            ctx.lineWidth = 1;
+
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x + 0.5, 0);
+                ctx.lineTo(x + 0.5, canvas.height);
+                ctx.stroke();
+            }
+
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y + 0.5);
+                ctx.lineTo(canvas.width, y + 0.5);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        function drawFetu() {
+            if (!spriteSheet.complete) return;
+
+            let srcRow, srcCol;
+
+            if (state.mode === "parry") {
+                // Map direction to parry row
+                if (state.dir === "up") {
+                    srcRow = 0;
+                } else if (state.dir === "left") {
+                    srcRow = 1;
+                } else if (state.dir === "down") {
+                    srcRow = 2;
+                } else {
+                    srcRow = 3; // right
+                }
+                srcCol = state.parryFrame;
+            } else if (state.mode === "ko") {
+                srcRow = 20;
+                srcCol = state.koFrame;
+            } else if (state.moving) {
+                // Walking
+                const d = directionData[state.dir];
+                srcRow = d.walkRow;
+                srcCol = state.walkFrame;
+            } else {
+                // Idle
+                const d = directionData[state.dir];
+                srcRow = d.idleRow;
+                srcCol = d.idleCol;
+            }
+
+            const sx = srcCol * FRAME_WIDTH;
+            const sy = srcRow * FRAME_HEIGHT;
+            const sw = FRAME_WIDTH;
+            const sh = FRAME_HEIGHT;
+
+            const dw = FRAME_WIDTH * SCALE;
+            const dh = FRAME_HEIGHT * SCALE;
+            const dx = state.x - dw / 2;
+            const dy = state.y - dh / 2;
+
+            ctx.drawImage(spriteSheet, sx, sy, sw, sh, dx, dy, dw, dh);
+        }
+
+        function gameLoop(timestamp) {
+            if (!lastTime) lastTime = timestamp;
+            const delta = timestamp - lastTime;
+            lastTime = timestamp;
+
+            update(delta);
+            clear();
+            drawFetu();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        spriteSheet.onload = () => {
+            requestAnimationFrame(gameLoop);
+        };
+    </script>
+</body>
+</html>
