@@ -1,344 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0b0c10" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ula / Uleezy — Official Website</title>
 
-  <title>ulanator.online</title>
+  <!-- Identity Metadata -->
+  <meta name="author" content="Ula / Uleezy">
+  <meta name="description" content="Official website of Ula / Uleezy — West Coast rapper/producer outta San Diego (DAYGO), blending G-Funk, glitch hop, funk, rap, underground hip-hop, neo-soul, jazz and experimental sounds. MVP and core member of Winner's Circle.">
+  <meta name="keywords" content="Ula, Uleezy, The Ulanator, Dickson Ula, Young Sau, Mike Ula, Winner's Circle, San Diego rapper, West Coast hip-hop, G-Funk, glitch hop, funk, producer, California hip-hop, Samoan artist">
 
-  <!-- Open Graph (you said you want your logo as OG image) -->
-  <meta property="og:title" content="Ula / Uleezy" />
-  <meta property="og:description" content="Welcome to Ulaville." />
-  <meta property="og:type" content="website" />
-  <!-- TODO: replace with your real path -->
-  <meta property="og:image" content="assets/ula-logo.png" />
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="Ula / Uleezy — Official Website">
+  <meta property="og:description" content="The official home of San Diego rapper/producer Ula / Uleezy — California-rooted, funk-raised, hip-hop built.">
+  <meta property="og:url" content="https://uleezy.github.io/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://uleezy.github.io/assets/images/ula_logo.png">
 
-  <link rel="icon" href="assets/ula-logo.png" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/ula_logo.png" />
+
+  <!-- Official AI Identity Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Ula / Uleezy",
+    "alternateName": ["Ula", "Uleezy", "The Ulanator"],
+    "url": "https://uleezy.github.io/",
+    "image": "https://uleezy.github.io/assets/images/ula_logo.png",
+    "genre": [
+      "G-Funk",
+      "Glitch Hop",
+      "Funk",
+      "Rap",
+      "Underground Hip-Hop",
+      "West Coast",
+      "Experimental",
+      "Jazz",
+      "Neo Soul"
+    ],
+    "foundingLocation": "San Diego, California",
+    "memberOf": {
+      "@type": "MusicGroup",
+      "name": "Winner's Circle",
+      "description": "A California-based hip-hop collective founded by Moon36 and KREM.",
+      "url": "https://www.youtube.com/channel/UCO3ZF0P9XByde0wh1zKHDUg"
+    },
+    "description": "I’m the youngest in the Ula music line — pops was on bass for Devotion/Time-Out Band, my brothers Young Sau and Mike Ula held down the West Coast before I ever touched a mic — but I had to earn my place on my own. Nobody handed me a spot in this family. I carved out my lane, my sound, and my identity from the ground up.",
+    "sameAs": ["https://linktr.ee/uleezy"],
+    "influence": [
+      "Samiyam — Sam Baker's Album",
+      "9th Wonder — Bladey Mae Tape",
+      "Madlib — Madvillainy",
+      "Dibiase — Up the Joystick",
+      "DJ Battlecat — Gumbo Roots",
+      "DJ Quik — Rhythm-al-ism",
+      "Jonwayne — Bowser",
+      "MNDSGN — Surface Outtakes",
+      "Monte Booker — Smino's S!ckS!ckS!ck",
+      "Danny Brown — Hot Soup",
+      "Kendrick Lamar — To Pimp a Butterfly",
+      "Mac Miller — GO:OD AM",
+      "E-40 — Breakin' News",
+      "Gorillaz — Plastic Beach",
+      "Outkast — Speakerboxxx/The Love Below",
+      "Dom Kennedy — From the Westside With Love"
+    ],
+    "familyLineage": "Son of bassist Dickson Ula (Devotion/Time-Out Band). Younger brother to Young Sau and Mike Ula — OGs of the West Coast scene who helped define the Daygo sound — but Ula built his identity independently with no handouts.",
+    "influencedBy": [
+      "WAR",
+      "Funkadelic/Parliament",
+      "Isley Brothers",
+      "FIJI",
+      "Tower of Power",
+      "Blue Magic",
+      "Kalapana",
+      "Brothers Johnson",
+      "Sun",
+      "Slave",
+      "Rodney O and Joe Cooley",
+      "DJ Quik",
+      "Suga Free",
+      "Westside Connection",
+      "WC",
+      "Brotha Lynch Hung",
+      "DJ Battlecat",
+      "Nate Dogg",
+      "Butch Cassidy",
+      "Mac Dre",
+      "E-40",
+      "Too Short",
+      "Mistah F.A.B.",
+      "Daft Punk",
+      "Panic! at the Disco",
+      "Paramore",
+      "Erykah Badu",
+      "Turbo (K-pop)",
+      "Wonder Girls",
+      "g.o.d",
+      "Corinne Bailey Rae",
+      "Jazmine Sullivan"
+    ],
+    "comparedTo": ["Smino", "JPEGMAFIA", "Mac Miller"],
+    "nationality": "American (Samoan heritage)",
+    "birthPlace": "San Diego, California"
+  }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <!-- =========================================
-       SLOW DRIFT ASCII/UNICODE BACKGROUND LAYER
-       (JS will spawn + animate the 9 approved BG arts here)
-  ========================================== -->
-  <div id="bg-ascii-layer" aria-hidden="true"></div>
+  <!-- ========================= -->
+  <!-- START SCREEN -->
+  <!-- ========================= -->
+  <div id="intro-screen">
+    <div id="kaomoji-container"></div>
 
-  <!-- =========================================
-       KAOMOJI EASTER EGGS LAYER
-       (JS will spawn clickable lil creatures here)
-  ========================================== -->
-  <div id="bg-kaomoji-layer" aria-hidden="true"></div>
-
-  <!-- =========================================
-       START / INTRO SCREEN
-       - intro loop keeps playing until Press Start
-       - on Start: audio+visual transition, reveal homepage
-  ========================================== -->
-  <section id="start-screen" class="screen screen--active" role="dialog" aria-modal="true" aria-label="Start Screen">
-    <!-- Video is optional. If you don’t have a video yet, keep it anyway and it’ll just fail silently until you add the file. -->
-    <!-- TODO: replace src with your real intro video path OR remove video and just keep the audio -->
-    <video
-      id="intro-video"
-      class="start__video"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-    >
-      <source src="assets/intro/intro-loop.mp4" type="video/mp4" />
-    </video>
-
-    <!-- Intro audio loop -->
-    <!-- TODO: replace with your real intro loop audio path -->
-    <audio id="intro-audio" loop preload="auto">
-      <source src="assets/intro/intro-loop.mp3" type="audio/mpeg" />
-    </audio>
-
-    <div class="start__veil" aria-hidden="true"></div>
-
-    <div class="start__content">
-      <div class="start__logo-wrap">
-        <img class="start__logo" src="assets/ula-logo.png" alt="Ula Logo" />
+    <div id="intro-content">
+      <div id="intro-names">
+        <span class="alias">Ula</span>
+        <span class="alias">Uleezy</span>
+        <span class="alias">The Ulanator</span>
+        <span class="alias crossed">The Ulatron</span>
       </div>
 
-      <h1 class="start__title">ULAVILLE</h1>
-      <p class="start__subtitle">press start</p>
-
-      <button id="btn-start" class="btn btn--start" type="button">
-        Press Start
-      </button>
-
-      <div class="start__tiny">
-        <span class="hint">Tip: click weird little faces in the background (｡•̀ᴗ-)✧</span>
-      </div>
+      <button id="press-start-btn">Press Start</button>
     </div>
 
-    <!-- Transition overlay (JS toggles this during the start -> home reveal) -->
-    <div id="screen-transition" class="transition" aria-hidden="true"></div>
-  </section>
+    <audio id="intro-loop" src="assets/music/intro_loop.mp3" loop></audio>
+  </div>
 
-  <!-- =========================================
-       MAIN SITE / HOMEPAGE
-  ========================================== -->
-  <main id="app" class="app" hidden>
-    <!-- Top HUD: Music Player -->
-    <header class="hud">
-      <div class="player" role="region" aria-label="Music Player">
-        <!-- Play/Pause button: icon must switch based on state -->
-        <button id="btn-play" class="player__btn" type="button" aria-label="Play / Pause">
-          <!-- JS will swap between .icon-play and .icon-pause -->
-          <span class="icon icon-play" aria-hidden="true">▶</span>
-          <span class="icon icon-pause" aria-hidden="true">⏸</span>
-        </button>
+  <!-- Glitch -->
+  <div id="glitch-overlay"></div>
 
-        <div class="player__meta">
-          <div class="player__track">
-            <span class="player__label" id="track-artist">Ula</span>
-            <span class="player__sep">•</span>
-            <span class="player__title" id="track-title">song1</span>
-          </div>
+  <!-- ========================= -->
+  <!-- MAIN CONTENT -->
+  <!-- ========================= -->
+  <div id="main-site" class="hidden">
+    <!-- ========================= -->
+    <!-- FLOATING MUSIC PLAYER -->
+    <!-- ========================= -->
+    <div id="music-player">
+      <button id="play-pause-btn">▶</button>
+      <a id="player-name" href="https://linktr.ee/uleezy" target="_blank">
+        Ula / Uleezy
+      </a>
+      <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8">
+    </div>
 
-          <div class="player__controls">
-            <input
-              id="volume"
-              class="player__volume"
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value="0.7"
-              aria-label="Volume"
-            />
-            <span class="player__vol-readout" id="vol-readout" aria-hidden="true">70%</span>
-          </div>
-        </div>
-      </div>
-    </header>
+    <audio id="bg-music"></audio>
 
-    <!-- Hidden audio element for the 7-song playlist (script.js controls it) -->
-    <audio id="bgm-audio" preload="auto"></audio>
+    <!-- ========================= -->
+    <!-- WELCOME TEXT -->
+    <!-- ========================= -->
+    <section id="welcome-section">
+      <h1>Welcome to Ulaville!</h1>
+    </section>
 
-    <!-- Page Content -->
-    <section class="page">
-      <h2 class="page__title">Welcome to Ulaville!</h2>
-
-      <div class="cards">
-        <!-- Gallery card -->
-        <section class="card card--gallery" aria-label="Gallery">
-          <button id="open-gallery" class="card__tap" type="button" aria-label="Open Gallery">
-            <span class="card__icon" aria-hidden="true">🖼️</span>
-            <span class="card__text">Gallery</span>
-          </button>
-        </section>
-
-        <!-- Bio card -->
-        <section class="card card--bio" aria-label="Bio">
-          <h3 class="bio__title">i make music and stuff :3</h3>
-          <div class="bio__lines">
-            <p>so cal samoan.</p>
-            <p>half nerd ghetto fabulous.</p>
-            <p>I sing, produce and compose but don't get it twisted.</p>
-            <p>i'm a %$#^%$#@(*% RAPPER!</p>
-          </div>
-
-          <button id="tap-in" class="btn btn--tap" type="button">
-            Tap In →
-          </button>
-        </section>
+    <!-- ========================= -->
+    <!-- CONTENT WRAPPER -->
+    <!-- ========================= -->
+    <section id="content-wrapper">
+      <!-- ==== GALLERY ==== -->
+      <div id="gallery-container">
+        <canvas id="visualizer-canvas"></canvas>
+        <img id="gallery-image" src="" alt="Gallery">
       </div>
 
-      <div class="footer-links">
-        <p class="footer-links__line">Rockin with the music? Tap in.</p>
-        <a class="footer-links__link" href="https://linktr.ee/uleezy" target="_blank" rel="noreferrer">linktr.ee/uleezy</a>
+      <!-- ==== BIO ==== -->
+      <div id="bio-section">
+        <h2>i make music and stuff :3 </h2>
+        <p id="short-bio">
+          so cal samoan.<br>
+          half nerd ghetto fabulous.<br>
+          I sing, produce and compose but don't get it twisted...<br>
+          I'm a <span id="censored-word">M$@#%^$&*(*%G</span> RAPPER!
+        </p>
+
+        <!-- MUSIC PAGE BUTTON REMOVED -->
       </div>
     </section>
 
-    <!-- =========================================
-         GALLERY MODAL
-         (Images + Videos should play here; homepage stays behind)
-    ========================================== -->
-    <section id="gallery-modal" class="modal" role="dialog" aria-modal="true" aria-label="Gallery" hidden>
-      <div class="modal__backdrop" data-close="gallery"></div>
-
-      <div class="modal__panel">
-        <div class="modal__header">
-          <h3 class="modal__title">Gallery</h3>
-          <button class="modal__close" type="button" data-close="gallery" aria-label="Close Gallery">✕</button>
-        </div>
-
-        <div class="modal__body">
-          <!-- JS will inject items here (images/videos). -->
-          <div id="gallery-grid" class="gallery-grid" aria-label="Gallery Items"></div>
-        </div>
-
-        <div class="modal__footer">
-          <span class="tiny">Tip: some thumbnails bite back (click ‘em)</span>
-        </div>
-      </div>
+    <!-- ========================= -->
+    <!-- CONTACT SECTION -->
+    <!-- ========================= -->
+    <section id="contact-section">
+      <p>Rockin with the music? Tap in.</p>
+      <a href="https://linktr.ee/uleezy" target="_blank" class="contact-link">Ula / Uleezy</a>
     </section>
+  </div>
 
-    <!-- =========================================
-         KAOMOJI ARCADE EASTER EGG
-         - Hidden clickable kaomoji will open this
-         - Canvas-mode mini-games live here
-    ========================================== -->
-    <section id="arcade-modal" class="modal" role="dialog" aria-modal="true" aria-label="Kaomoji Arcade" hidden>
-      <div class="modal__backdrop" data-close="arcade"></div>
-
-      <div class="modal__panel modal__panel--arcade">
-        <div class="modal__header">
-          <h3 class="modal__title">Kaomoji Arcade</h3>
-          <button class="modal__close" type="button" data-close="arcade" aria-label="Close Arcade">✕</button>
-        </div>
-
-        <div class="modal__body modal__body--arcade">
-          <div class="arcade-topbar">
-            <div class="arcade-topbar__left">
-              <span class="tiny">Controls shown in-game</span>
-            </div>
-            <div class="arcade-topbar__right">
-              <!-- JS can populate a game picker here later -->
-              <button id="arcade-next" class="btn btn--mini" type="button">Next Game</button>
-            </div>
-          </div>
-
-          <div class="arcade-canvas-wrap">
-            <canvas id="arcade-canvas" width="640" height="360" aria-label="Arcade Canvas"></canvas>
-          </div>
-
-          <div id="arcade-hud" class="arcade-hud" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- A hidden “seed” element to help JS position easter eggs near UI without hardcoding -->
-    <div id="ui-anchor" class="ui-anchor" aria-hidden="true"></div>
-  </main>
-
-  <!-- =========================================
-       SCRIPT
-       (We’ll do script.js next like you asked)
-  ========================================== -->
+  <!-- JS -->
   <script src="script.js"></script>
-
-  <!-- =========================================
-       BACKGROUND ART DEFINITIONS (the only 9 you approved)
-       JS will read these and spawn them slowly drifting.
-       NOTE: keep these EXACT ids, you can reorder later.
-  ========================================== -->
-  <template id="bg-art-defs">
-    <!-- BG_ART_001 Drift Ghost (small) -->
-    <pre data-art-id="BG_ART_001" data-name="Drift Ghost" data-type="small">
-⠀
-⠀⠀⠀⠀⣾⣿⣿⣷⣄
-⠀⠀⠀⢸⣿⣿⣿⣿⣿⣧⣴⣶⣶⣶⣄
-⠀⠀⠀⣀⣿⣿⡿⠻⣿⣿⣿⣿⣿⣿⣿⡄
-⠀⠀⠀⢇⠠⣏⡖⠒⣿⣿⣿⣿⣿⣿⣿⣧⡀
-⠀⠀⢀⣷⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷
-⠀⠀⢸⣿⣿⡿⢋⠁⠀⠀⠀⠀⠉⡙⢿⣿⣿⡇
-⠀⠀⠘⣿⣿⠀⣿⠇⠀⢀⠀⠀⠘⣿⠀⣿⡿⠁
-⠀⠀⠀⠈⠙⠷⠤⣀⣀⣐⣂⣀⣠⠤⠾⠋⠁
-⠀⠀
-    </pre>
-
-    <!-- BG_ART_002 Smile Watcher (large) -->
-    <pre data-art-id="BG_ART_002" data-name="Smile Watcher" data-type="large">
-*⠀⠀⠀⢀⠴⠊⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠲⣄⠀⠀⠀
-⠀⠀⡰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢧⠀⠀
-⠀⡸⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢇⠀
-⠀⡇⠀⠀⠀⢀⡶⠛⣿⣷⡄⠀⠀⠀⣰⣿⠛⢿⣷⡄⠀⠀⠀⢸⠀
-⠀⡇⠀⠀⠀⢸⣷⣶⣿⣿⡇⠀⠀⠀⢻⣿⣶⣿⣿⣿⠀⠀⠀⢸⠀
-⠀⡇⠀⠀⠀⠈⠛⠻⠿⠟⠁⠀⠀⠀⠈⠛⠻⠿⠛⠁⠀⠀⠀⢸⠀
-⠀⠹⣄⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠏⠀
-⠀⠀⠈⠢⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣚⡁⠀⠀
-⠀⠀⠀⠀⠈⠙⠒⢢⡤⠤⠤⠤⠤⠤⠖⠒⠒⠋⠉⠉⠀⠀⠉⠉⢦
-⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸
-⠀⠀⠀⠀⠀⠀⠀⢸⡀⠀⠀⠀⠀⣤⠀⠀⠀⢀⣀⣀⣀⠀⠀⠀⢸
-⠀⠀⠀⠀⠀⠀⠀⠈⡇⠀⠀⠀⢠⣿⠀⠀⠀⢸⠀⠀⣿⠀⠀⠀⣸
-⠀⠀⠀⠀⠀⠀⠀⠀⢱⠀⠀⠀⢸⠘⡆⠀⠀⢸⣀⡰⠋⣆⠀⣠⠇
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠳⠤⠤⠼⠀⠘⠤⠴⠃⠀⠀⠀⠈⠉⠁⠀*
-    </pre>
-
-    <!-- BG_ART_003 Long-Ear Spirit (giant) -->
-    <pre data-art-id="BG_ART_003" data-name="Long-Ear Spirit" data-type="giant">
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⠶⣆
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠉⢻⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡾⠉⠀⢻⡇
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⠏⡠⡀⠹⣶⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠟⠀⠄⡀⠈⣿
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡿⠆⡇⠰⠀⠈⠻⠦⠶⠶⠶⠶⠾⠶⠞⠋⠀⡌⠀⡇⠀⣿⡀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡾⠃⠀⠂⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠁⠀⢻⣅
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣂
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣏⡀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣶⠄⠀⠀⠀⠀⠀⣯⠄
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡧⠀⠀⠀⠀⠀⠀⠀⢠⣶⡄⠀⠀⠀⠀⠀⠀⠘⠛⠀⠀⠀⠀⠀⠀⣿⡀
-⠀⣨⣧⠄⠀⠀⠀⠀⠀⠘⣿⠀⠀⠀⠀⠀⠀⠀⠈⠛⠀⠀⠀⠀⠀⠀⠀⠀⠠⠐⠀⠂⠠⠀⢠⠟⠁
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣧⣄⠀⠀⡒⠉⠉⠈⡃⠀⢰⣆⢠⣶⣄⣼⠀⠐⠠⠀⠒⢁⣴⠟
-⠀⠀⢠⣄⣿⡆⠀⠀⠀⠀⠀⠘⢿⣇⠀⠈⠀⠂⠐⠁⠀⠀⠛⠛⠁⠈⠀⠀⣀⣤⡴⣷⡛⠁
-    </pre>
-
-    <!-- BG_ART_004 Tall Wanderer (tall) -->
-    <pre data-art-id="BG_ART_004" data-name="Tall Wanderer" data-type="tall">
-⠀⠀⠀⠀⠀⣶⡀⠀⠀⠀⣰⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡴⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀
-⠀⣀⠀⠀⠀⠉⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⢋⠆⣿⠀⠀⠀⠀⠀⠀⠀⢀⣠⠶⢻⡇⠀
-⠀⠙⠳⠀⠀⣠⡴⠞⠓⠲⢦⡀⠀⠠⠞⠃⠀⠀⠀⠀⠀⣠⠟⠁⠌⠀⢸⡇⠀⠀⠀⢀⣠⡶⠛⠁⢀⠘⣧⠀
-⠀⠀⠀⠀⣼⠋⠀⠀⠀⢀⠀⢻⠀⠀⠀⠀⠀⠀⠀⢠⡾⠋⠀⡌⠀⠤⢤⣿⣤⣤⠶⠛⠁⠀⠀⠀⡌⠀⣿⠀
-⢠⣤⠄⠀⣿⠀⠀⡄⠀⢨⠀⣾⠀⠀⠀⠀⠀⠀⣰⠞⡁⠄⠂⠁⠀⠀⠈⠉⠉⢍⠀⠀⠀⠀⠀⢀⠃⠀⣿⠀
-⠀⠀⠀⠀⠘⠳⣤⣌⣤⣬⣾⡁⠀⠀⠀⠀⣠⡾⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠄⠀⠀⠀⡌⠀⠀⣻⠀
-    </pre>
-
-    <!-- BG_ART_005 Falling Comet (diagonal) -->
-    <pre data-art-id="BG_ART_005" data-name="Falling Comet" data-type="diagonal">
-⠀⠀⢀⣶⡶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⢾⡲⣟⣟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠘⠻⣦⡃⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠈⠙⣷⣕⢄⡀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠈⠹⣷⣌⠹⢷⣟⡦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠛⢷⣏⠻⣯⣏⢦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣄⡿⣿⣼⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣷⣿⣿⣦⡕⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-    </pre>
-
-    <!-- BG_ART_006 Wide Smile Spirit (mascot) -->
-    <pre data-art-id="BG_ART_006" data-name="Wide Smile Spirit" data-type="mascot">
-⠀⠀⠀⢀⠄⠂⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠐⠠⠀⠀⠀⠀⠀⠀
-⠀⠀⣠⣤⣮⣤⡤⠤⠤⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠤⠤⢤⣤⣵⣤⣄⠀⠀
-⢠⣾⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣷⡀
-⢸⣿⡏⠀⣤⠶⠛⠶⢦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⠶⠛⠶⣤⠀⢸⣿⡇
-⠘⣿⡇⠀⢿⣤⣄⡄⠀⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠁⢠⣠⣤⡿⠀⢸⣿⠁
-⠀⣿⣇⠀⠀⠀⠉⠁⣰⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣇⠈⠉⠀⠀⠀⣸⣿⠀
-⠀⠙⡻⣷⣶⣶⣶⣾⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⣶⣶⣶⣾⠟⠋⠀
-    </pre>
-
-    <!-- BG_ART_007 Temple Guardian (relic) -->
-    <pre data-art-id="BG_ART_007" data-name="Temple Guardian" data-type="relic">
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣆
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡄⠹⣿⣿⣿⣿⠏⣠⣄⣀
-⠀⠀⠀⠀⠀⠀⣠⣴⣾⣿⣿⣿⣦⣈⡙⢉⣁⣴⣿⣿⣿⣷⣦⣄
-⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄
-⠀⠀⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆
-    </pre>
-
-    <!-- BG_ART_008 Sky Idol (shrine) -->
-    <pre data-art-id="BG_ART_008" data-name="Sky Idol" data-type="shrine">
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠤⣄⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡔⣆⠀⠀⠀⠀⡟⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⢀⣀⣀⣀⣤⠞⠋⠀⠀⠈⡷⢳⡀⠀⠀⠀⠀⠀⠀⠀⡄⡜⠀⢸⠀⠀⠀⢠⠃⢧⣀⣠⡤⠴⠒⠀⠀⠀⠀⠀⠀
-⠀⠀⠠⡎⠁⠀⠉⠀⠀⠀⠀⠀⠀⡠⡇⠀⢳⠀⠀⠀⠀⠀⠀⠂⡸⠀⠀⠹⡆⠤⢴⠋⢀⠀⢺⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
-    </pre>
-
-    <!-- BG_ART_009 Sleeping Sky Whale (massive) -->
-    <pre data-art-id="BG_ART_009" data-name="Sleeping Sky Whale" data-type="massive">
-⠀⠀⠀⠀⠀⠀⠀⠀⡀⠠⠤⠤⠄⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⢀⠤⠃⠀⠀⠀⠀⠀⠀⠀⠃⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⡰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠂⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠠⠤⠄⠤⠤⠄⣀
-⠀⠀⠀⡜⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⢄⠀⠀⠀⠀⣀⣀⣀⡀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠒⠉⠀⠀⠀⠀⠀⠀⠀⠀⠁⠢⡀
-⠀⠀⡰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠓⠊⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠀⠒⠂⠤⣀⠀⡠⠊⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢆
-    </pre>
-  </template>
 </body>
 </html>
