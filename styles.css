@@ -1,339 +1,290 @@
-/* =============================== */
-/*        GLOBAL SETTINGS          */
-/* =============================== */
+:root {
+  --bg: #0b0b10;
+  --panel: rgba(18, 18, 26, 0.75);
+  --panel-solid: #12121a;
+  --text: #f5f5ff;
+  --muted: rgba(245, 245, 255, 0.75);
+  --border: rgba(245, 245, 255, 0.14);
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  --radius: 16px;
+}
 
-body {
-    margin: 0;
-    padding: 0;
-    background: black;
-    color: white;
-    font-family: "VT323", monospace;
-    overflow-x: hidden;
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "VT323", monospace;
 }
 
 .hidden { display: none !important; }
 
-h1, h2 {
-    font-family: "Press Start 2P", cursive;
-    letter-spacing: 2px;
+.screen {
+  min-height: 100vh;
+  width: 100%;
 }
 
-
-/* =============================== */
-/*         START SCREEN            */
-/* =============================== */
-
+/* =========================
+   START SCREEN
+========================= */
 #intro-screen {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 9999;
-    overflow: hidden;
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+#kaomoji-container {
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  pointer-events: none;
+  filter: blur(0.2px);
+}
+
+#intro-content {
+  text-align: center;
+  padding: 28px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
 }
 
 #intro-names {
-    display: flex;
-    flex-direction: column;
-    font-family: "Press Start 2P", cursive;
-    font-size: 18px;
-    margin-bottom: 30px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
 }
 
-.alias { margin: 5px 0; }
-.crossed { text-decoration: line-through; opacity: 0.6; }
+.alias {
+  font-family: "Press Start 2P", system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  opacity: 0.95;
+}
+
+.alias.crossed {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
 
 #press-start-btn {
-    font-family: "Press Start 2P", cursive;
-    padding: 12px 22px;
-    font-size: 16px;
-    color: #00ffc8;
-    background: transparent;
-    border: 2px solid #00ffc8;
-    cursor: pointer;
-    transition: 0.3s;
+  font-family: "Press Start 2P", system-ui, sans-serif;
+  font-size: 14px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
 }
 
-#press-start-btn:hover {
-    background: #00ffc8;
-    color: black;
+#press-start-btn:hover { transform: translateY(-1px); }
+#press-start-btn:active { transform: translateY(1px); }
+
+#intro-subtext {
+  margin-top: 14px;
+  font-size: 20px;
+  color: var(--muted);
 }
 
-
-/* =============================== */
-/*         KAOMOJI FLOAT           */
-/* =============================== */
-
-#kaomoji-container {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: -1;
-}
-
-.kaomoji {
-    position: absolute;
-    font-size: 28px;
-    opacity: 0.15;
-    animation: floatAround 12s infinite linear;
-}
-
-@keyframes floatAround {
-    0% { transform: translate(0, 0); }
-    25% { transform: translate(40px, -60px); }
-    50% { transform: translate(-20px, -30px); }
-    75% { transform: translate(30px, 20px); }
-    100% { transform: translate(0, 0); }
-}
-
-
-/* =============================== */
-/*            GLITCH FX            */
-/* =============================== */
-
-#glitch-overlay {
-    position: fixed;
-    inset: 0;
-    background: black;
-    display: none;
-    z-index: 20000;
-    pointer-events: none;
-}
-
-.glitch-active {
-    display: block !important;
-    animation: glitchFX 1.6s ease-in-out forwards;
-}
-
-@keyframes glitchFX {
-    0% { opacity: 0; }
-    10% { opacity: 1; background: #111; }
-    25% { background: #ff00c8; }
-    40% { background: #00eaff; }
-    55% { background: #111; }
-    70% { background: #ffcc00; }
-    90% { background: #000; }
-    100% { opacity: 0; }
-}
-
-
-/* =============================== */
-/*            MAIN SITE            */
-/* =============================== */
-
-#main-site {
-    background: #0a0a0a;
-    min-height: 100vh;
-    padding-top: 70px;
-    animation: fadeIn 1.2s ease-in forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-
-/* =============================== */
-/*          MUSIC PLAYER           */
-/* =============================== */
-
+/* =========================
+   MUSIC PLAYER (Floating)
+========================= */
 #music-player {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 55px;
-    background: rgba(20, 20, 20, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
-    z-index: 5000;
-    border-bottom: 2px solid #ffd966;
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+}
+
+#logo-back-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+}
+
+#logo-back-btn img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 #play-pause-btn {
-    font-size: 20px;
-    background: transparent;
-    border: none;
-    color: #ffd966;
-    cursor: pointer;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 18px;
 }
 
 #player-name {
-    font-family: "Press Start 2P", cursive;
-    color: #00c8ff;
-    text-decoration: none;
-    transition: 0.25s;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 22px;
+  padding: 0 6px;
+  opacity: 0.95;
 }
 
-#player-name:hover {
-    color: #82efff;
-    text-shadow: 0 0 8px #82efff;
+#player-name:hover { opacity: 1; text-decoration: underline; }
+
+#volume-slider {
+  width: 120px;
 }
 
-#volume-slider { width: 150px; }
-
-
-/* =============================== */
-/*           WELCOME TEXT          */
-/* =============================== */
+/* =========================
+   MAIN SITE LAYOUT
+========================= */
+#main-site {
+  padding-top: 82px; /* give room for floating player */
+  padding-left: 18px;
+  padding-right: 18px;
+}
 
 #welcome-section {
-    text-align: center;
-    margin-top: 40px;
+  text-align: center;
+  margin-top: 18px;
 }
 
-
-/* =============================== */
-/*         CONTENT WRAPPER         */
-/* =============================== */
+#welcome-section h1 {
+  font-family: "Press Start 2P", system-ui, sans-serif;
+  font-size: 18px;
+  margin: 0;
+}
 
 #content-wrapper {
-    width: 85%;
-    max-width: 1200px;
-    margin: 60px auto;
-    padding: 35px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 2px solid #ffd966;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  margin: 22px auto 0;
+  max-width: 980px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
 }
 
-
-/* =============================== */
-/*             GALLERY             */
-/* =============================== */
+#gallery-container, #bio-section {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
 
 #gallery-container {
-    width: 100%;
-    max-width: 900px;
-    height: 650px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 14px;
-    border: 2px solid #ffd966;
-    margin-bottom: 40px;
-}
-
-#gallery-image {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 1;
-    transition: opacity 0.6s ease;
+  min-height: 360px;
+  position: relative;
+  display: grid;
+  place-items: center;
 }
 
 #visualizer-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.45;
-    mix-blend-mode: screen;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
-
-/* =============================== */
-/*               BIO               */
-/* =============================== */
+#gallery-image {
+  position: relative;
+  max-width: 90%;
+  max-height: 80%;
+  opacity: 0.92;
+}
 
 #bio-section {
-    text-align: center;
-    margin-top: 25px;
+  padding: 18px 18px 16px;
+}
+
+#bio-section h2 {
+  margin: 0 0 10px;
+  font-size: 28px;
 }
 
 #short-bio {
-    font-size: 22px;
-    line-height: 1.5;
+  margin: 0;
+  font-size: 22px;
+  color: var(--muted);
+  line-height: 1.25;
 }
 
-.music-page-button {
-    margin-top: 1.8rem;
-    padding: 0.9rem 2rem;
-    border-radius: 999px;
-    border: 2px solid #ffd966;
-    background: transparent;
-    color: white;
-    font-family: "Press Start 2P";
-    cursor: pointer;
-    transition: 0.25s ease;
+#censored-word {
+  color: var(--text);
+  opacity: 0.9;
 }
 
-.music-page-button:hover {
-    background: rgba(255, 204, 77, 0.18);
-    box-shadow: 0 0 12px rgba(255, 204, 77, 0.6);
-    transform: translateY(-2px);
+#cta-row {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
+.cta-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 22px;
+}
 
-/* =============================== */
-/*             CONTACT             */
-/* =============================== */
+.cta-btn:hover {
+  background: rgba(255, 255, 255, 0.10);
+}
 
 #contact-section {
-    text-align: center;
-    margin: 60px 0;
+  margin: 22px auto 30px;
+  max-width: 980px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 22px;
 }
 
 .contact-link {
-    font-family: "Press Start 2P", cursive;
-    color: #00c8ff;
-    text-decoration: none;
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(245,245,255,0.35);
 }
 
 .contact-link:hover {
-    text-shadow: 0 0 8px #82efff;
+  border-bottom-color: rgba(245,245,255,0.8);
 }
 
-
-/* =============================== */
-/*          RESPONSIVE             */
-/* =============================== */
-
-@media (max-width: 768px) {
-    #gallery-container {
-        height: 350px;
-    }
-}
-
-/* ============================================================
-   CRONO FOLLOWER CSS
-   Handles size, position, pixel clarity, flipping, layering,
-   and disables interaction so he never blocks clicks.
-   ============================================================ */
-
-#crono-follower {
-    position: fixed;
-    width: 64px;               /* Adjust size later if needed */
-    height: auto;
-    pointer-events: none;      /* Prevent blocking buttons */
-    z-index: 999999;           /* Always on top */
-    transform-origin: center;  /* Ensure clean horizontal flipping */
-    image-rendering: pixelated; /* Keep pixel-art sharp */
-    transition: transform 0.05s linear;
-}
-
-/* Optional: subtle shadow for depth */
-#crono-follower::after {
-    content: "";
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    width: 22px;
-    height: 6px;
-    transform: translateX(-50%);
-    background: rgba(0,0,0,0.2);
-    border-radius: 50%;
-    filter: blur(3px);
-    z-index: -1;
+/* Responsive */
+@media (max-width: 860px) {
+  #content-wrapper {
+    grid-template-columns: 1fr;
+  }
+  #volume-slider { width: 96px; }
 }
