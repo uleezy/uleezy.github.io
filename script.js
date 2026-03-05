@@ -1,251 +1,211 @@
-/* ====================================================== */
-/*                INTRO SCREEN + AUDIO                    */
-/* ====================================================== */
+// ================================
+// ULA SITE: One-page boot flow
+// Start screen -> Main site
+// Floating music player + logo back button
+// ================================
 
 const introScreen = document.getElementById("intro-screen");
-const pressStartBtn = document.getElementById("press-start-btn");
-const introLoop = document.getElementById("intro-loop");
-const glitchOverlay = document.getElementById("glitch-overlay");
 const mainSite = document.getElementById("main-site");
 
-// Autoplay-safe setup
-introLoop.volume = 0.0;
-introLoop.muted = true;
-introLoop.play().catch(() => {});
-
-/* Fade in intro loop after click */
-function fadeInIntroLoop() {
-    introLoop.muted = false;
-    let vol = 0;
-    const fade = setInterval(() => {
-        vol += 0.05;
-        introLoop.volume = vol;
-        if (vol >= 0.8) clearInterval(fade);
-    }, 60);
-}
-
-/* ====================================================== */
-/*         KAOMOJI FLOAT PARTICLES                        */
-/* ====================================================== */
-
-const kaomojiList = [
-    "(｡•́‿•̀｡)", "(╥﹏╥)", "(>_<)", "(¬‿¬)", 
-    "(◕‿◕)", "(✿◠‿◠)", "(ﾉ◕ヮ◕)ﾉ*", "(ಠ_ಠ)"
-];
-
-function spawnKaomoji() {
-    const container = document.getElementById("kaomoji-container");
-    const span = document.createElement("span");
-
-    span.classList.add("kaomoji");
-    span.textContent = kaomojiList[Math.floor(Math.random() * kaomojiList.length)];
-    span.style.left = Math.random() * 100 + "%";
-    span.style.top = Math.random() * 100 + "%";
-
-    container.appendChild(span);
-
-    setTimeout(() => span.remove(), 15000);
-}
-
-setInterval(spawnKaomoji, 1200);
-
-
-/* ====================================================== */
-/*   PRESS START → GLITCH → LOAD MAIN SITE                */
-/* ====================================================== */
-
-pressStartBtn.addEventListener("click", () => {
-
-    fadeInIntroLoop();
-
-    setTimeout(() => {
-        glitchOverlay.classList.add("glitch-active");
-
-        let vol = introLoop.volume;
-        const fadeOut = setInterval(() => {
-            vol -= 0.08;
-            introLoop.volume = Math.max(0, vol);
-            if (vol <= 0) {
-                clearInterval(fadeOut);
-                introLoop.pause();
-            }
-        }, 50);
-
-        setTimeout(() => {
-            introScreen.classList.add("hidden");
-            mainSite.classList.remove("hidden");
-            startPlaylist();
-        }, 1600);
-
-    }, 800);
-});
-
-
-/* ====================================================== */
-/*                        GALLERY                         */
-/* ====================================================== */
-
-const galleryImages = [
-    "assets/images/main-image-2.png",
-    "assets/images/main-image-3.webp",
-    "assets/images/main-image-4.webp",
-    "assets/images/main-image-7.jpg",
-    "assets/images/main-image-8.jpg"
-];
-
-const galleryImage = document.getElementById("gallery-image");
-
-let galleryIndex = 0;
-galleryImages.sort(() => Math.random() - 0.5);
-
-function showGalleryItem() {
-    galleryImage.style.opacity = 0;
-    setTimeout(() => {
-        galleryImage.src = galleryImages[galleryIndex];
-        galleryImage.style.opacity = 1;
-    }, 400);
-    galleryIndex = (galleryIndex + 1) % galleryImages.length;
-}
-
-showGalleryItem();
-setInterval(showGalleryItem, 6000);
-
-
-/* ====================================================== */
-/*                MUSIC PLAYER + VISUALIZER               */
-/* ====================================================== */
+const pressStartBtn = document.getElementById("press-start-btn");
+const introLoop = document.getElementById("intro-loop");
 
 const bgMusic = document.getElementById("bg-music");
 const playPauseBtn = document.getElementById("play-pause-btn");
 const volumeSlider = document.getElementById("volume-slider");
+const logoBackBtn = document.getElementById("logo-back-btn");
 
-const playlist = [
-    "assets/music/song1.mp3",
-    "assets/music/song2.mp3",
-    "assets/music/song3.mp3",
-    "assets/music/song4.mp3",
-    "assets/music/song5.mp3",
-    "assets/music/song6.mp3",
-    "assets/music/song7.mp3",
+const kaomojiContainer = document.getElementById("kaomoji-container");
+const canvas = document.getElementById("visualizer-canvas");
+const ctx = canvas ? canvas.getContext("2d") : null;
+
+let audioCtx = null;
+let analyser = null;
+let dataArray = null;
+let animationId = null;
+
+// Optional: set a default background track (put a file in assets/music/)
+// Example: assets/music/bg_loop.mp3
+const DEFAULT_BG_TRACK = ""; // e.g. "assets/music/bg_loop.mp3"
+
+// ---------- Helpers ----------
+function showMain() {
+  introScreen.classList.add("hidden");
+  mainSite.classList.remove("hidden");
+}
+
+function showIntro() {
+  mainSite.classList.add("hidden");
+  introScreen.classList.remove("hidden");
+}
+
+function safePlay(audioEl) {
+  if (!audioEl) return;
+  const p = audioEl.play();
+  if (p && typeof p.catch === "function") p.catch(() => {});
+}
+
+function safePause(audioEl) {
+  if (!audioEl) return;
+  audioEl.pause();
+}
+
+function setPlayIcon(isPlaying) {
+  playPauseBtn.textContent = isPlaying ? "❚❚" : "▶";
+}
+
+function stopEverything() {
+  // stop bg music
+  safePause(bgMusic);
+  bgMusic.currentTime = 0;
+  setPlayIcon(false);
+
+  // stop intro loop
+  safePause(introLoop);
+  introLoop.currentTime = 0;
+
+  // stop visualizer
+  if (animationId) cancelAnimationFrame(animationId);
+  animationId = null;
+}
+
+// ---------- Kaomoji ambience ----------
+const KAOMOJI = [
+  "(・ω・)", "(ง'̀-'́)ง", "(づ｡◕‿‿◕｡)づ", "(T_T)", "(¬_¬)", "(•̀ᴗ•́)و", "(•_•)", "(≧▽≦)", "(._.)"
 ];
 
-let currentTrack = 0;
+function spawnKaomoji() {
+  if (!kaomojiContainer) return;
 
-function startPlaylist() {
-    bgMusic.src = playlist[currentTrack];
-    bgMusic.volume = 0.8;
-    bgMusic.play().catch(()=>{});
+  const el = document.createElement("div");
+  el.textContent = KAOMOJI[Math.floor(Math.random() * KAOMOJI.length)];
+  el.style.position = "absolute";
+  el.style.left = Math.floor(Math.random() * 100) + "%";
+  el.style.top = Math.floor(Math.random() * 100) + "%";
+  el.style.opacity = (0.10 + Math.random() * 0.25).toFixed(2);
+  el.style.fontSize = (16 + Math.random() * 18).toFixed(0) + "px";
+  el.style.transform = `rotate(${(Math.random() * 12 - 6).toFixed(1)}deg)`;
+  el.style.color = "rgba(245,245,255,0.7)";
+  el.style.pointerEvents = "none";
+  el.style.userSelect = "none";
+  el.style.whiteSpace = "nowrap";
+
+  kaomojiContainer.appendChild(el);
+
+  setTimeout(() => {
+    el.remove();
+  }, 5000 + Math.random() * 3000);
 }
 
-playPauseBtn.addEventListener("click", () => {
-    if (bgMusic.paused) {
-        bgMusic.play();
-        playPauseBtn.textContent = "❚❚";
-    } else {
-        bgMusic.pause();
-        playPauseBtn.textContent = "▶";
-    }
-});
+setInterval(spawnKaomoji, 800);
 
-volumeSlider.addEventListener("input", () => {
-    bgMusic.volume = volumeSlider.value;
-});
-
-bgMusic.addEventListener("ended", () => {
-    currentTrack = (currentTrack + 1) % playlist.length;
-    bgMusic.src = playlist[currentTrack];
-    bgMusic.play();
-    playPauseBtn.textContent = "❚❚";
-});
-
-
-/* ====================================================== */
-/*                  AUDIO GLOW VISUALIZER                 */
-/* ====================================================== */
-
-const canvas = document.getElementById("visualizer-canvas");
-const ctx = canvas.getContext("2d");
-
-function resize() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+// ---------- Visualizer ----------
+function resizeCanvas() {
+  if (!canvas || !ctx) return;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = Math.floor(rect.width * devicePixelRatio);
+  canvas.height = Math.floor(rect.height * devicePixelRatio);
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
 }
-resize();
-window.addEventListener("resize", resize);
 
-let audioContext, analyser, dataArray;
+window.addEventListener("resize", resizeCanvas);
 
-function setupVisualizer() {
-    if (audioContext) return;
+function initAudioGraph() {
+  if (audioCtx) return;
 
-    audioContext = new AudioContext();
-    const source = audioContext.createMediaElementSource(bgMusic);
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
 
-    analyser = audioContext.createAnalyser();
-    analyser.fftSize = 256;
+  const source = audioCtx.createMediaElementSource(bgMusic);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
 
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-    source.connect(analyser);
-    analyser.connect(audioContext.destination);
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
 }
 
 function drawVisualizer() {
-    requestAnimationFrame(drawVisualizer);
-    if (!analyser) return;
+  if (!ctx || !analyser || !dataArray) return;
 
-    analyser.getByteFrequencyData(dataArray);
+  analyser.getByteFrequencyData(dataArray);
 
-    let bass = dataArray[1] + dataArray[2] + dataArray[3];
-    let intensity = bass / 5;
+  // clear
+  ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+  const w = canvas.clientWidth;
+  const h = canvas.clientHeight;
 
-    const gradient = ctx.createRadialGradient(
-        canvas.width/2, canvas.height/2, 50,
-        canvas.width/2, canvas.height/2, canvas.width*0.8
-    );
+  const barCount = 48;
+  const step = Math.floor(dataArray.length / barCount);
 
-    gradient.addColorStop(0, `rgba(255,255,0,${0.15 + intensity/900})`);
-    gradient.addColorStop(0.5, `rgba(255,190,0,${0.10 + intensity/1200})`);
-    gradient.addColorStop(1, "rgba(0,0,0,0)");
+  const barWidth = Math.max(4, Math.floor(w / barCount));
+  const gap = 2;
 
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+  for (let i = 0; i < barCount; i++) {
+    const v = dataArray[i * step] / 255;
+    const barH = Math.floor(v * (h * 0.65));
+
+    const x = i * (barWidth + gap);
+    const y = h - barH;
+
+    // no explicit colors requested, so keep it default subtle
+    ctx.fillStyle = "rgba(245,245,255,0.18)";
+    ctx.fillRect(x, y, barWidth, barH);
+  }
+
+  animationId = requestAnimationFrame(drawVisualizer);
 }
 
-bgMusic.addEventListener("play", () => {
-    setupVisualizer();
-    if (audioContext.state === "suspended") audioContext.resume();
-    drawVisualizer();
+// ---------- Boot flow ----------
+pressStartBtn.addEventListener("click", () => {
+  // Intro audio starts on user gesture
+  safePlay(introLoop);
+  introLoop.volume = 0.6;
+
+  showMain();
+
+  // Prepare BG music
+  bgMusic.volume = parseFloat(volumeSlider.value || "0.8");
+  if (DEFAULT_BG_TRACK) {
+    bgMusic.src = DEFAULT_BG_TRACK;
+  }
+
+  resizeCanvas();
 });
 
+// ---------- Music controls ----------
+playPauseBtn.addEventListener("click", async () => {
+  // Ensure audio context exists and is resumed (required by some browsers)
+  initAudioGraph();
+  if (audioCtx && audioCtx.state === "suspended") {
+    try { await audioCtx.resume(); } catch (_) {}
+  }
 
-/* ====================================================== */
-/*            CENSORED WORD + RANDOM SYMBOLS              */
-/* ====================================================== */
+  if (!bgMusic.src) {
+    // if you haven't set a track, do nothing gracefully
+    // (you can later set DEFAULT_BG_TRACK or programmatically set bgMusic.src)
+    return;
+  }
 
-const censoredWord = document.getElementById("censored-word");
-const symbols = ["$", "@", "%", "!", "#", "&", ")", "(", "*"];
+  if (bgMusic.paused) {
+    safePlay(bgMusic);
+    setPlayIcon(true);
+    if (!animationId) drawVisualizer();
+  } else {
+    safePause(bgMusic);
+    setPlayIcon(false);
+  }
+});
 
-function scramble() {
-    let result = "";
-    for (let i=0;i<10;i++) {
-        result += symbols[Math.floor(Math.random() * symbols.length)];
-    }
-    censoredWord.textContent = result + "G";
-}
+volumeSlider.addEventListener("input", () => {
+  const vol = parseFloat(volumeSlider.value || "0.8");
+  bgMusic.volume = vol;
+  introLoop.volume = Math.min(0.8, vol);
+});
 
-setInterval(scramble,150);
-
-
-/* ====================================================== */
-/*               MUSIC PAGE REDIRECT BUTTON               */
-/* ====================================================== */
-
-const musicPageButton = document.getElementById("music-page-button");
-if (musicPageButton) {
-    musicPageButton.addEventListener("click", () => {
-        window.location.href = "music.html";
-    });
-}
+// ---------- Logo back button ----------
+logoBackBtn.addEventListener("click", () => {
+  // Back to title screen (clean, game-like)
+  stopEverything();
+  showIntro();
+});
