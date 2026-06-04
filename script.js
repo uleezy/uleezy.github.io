@@ -156,10 +156,12 @@ let currentSlide = 0;
 let secretClicks = 0;
 let secretModeActive = false;
 
-document.body.classList.add("intro-active");
-
-function hardTop() {
+function resetScrollPositions() {
   window.scrollTo(0, 0);
+
+  if (siteShell) siteShell.scrollTop = 0;
+  if (titleScreen) titleScreen.scrollTop = 0;
+
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
 }
@@ -224,7 +226,7 @@ function switchPanel(panelId) {
     button.classList.toggle("active", button.dataset.panel === panelId);
   });
 
-  hardTop();
+  if (siteShell) siteShell.scrollTop = 0;
 
   secretClicks += 1;
 
@@ -233,39 +235,51 @@ function switchPanel(panelId) {
   }
 }
 
+function revealHome(targetPanel = "homeBase") {
+  resetScrollPositions();
+
+  titleScreen.classList.add("hidden");
+  siteShell.classList.add("active");
+
+  switchPanel(targetPanel);
+
+  requestAnimationFrame(() => {
+    resetScrollPositions();
+  });
+}
+
 function unlockSite(targetPanel = "homeBase", useBoot = true) {
   beep("start");
-  hardTop();
+  resetScrollPositions();
 
-  if (useBoot) {
-    bootSequence.classList.add("active");
-    bootSequence.setAttribute("aria-hidden", "false");
-
-    window.setTimeout(() => {
-      showSite(targetPanel);
-      bootSequence.classList.remove("active");
-      bootSequence.setAttribute("aria-hidden", "true");
-    }, 1350);
-
+  if (!useBoot) {
+    revealHome(targetPanel);
     return;
   }
 
-  showSite(targetPanel);
-}
+  bootSequence.classList.add("active");
+  bootSequence.setAttribute("aria-hidden", "false");
 
-function showSite(targetPanel = "homeBase") {
-  hardTop();
-  titleScreen.classList.add("hidden");
-  document.body.classList.remove("intro-active");
-  switchPanel(targetPanel);
-  hardTop();
+  window.setTimeout(() => {
+    revealHome(targetPanel);
+  }, 950);
+
+  window.setTimeout(() => {
+    bootSequence.classList.remove("active");
+    bootSequence.setAttribute("aria-hidden", "true");
+  }, 1450);
 }
 
 function showTitleScreen() {
   beep("back");
-  hardTop();
+  resetScrollPositions();
+
+  siteShell.classList.remove("active");
   titleScreen.classList.remove("hidden");
-  document.body.classList.add("intro-active");
+
+  requestAnimationFrame(() => {
+    resetScrollPositions();
+  });
 }
 
 pressStartButton.addEventListener("click", () => {
@@ -296,9 +310,7 @@ soundToggle.addEventListener("click", () => {
   soundOn = !soundOn;
   soundToggle.textContent = soundOn ? "sound: on" : "sound: off";
 
-  if (soundOn) {
-    beep("select");
-  }
+  if (soundOn) beep("select");
 });
 
 function updateTrack() {
@@ -357,9 +369,7 @@ function updateSlide() {
   slideText.textContent = slide.title;
 
   const slideNote = slideshowFrame.querySelector("span");
-  if (slideNote) {
-    slideNote.textContent = slide.note;
-  }
+  if (slideNote) slideNote.textContent = slide.note;
 }
 
 function goToNextSlide() {
@@ -483,20 +493,27 @@ function activateSecretMode() {
 }
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && !titleScreen.classList.contains("hidden")) {
+  const titleVisible = !titleScreen.classList.contains("hidden");
+
+  if (event.key === "Enter" && titleVisible) {
     unlockSite("homeBase", true);
   }
 
-  if (event.key === "Escape" && titleScreen.classList.contains("hidden")) {
+  if (event.key === "Escape" && !titleVisible) {
     showTitleScreen();
   }
 });
 
 function init() {
-  hardTop();
+  resetScrollPositions();
+
+  siteShell.classList.remove("active");
+  titleScreen.classList.remove("hidden");
+
   updateTrack();
   setPlayButtonText();
   updateSlide();
+
   startKaomojiWeather();
   startAsciiDrifter();
 }
