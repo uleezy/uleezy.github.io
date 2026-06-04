@@ -1,29 +1,6 @@
-/* =========================================================
-   ULAVILLE v1.0
-   styles.css
-
-   This file controls:
-   - colors
-   - layout
-   - title screen
-   - JRPG menu panels
-   - mobile handheld version
-   - floating kaomoji / ASCII art styling
-   - Super Lame Boy "back in the lab" styling
-   ========================================================= */
-
-
-/* =========================
-   GLOBAL THEME
-   ========================= */
-
 :root {
   --bg: #07070d;
-  --bg-soft: #0d0d18;
-  --panel: rgba(12, 13, 25, 0.88);
-  --panel-strong: rgba(19, 20, 36, 0.94);
-  --panel-glass: rgba(255, 255, 255, 0.045);
-
+  --panel: rgba(12, 13, 25, 0.9);
   --text: #f6f0dc;
   --muted: #b8ad91;
   --dim: #746d5d;
@@ -32,7 +9,6 @@
   --green: #7dff9b;
   --pink: #ff79c6;
   --blue: #7cc7ff;
-  --red: #ff5d73;
   --purple: #a78bfa;
 
   --line: rgba(255, 255, 255, 0.16);
@@ -45,7 +21,6 @@
 
   --radius-lg: 28px;
   --radius-md: 18px;
-  --radius-sm: 12px;
 
   --mono: "Courier New", Courier, monospace;
   --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -55,14 +30,16 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
   background: var(--bg);
 }
 
 body {
-  min-height: 100vh;
-  margin: 0;
   color: var(--text);
   font-family: var(--sans);
   background:
@@ -70,18 +47,16 @@ body {
     radial-gradient(circle at 80% 20%, rgba(125, 255, 155, 0.08), transparent 26%),
     radial-gradient(circle at 40% 90%, rgba(124, 199, 255, 0.11), transparent 28%),
     linear-gradient(135deg, #050508 0%, #090916 45%, #100b19 100%);
-  overflow-x: hidden;
 }
 
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: 1;
+  pointer-events: none;
   opacity: 0.11;
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.07) 50%, transparent 50%);
+  background: linear-gradient(rgba(255, 255, 255, 0.07) 50%, transparent 50%);
   background-size: 100% 4px;
   mix-blend-mode: screen;
 }
@@ -90,11 +65,10 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: 2;
+  pointer-events: none;
   opacity: 0.23;
-  background:
-    radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.72) 100%);
+  background: radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.72) 100%);
 }
 
 a {
@@ -116,10 +90,7 @@ button {
   background: var(--gold);
 }
 
-
-/* =========================
-   BACKGROUND FX
-   ========================= */
+/* BACKGROUND FX */
 
 #backgroundFX {
   position: fixed;
@@ -233,10 +204,7 @@ button {
   }
 }
 
-
-/* =========================
-   SHARED UI
-   ========================= */
+/* SHARED */
 
 .system-line,
 .card-label,
@@ -272,7 +240,7 @@ button {
   position: fixed;
   top: 16px;
   right: 16px;
-  z-index: 50;
+  z-index: 100;
   padding: 0.65rem 0.85rem;
   border: 1px solid rgba(125, 255, 155, 0.35);
   border-radius: 999px;
@@ -292,19 +260,65 @@ button {
   background: var(--green);
 }
 
+/* IMPORTANT FIX:
+   title screen and real site are separate full-screen layers.
+   They do not stack vertically anymore.
+*/
 
-/* =========================
-   TITLE SCREEN
-   ========================= */
+.title-screen,
+.site-shell {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+}
 
 .title-screen {
-  position: relative;
-  z-index: 5;
-  min-height: 100vh;
+  z-index: 60;
   display: grid;
   place-items: center;
   padding: 5rem 1.2rem 3rem;
+  overflow-y: auto;
+  background:
+    radial-gradient(circle at 50% 25%, rgba(255, 209, 102, 0.09), transparent 34%),
+    rgba(3, 3, 8, 0.78);
+  backdrop-filter: blur(4px);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity 280ms ease,
+    visibility 280ms ease;
 }
+
+.title-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.site-shell {
+  z-index: 5;
+  padding: 1.2rem;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.985);
+  transition:
+    opacity 260ms ease,
+    visibility 260ms ease,
+    transform 260ms ease;
+}
+
+.site-shell.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* TITLE SCREEN */
 
 .boot-card {
   width: min(940px, 100%);
@@ -314,7 +328,7 @@ button {
   background:
     linear-gradient(135deg, rgba(255, 209, 102, 0.08), transparent 34%),
     linear-gradient(225deg, rgba(125, 255, 155, 0.08), transparent 36%),
-    rgba(6, 7, 13, 0.88);
+    rgba(6, 7, 13, 0.9);
   backdrop-filter: blur(18px);
   box-shadow:
     var(--shadow),
@@ -355,16 +369,20 @@ button {
   font-size: clamp(0.74rem, 2vw, 1rem);
 }
 
-.press-mini-card {
-  margin: 0 auto 1rem;
+.press-mini-card,
+.latest-title-drops {
   max-width: 760px;
-  padding: 1.2rem;
+  margin: 1rem auto 0;
+  padding: 1.1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  color: var(--muted);
   background: rgba(255, 255, 255, 0.045);
   text-align: left;
   line-height: 1.7;
+}
+
+.press-mini-card {
+  color: var(--muted);
 }
 
 .press-mini-card p:not(.card-label) {
@@ -381,13 +399,8 @@ button {
 }
 
 .latest-title-drops {
-  max-width: 760px;
-  margin: 1rem auto 0;
-  padding: 1rem;
-  border: 1px solid rgba(125, 255, 155, 0.24);
-  border-radius: var(--radius-md);
+  border-color: rgba(125, 255, 155, 0.24);
   background: rgba(125, 255, 155, 0.035);
-  text-align: left;
 }
 
 .latest-title-drops ul,
@@ -437,13 +450,13 @@ button {
 }
 
 .title-actions a,
+.title-nav-button,
 .portal-buttons a,
 .release-card a,
 .site-footer button,
 .slideshow-controls button,
 .player-controls button,
 .skip-intro {
-  position: relative;
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--text);
@@ -456,7 +469,8 @@ button {
     box-shadow 160ms ease;
 }
 
-.title-actions a {
+.title-actions a,
+.title-nav-button {
   padding: 0.75rem 1rem;
   font-family: var(--mono);
   font-size: 0.76rem;
@@ -465,6 +479,8 @@ button {
 
 .title-actions a:hover,
 .title-actions a:focus-visible,
+.title-nav-button:hover,
+.title-nav-button:focus-visible,
 .portal-buttons a:hover,
 .portal-buttons a:focus-visible,
 .release-card a:hover,
@@ -486,7 +502,6 @@ button {
 }
 
 .press-start {
-  position: relative;
   display: block;
   width: min(420px, 100%);
   margin: 1.2rem auto 0.65rem;
@@ -494,8 +509,7 @@ button {
   border: 2px solid var(--green);
   border-radius: 999px;
   color: #050508;
-  background:
-    linear-gradient(90deg, var(--green), var(--gold), var(--pink));
+  background: linear-gradient(90deg, var(--green), var(--gold), var(--pink));
   font-family: var(--mono);
   font-size: clamp(1rem, 3vw, 1.35rem);
   font-weight: 900;
@@ -522,11 +536,13 @@ button {
   text-transform: uppercase;
 }
 
+/* BOOT TRANSITION */
+
 .boot-sequence {
   position: fixed;
   inset: 0;
-  z-index: 70;
-  display: none;
+  z-index: 80;
+  display: grid;
   place-items: center;
   padding: 1.5rem;
   color: var(--green);
@@ -535,10 +551,13 @@ button {
     rgba(2, 2, 5, 0.96);
   font-family: var(--mono);
   text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .boot-sequence.active {
-  display: grid;
+  visibility: visible;
   animation: bootFlash 1.45s ease forwards;
 }
 
@@ -548,57 +567,7 @@ button {
   text-shadow: var(--glow-green);
 }
 
-@keyframes pressPulse {
-  0%,
-  100% {
-    box-shadow:
-      0 0 14px rgba(125, 255, 155, 0.5),
-      0 0 34px rgba(255, 209, 102, 0.25);
-  }
-
-  50% {
-    box-shadow:
-      0 0 24px rgba(125, 255, 155, 0.8),
-      0 0 54px rgba(255, 121, 198, 0.3);
-  }
-}
-
-@keyframes bootFlash {
-  0% {
-    opacity: 0;
-    filter: contrast(1);
-  }
-
-  12% {
-    opacity: 1;
-    filter: contrast(1.4);
-  }
-
-  45% {
-    filter: contrast(2.2) hue-rotate(15deg);
-  }
-
-  75% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    filter: contrast(1);
-  }
-}
-
-
-/* =========================
-   UNLOCKED SITE SHELL
-   ========================= */
-
-.site-shell {
-  position: relative;
-  z-index: 5;
-  min-height: 100vh;
-  padding: 1.2rem;
-}
+/* MAIN SITE */
 
 .top-hud {
   width: min(1320px, 100%);
@@ -750,32 +719,10 @@ button {
   text-transform: uppercase;
 }
 
-@keyframes panelIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-    filter: blur(4px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-
-/* =========================
-   CARDS + GRIDS
-   ========================= */
+/* CARDS */
 
 .home-grid,
-.press-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
+.press-grid,
 .release-grid,
 .quest-list {
   display: grid;
@@ -808,7 +755,8 @@ button {
 .latest-card,
 .press-card,
 .terminal-card,
-.quest-card {
+.quest-card,
+.release-card {
   padding: 1rem;
 }
 
@@ -834,10 +782,7 @@ button {
   grid-column: 1 / -1;
 }
 
-
-/* =========================
-   FAKE MUSIC PLAYER
-   ========================= */
+/* PLAYER */
 
 .fake-player-display {
   min-height: 112px;
@@ -894,7 +839,9 @@ button {
   margin-bottom: 1rem;
 }
 
-.player-controls button {
+.player-controls button,
+.slideshow-controls button,
+.site-footer button {
   min-height: 2.65rem;
   padding: 0.55rem 0.85rem;
   font-family: var(--mono);
@@ -927,10 +874,7 @@ input[type="range"] {
   font-size: 0.85rem;
 }
 
-
-/* =========================
-   SLIDESHOW PLACEHOLDER
-   ========================= */
+/* SLIDES */
 
 .slideshow-frame {
   min-height: 240px;
@@ -969,18 +913,7 @@ input[type="range"] {
   margin-top: 1rem;
 }
 
-.slideshow-controls button {
-  min-height: 2.35rem;
-  padding: 0.5rem 0.85rem;
-  font-family: var(--mono);
-  font-size: 0.76rem;
-  text-transform: uppercase;
-}
-
-
-/* =========================
-   RELEASE LISTS
-   ========================= */
+/* RELEASES */
 
 .release-list li {
   display: grid;
@@ -1003,10 +936,6 @@ input[type="range"] {
   font-size: 0.86rem;
 }
 
-.release-card {
-  padding: 1rem;
-}
-
 .release-card.featured-release {
   border-color: rgba(125, 255, 155, 0.3);
   background:
@@ -1017,12 +946,15 @@ input[type="range"] {
   margin-top: 0;
 }
 
-.release-card a {
+.release-card a,
+.portal-buttons a {
   display: inline-flex;
-  margin-top: 0.6rem;
-  padding: 0.65rem 0.9rem;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.55rem;
+  padding: 0.6rem 0.85rem;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
 }
 
@@ -1047,10 +979,7 @@ input[type="range"] {
   opacity: 0.68;
 }
 
-
-/* =========================
-   PORTALS / EMBEDS
-   ========================= */
+/* PORTALS */
 
 .embed-zone {
   margin-top: 1rem;
@@ -1060,17 +989,6 @@ input[type="range"] {
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem;
-}
-
-.portal-buttons a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.55rem;
-  padding: 0.6rem 0.85rem;
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  text-transform: uppercase;
 }
 
 .embed-placeholder {
@@ -1096,10 +1014,7 @@ input[type="range"] {
   color: var(--muted);
 }
 
-
-/* =========================
-   PRESS KIT
-   ========================= */
+/* PRESS / QUEST / SHOW */
 
 .fact-list {
   display: grid;
@@ -1123,11 +1038,6 @@ input[type="range"] {
   font-family: var(--mono);
   text-transform: uppercase;
 }
-
-
-/* =========================
-   QUEST LOG / SHOWS / TERMINAL
-   ========================= */
 
 .quest-card {
   min-height: 180px;
@@ -1176,10 +1086,7 @@ input[type="range"] {
   opacity: 0.72;
 }
 
-
-/* =========================
-   FOOTER
-   ========================= */
+/* FOOTER */
 
 .site-footer {
   width: min(1320px, 100%);
@@ -1204,30 +1111,65 @@ input[type="range"] {
   margin: 0;
 }
 
-.site-footer button {
-  min-height: 2.4rem;
-  padding: 0.55rem 0.85rem;
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  text-transform: uppercase;
+/* ANIMATIONS */
+
+@keyframes pressPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 14px rgba(125, 255, 155, 0.5),
+      0 0 34px rgba(255, 209, 102, 0.25);
+  }
+
+  50% {
+    box-shadow:
+      0 0 24px rgba(125, 255, 155, 0.8),
+      0 0 54px rgba(255, 121, 198, 0.3);
+  }
 }
 
+@keyframes bootFlash {
+  0% {
+    opacity: 0;
+    filter: contrast(1);
+  }
 
-/* =========================
-   EASTER EGG EFFECTS
-   ========================= */
+  12% {
+    opacity: 1;
+    filter: contrast(1.4);
+  }
+
+  45% {
+    filter: contrast(2.2) hue-rotate(15deg);
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    filter: contrast(1);
+    visibility: hidden;
+  }
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
 
 body.secret-mode {
   animation: secretHue 3s linear infinite;
-}
-
-body.secret-mode .top-hud,
-body.secret-mode .content-screen,
-body.secret-mode .side-menu {
-  border-color: rgba(255, 121, 198, 0.5);
-  box-shadow:
-    var(--shadow),
-    0 0 40px rgba(255, 121, 198, 0.16);
 }
 
 @keyframes secretHue {
@@ -1240,10 +1182,7 @@ body.secret-mode .side-menu {
   }
 }
 
-
-/* =========================
-   TABLET
-   ========================= */
+/* TABLET */
 
 @media (max-width: 980px) {
   .game-layout {
@@ -1283,24 +1222,9 @@ body.secret-mode .side-menu {
   }
 }
 
-
-/* =========================
-   MOBILE HANDHELD MODE
-   ========================= */
+/* MOBILE */
 
 @media (max-width: 640px) {
-  body {
-    background:
-      radial-gradient(circle at 20% 10%, rgba(125, 255, 155, 0.12), transparent 34%),
-      radial-gradient(circle at 80% 88%, rgba(255, 121, 198, 0.11), transparent 34%),
-      linear-gradient(180deg, #050508 0%, #0a0d16 100%);
-  }
-
-  body::before {
-    opacity: 0.08;
-    background-size: 100% 5px;
-  }
-
   #asciiDrifter {
     font-size: clamp(7px, 2.35vw, 11px);
     line-height: 1.03;
@@ -1350,15 +1274,12 @@ body.secret-mode .side-menu {
     font-size: 0.7rem;
   }
 
-  .latest-title-drops li {
-    align-items: flex-start;
-  }
-
   .title-actions {
     gap: 0.5rem;
   }
 
-  .title-actions a {
+  .title-actions a,
+  .title-nav-button {
     flex: 1 1 calc(50% - 0.5rem);
     justify-content: center;
     padding: 0.68rem 0.7rem;
@@ -1401,9 +1322,6 @@ body.secret-mode .side-menu {
     grid-template-columns: 1fr;
     gap: 0.45rem;
     padding: 0.7rem;
-    background:
-      linear-gradient(135deg, rgba(125, 255, 155, 0.06), transparent 40%),
-      rgba(5, 5, 8, 0.86);
   }
 
   .menu-button {
@@ -1472,29 +1390,5 @@ body.secret-mode .side-menu {
     align-items: flex-start;
     flex-direction: column;
     padding: 0.85rem;
-  }
-}
-
-
-/* =========================
-   ACCESSIBILITY: REDUCED MOTION
-   ========================= */
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-
-  .kaomoji {
-    display: none;
-  }
-
-  #asciiDrifter {
-    display: none;
   }
 }
