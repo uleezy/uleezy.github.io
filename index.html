@@ -12,9 +12,8 @@
   />
 
   <meta name="author" content="Ula" />
-  <meta name="theme-color" content="#0b0b12" />
+  <meta name="theme-color" content="#07070d" />
 
-  <!-- Social preview placeholders. We can add a real image later. -->
   <meta property="og:title" content="Ula / Uleezy | Official Website" />
   <meta
     property="og:description"
@@ -27,34 +26,28 @@
 </head>
 
 <body>
-  <!-- Background FX lives behind everything. JS fills this with kaomoji + Unicode art. -->
   <div id="backgroundFX" aria-hidden="true">
     <div id="asciiDrifter"></div>
   </div>
 
-  <!-- Audio warning / unlock layer: modern browsers only allow sound after a click. -->
-  <button id="soundToggle" class="sound-toggle" type="button" aria-label="Toggle menu sound">
+  <button id="soundToggle" class="sound-toggle" type="button">
     sound: on
   </button>
 
-  <!-- =========================
-       TITLE SCREEN / PRESS START
-       ========================= -->
+  <!-- TITLE SCREEN OVERLAY -->
   <main id="titleScreen" class="title-screen">
-    <section class="boot-card" aria-labelledby="siteTitle">
-      <p class="system-line">ULAVILLE OS // v1.0 // MEMORY CARD FOUND</p>
+    <section class="boot-card">
+      <p class="system-line">ULAVILLE OS // v1.1 // MEMORY CARD FOUND</p>
 
-      <h1 id="siteTitle" class="site-title">
+      <h1 class="site-title">
         <span>ULA</span>
         <span class="slash">/</span>
         <span>ULEEZY</span>
       </h1>
 
-      <p class="site-subtitle">
-        THE ULANATOR FILES
-      </p>
+      <p class="site-subtitle">THE ULANATOR FILES</p>
 
-      <div class="press-mini-card">
+      <section class="press-mini-card">
         <p class="card-label">official artist file</p>
 
         <p>
@@ -75,9 +68,9 @@
           <span>crew: winner’s circle san diego</span>
           <span>status: still loading...</span>
         </div>
-      </div>
+      </section>
 
-      <div class="latest-title-drops">
+      <section class="latest-title-drops">
         <p class="card-label">latest drops</p>
 
         <ul>
@@ -86,29 +79,33 @@
             graceULAnd Blunt Rotation
             <span class="tag">demo tape</span>
           </li>
+
           <li>
             <span class="file-number">02</span>
             Rogues Gallery Demo EP
             <span class="tag">demo ep</span>
           </li>
+
           <li class="lab-file">
             <span class="file-number">03</span>
             Super Lame Boy
             <span class="tag">back in the lab</span>
           </li>
         </ul>
-      </div>
+      </section>
 
-      <nav class="title-actions" aria-label="Title screen quick links">
+      <nav class="title-actions">
         <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">
           links
         </a>
-        <a href="#pressKit" class="unlock-link" data-unlock-target="pressKit">
+
+        <button class="title-nav-button" type="button" data-start-panel="pressKit">
           press kit
-        </a>
-        <a href="#musicSelect" class="unlock-link" data-unlock-target="musicSelect">
+        </button>
+
+        <button class="title-nav-button" type="button" data-start-panel="musicSelect">
           music
-        </a>
+        </button>
       </nav>
 
       <button id="pressStartButton" class="press-start" type="button">
@@ -123,19 +120,20 @@
         warning: contains kaomoji weather, demo tapes, menu beeps, and unstable Ula particles.
       </p>
     </section>
+  </main>
 
-    <section id="bootSequence" class="boot-sequence" aria-live="polite" aria-hidden="true">
+  <!-- TRANSITION OVERLAY -->
+  <section id="bootSequence" class="boot-sequence" aria-hidden="true">
+    <div>
       <p>loading ulaville...</p>
       <p>checking memory card...</p>
       <p>unlocking music select...</p>
       <p>syncing random weird stuff...</p>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <!-- =========================
-       UNLOCKED WEBSITE
-       ========================= -->
-  <div id="siteShell" class="site-shell" hidden>
+  <!-- MAIN WEBSITE -->
+  <div id="siteShell" class="site-shell">
     <header class="top-hud">
       <div>
         <p class="system-line">ULAVILLE MAIN MENU</p>
@@ -150,35 +148,38 @@
     </header>
 
     <div class="game-layout">
-      <!-- Desktop/handheld menu -->
-      <aside class="side-menu" aria-label="Ulaville menu">
+      <aside class="side-menu">
         <button class="menu-button active" type="button" data-panel="homeBase">
           Home Base
         </button>
+
         <button class="menu-button" type="button" data-panel="musicSelect">
           Music Select
         </button>
+
         <button class="menu-button" type="button" data-panel="pressKit">
           Press Kit
         </button>
+
         <button class="menu-button" type="button" data-panel="videoRoom">
           Video Room
         </button>
+
         <button class="menu-button" type="button" data-panel="questLog">
           Quest Log
         </button>
+
         <button class="menu-button" type="button" data-panel="showDates">
           Show Dates
         </button>
+
         <button class="menu-button" type="button" data-panel="contactTerminal">
           Contact Terminal
         </button>
       </aside>
 
       <section class="content-screen">
-        <!-- =========================
-             HOME BASE
-             ========================= -->
+        <!-- HOME BASE -->
         <article id="homeBase" class="panel active-panel">
           <div class="panel-header">
             <p class="card-label">home base</p>
@@ -194,20 +195,14 @@
                 <span id="trackMeta">demo tape // newgrounds transmission</span>
               </div>
 
-              <div class="player-progress" aria-hidden="true">
+              <div class="player-progress">
                 <span></span>
               </div>
 
               <div class="player-controls">
-                <button type="button" class="small-control" data-player-action="prev">
-                  ◀◀
-                </button>
-                <button type="button" class="main-control" data-player-action="play">
-                  play
-                </button>
-                <button type="button" class="small-control" data-player-action="next">
-                  ▶▶
-                </button>
+                <button type="button" data-player-action="prev">◀◀</button>
+                <button type="button" data-player-action="play" class="main-control">play</button>
+                <button type="button" data-player-action="next">▶▶</button>
               </div>
 
               <label class="volume-row">
@@ -225,7 +220,7 @@
 
               <div class="slideshow-frame">
                 <p id="slideText">image slot 01</p>
-                <span>upload real photos later</span>
+                <span>artist photo goes here later</span>
               </div>
 
               <div class="slideshow-controls">
@@ -237,8 +232,9 @@
             <section class="status-card">
               <p class="card-label">ula status</p>
               <h4>currently in the lab</h4>
+
               <p>
-                Updating the world map, rebuilding the old files, dropping demos,
+                Updating the world map, rebuilding old files, dropping demos,
                 and turning the website into a small haunted arcade cabinet.
               </p>
             </section>
@@ -251,14 +247,17 @@
                   <strong>graceULAnd Blunt Rotation</strong>
                   <span>demo tape // newgrounds</span>
                 </li>
+
                 <li>
                   <strong>Rogues Gallery Demo EP</strong>
                   <span>demo ep // newgrounds</span>
                 </li>
+
                 <li>
                   <strong>Modern Day Glitch-Hop</strong>
                   <span>album // available</span>
                 </li>
+
                 <li class="lab-file">
                   <strong>Super Lame Boy</strong>
                   <span>back in the lab</span>
@@ -268,9 +267,7 @@
           </div>
         </article>
 
-        <!-- =========================
-             MUSIC SELECT
-             ========================= -->
+        <!-- MUSIC SELECT -->
         <article id="musicSelect" class="panel">
           <div class="panel-header">
             <p class="card-label">music select</p>
@@ -328,38 +325,22 @@
             <p class="card-label">platform portals</p>
 
             <div class="portal-buttons">
-              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">
-                Linktree
-              </a>
-              <a href="https://www.youtube.com/@ula619" target="_blank" rel="noopener noreferrer">
-                YouTube
-              </a>
-              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">
-                Spotify
-              </a>
-              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">
-                Bandcamp
-              </a>
-              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">
-                SoundCloud
-              </a>
-              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">
-                Newgrounds
-              </a>
+              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">Linktree</a>
+              <a href="https://www.youtube.com/@ula619" target="_blank" rel="noopener noreferrer">YouTube</a>
+              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">Spotify</a>
+              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">Bandcamp</a>
+              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">SoundCloud</a>
+              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">Newgrounds</a>
             </div>
 
             <div class="embed-placeholder">
               <p>embed slot</p>
-              <span>
-                Later, paste Spotify/Bandcamp/SoundCloud embed code here.
-              </span>
+              <span>Later, paste Spotify/Bandcamp/SoundCloud embed code here.</span>
             </div>
           </section>
         </article>
 
-        <!-- =========================
-             PRESS KIT
-             ========================= -->
+        <!-- PRESS KIT -->
         <article id="pressKit" class="panel">
           <div class="panel-header">
             <p class="card-label">press kit</p>
@@ -386,6 +367,7 @@
 
             <section class="press-card">
               <p class="card-label">quick facts</p>
+
               <ul class="fact-list">
                 <li><strong>artist:</strong> Ula</li>
                 <li><strong>also known as:</strong> Uleezy / The Ulanator</li>
@@ -397,6 +379,7 @@
 
             <section class="press-card">
               <p class="card-label">selected files</p>
+
               <ul class="fact-list">
                 <li>graceULAnd Blunt Rotation</li>
                 <li>Rogues Gallery Demo EP</li>
@@ -408,13 +391,16 @@
 
             <section class="press-card wide">
               <p class="card-label">press links</p>
+
               <div class="portal-buttons">
                 <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">
                   all links
                 </a>
+
                 <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">
                   press kit link
                 </a>
+
                 <a href="https://www.youtube.com/@ula619" target="_blank" rel="noopener noreferrer">
                   youtube
                 </a>
@@ -423,9 +409,7 @@
           </div>
         </article>
 
-        <!-- =========================
-             VIDEO ROOM
-             ========================= -->
+        <!-- VIDEO ROOM -->
         <article id="videoRoom" class="panel">
           <div class="panel-header">
             <p class="card-label">video room</p>
@@ -443,6 +427,7 @@
               <a href="https://www.youtube.com/@ula619" target="_blank" rel="noopener noreferrer">
                 open youtube
               </a>
+
               <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">
                 all links
               </a>
@@ -455,9 +440,7 @@
           </section>
         </article>
 
-        <!-- =========================
-             QUEST LOG
-             ========================= -->
+        <!-- QUEST LOG -->
         <article id="questLog" class="panel">
           <div class="panel-header">
             <p class="card-label">quest log</p>
@@ -487,9 +470,7 @@
           </div>
         </article>
 
-        <!-- =========================
-             SHOW DATES
-             ========================= -->
+        <!-- SHOW DATES -->
         <article id="showDates" class="panel">
           <div class="panel-header">
             <p class="card-label">show dates</p>
@@ -501,18 +482,6 @@
               No upcoming shows logged. Check back soon.
             </p>
 
-            <!--
-              EDIT SHOWS HERE LATER.
-
-              Example:
-
-              <div class="show-card">
-                <span>June 20, 2026</span>
-                <strong>San Diego, CA</strong>
-                <p>Venue Name</p>
-              </div>
-            -->
-
             <div class="show-card empty-show">
               <span>status</span>
               <strong>no active quests</strong>
@@ -521,9 +490,7 @@
           </section>
         </article>
 
-        <!-- =========================
-             CONTACT TERMINAL
-             ========================= -->
+        <!-- CONTACT TERMINAL -->
         <article id="contactTerminal" class="panel">
           <div class="panel-header">
             <p class="card-label">contact terminal</p>
@@ -540,6 +507,7 @@
               <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">
                 contact through linktree
               </a>
+
               <a href="https://www.youtube.com/@ula619" target="_blank" rel="noopener noreferrer">
                 youtube
               </a>
@@ -554,9 +522,8 @@
     </div>
 
     <footer class="site-footer">
-      <p>
-        ULA / ULEEZY // ULAVILLE IS UNDER ACTIVE CONSTRUCTION
-      </p>
+      <p>ULA / ULEEZY // ULAVILLE IS UNDER ACTIVE CONSTRUCTION</p>
+
       <button id="returnToTitle" type="button">
         return to title screen
       </button>
