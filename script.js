@@ -613,12 +613,63 @@ function unfreezeDanceSprite() {
 function updateGalleryImage() {
   const item = galleryItems[currentGalleryIndex];
 
+  function getImageCandidates(src) {
+  const decodedSrc = src;
+  const base = decodedSrc.replace(/\.(jpg|jpeg|png|webp)$/i, "");
+
+  return [
+    decodedSrc,
+    `${base}.jpg`,
+    `${base}.jpeg`,
+    `${base}.png`,
+    `${base}.webp`,
+    `${base}.JPG`,
+    `${base}.JPEG`,
+    `${base}.PNG`,
+    `${base}.WEBP`
+  ];
+}
+
+function tryLoadGalleryImage(candidates, item, index = 0) {
+  if (!galleryImage || !galleryCaption) {
+    return;
+  }
+
+  if (index >= candidates.length) {
+    galleryCaption.textContent = `${item.title} ain't loading yet, check the file name`;
+    galleryImage.style.opacity = "0.35";
+    galleryImage.classList.remove("is-changing");
+    return;
+  }
+
+  const testImage = new Image();
+
+  testImage.onload = () => {
+    galleryImage.src = candidates[index];
+    galleryImage.alt = `Ulaville gallery image: ${item.title}`;
+    galleryCaption.textContent = item.title;
+    galleryImage.style.opacity = "";
+  };
+
+  testImage.onerror = () => {
+    tryLoadGalleryImage(candidates, item, index + 1);
+  };
+
+  testImage.src = candidates[index];
+}
+
+function updateGalleryImage() {
+  if (!galleryImage || !galleryCaption || !galleryItems.length) {
+    return;
+  }
+
+  const item = galleryItems[currentGalleryIndex];
+
   galleryImage.classList.add("is-changing");
 
   window.setTimeout(() => {
-    galleryImage.src = item.src;
-    galleryImage.alt = `Ulaville gallery image: ${item.title}`;
-    galleryCaption.textContent = item.title;
+    const candidates = getImageCandidates(item.src);
+    tryLoadGalleryImage(candidates, item);
   }, 90);
 
   window.setTimeout(() => {
