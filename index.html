@@ -157,7 +157,28 @@
         </a>
       </nav>
 
-      <button id="pressStartButton" class="press-start" type="button">
+     <button
+  id="pressStartButton"
+  class="press-start"
+  type="button"
+  onclick="
+    document.body.classList.remove('title-mode');
+    document.body.classList.add('site-started');
+    document.body.classList.add('music-paused');
+
+    document.getElementById('titleScreen').style.display = 'none';
+
+    document.getElementById('siteShell').style.opacity = '1';
+    document.getElementById('siteShell').style.visibility = 'visible';
+    document.getElementById('siteShell').style.pointerEvents = 'auto';
+    document.getElementById('siteShell').style.transform = 'scale(1)';
+    document.getElementById('siteShell').setAttribute('aria-hidden', 'false');
+
+    window.scrollTo(0, 0);
+  "
+>
+  PRESS START
+</button>
         PRESS START
       </button>
 
