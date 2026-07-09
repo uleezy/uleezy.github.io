@@ -763,6 +763,387 @@
     ]
   </script>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
+
+<script>
+  (() => {
+    "use strict";
+
+    const $ = (id) => document.getElementById(id);
+
+    const body = document.body;
+    const startButton = $("pressStartButton");
+    const skipButton = $("skipIntroButton");
+    const returnButton = $("returnToTitleButton");
+    const siteShell = $("siteShell");
+    const transition = $("startTransition");
+    const introAudio = $("introLoopAudio");
+    const musicAudio = $("siteMusicAudio");
+
+    const playButton = $("playPauseButton");
+    const nextButton = $("nextTrackButton");
+    const prevButton = $("prevTrackButton");
+    const volumeSlider = $("volumeSlider");
+    const currentTrackTitle = $("currentTrackTitle");
+    const currentTrackMeta = $("currentTrackMeta");
+    const playerStateBadge = $("playerStateBadge");
+    const progressFill = $("trackProgressFill");
+    const currentTimeText = $("currentTimeText");
+    const durationText = $("durationText");
+    const danceSpriteStatus = $("danceSpriteStatus");
+
+    const menuButtons = document.querySelectorAll(".menu-button");
+    const panels = document.querySelectorAll(".panel");
+    const panelJumpButtons = document.querySelectorAll("[data-panel-jump]");
+
+    let playlist = [];
+
+    try {
+      playlist = JSON.parse($("localPlaylistData")?.textContent || "[]");
+    } catch {
+      playlist = [];
+    }
+
+    if (!playlist.length) {
+      playlist = [
+        {
+          title: "The Ulanator",
+          artist: "Ula",
+          src: "music/the%20ulanator.mp3"
+        },
+        {
+          title: "The Ulatron",
+          artist: "Ula",
+          src: "music/the%20ulatron.mp3"
+        },
+        {
+          title: "Ula",
+          artist: "Ula",
+          src: "music/ula.mp3"
+        },
+        {
+          title: "Uleezy",
+          artist: "Ula",
+          src: "music/uleezy.mp3"
+        }
+      ];
+    }
+
+    let shuffledPlaylist = [];
+    let trackIndex = 0;
+    let unlocked = false;
+
+    function shuffle(array) {
+      const copy = [...array];
+
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[randomIndex]] = [copy[randomIndex], copy[i]];
+      }
+
+      return copy;
+    }
+
+    function formatTime(seconds) {
+      if (!Number.isFinite(seconds)) return "0:00";
+
+      const minutes = Math.floor(seconds / 60);
+      const remaining = Math.floor(seconds % 60).toString().padStart(2, "0");
+
+      return `${minutes}:${remaining}`;
+    }
+
+    function setMusicState(isPlaying) {
+      body.classList.toggle("music-playing", isPlaying);
+      body.classList.toggle("music-paused", !isPlaying);
+
+      if (playButton) {
+        playButton.textContent = isPlaying ? "pause" : "play";
+      }
+
+      if (playerStateBadge) {
+        playerStateBadge.textContent = isPlaying ? "playing" : "paused";
+      }
+
+      if (danceSpriteStatus) {
+        danceSpriteStatus.textContent = isPlaying ? "dancing..." : "idle...";
+      }
+    }
+
+    function applyVolume() {
+      if (!volumeSlider) return;
+
+      const volume = Number(volumeSlider.value) / 100;
+
+      if (musicAudio) {
+        musicAudio.volume = volume;
+      }
+
+      if (introAudio) {
+        introAudio.volume = Math.min(0.35, volume * 0.5);
+      }
+    }
+
+    function fadeOutIntro() {
+      if (!introAudio) return;
+
+      const startVolume = introAudio.volume || 0.25;
+      const duration = 1500;
+      const startTime = performance.now();
+
+      function step(now) {
+        const progress = Math.min((now - startTime) / duration, 1);
+        introAudio.volume = startVolume * (1 - progress);
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+          return;
+        }
+
+        introAudio.pause();
+        introAudio.currentTime = 0;
+        introAudio.volume = startVolume;
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    function switchPanel(panelId) {
+      panels.forEach((panel) => {
+        panel.classList.toggle("active-panel", panel.id === panelId);
+      });
+
+      menuButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.panel === panelId);
+      });
+
+      if (siteShell) {
+        siteShell.scrollTop = 0;
+      }
+    }
+
+    function loadTrack() {
+      if (!shuffledPlaylist.length) {
+        shuffledPlaylist = shuffle(playlist);
+      }
+
+      const track = shuffledPlaylist[trackIndex];
+
+      if (!track || !musicAudio) return;
+
+      musicAudio.src = track.src;
+      musicAudio.load();
+
+      if (currentTrackTitle) {
+        currentTrackTitle.textContent = track.title;
+      }
+
+      if (currentTrackMeta) {
+        currentTrackMeta.textContent = `${track.artist} // local music file`;
+      }
+
+      if (playerStateBadge) {
+        playerStateBadge.textContent = "track loaded";
+      }
+    }
+
+    function playMusic() {
+      if (!musicAudio) return;
+
+      if (!musicAudio.src) {
+        loadTrack();
+      }
+
+      applyVolume();
+
+      musicAudio.play()
+        .then(() => {
+          setMusicState(true);
+        })
+        .catch(() => {
+          setMusicState(false);
+
+          if (playerStateBadge) {
+            playerStateBadge.textContent = "press play";
+          }
+        });
+    }
+
+    function pauseMusic() {
+      if (!musicAudio) return;
+
+      musicAudio.pause();
+      setMusicState(false);
+    }
+
+    function nextTrack() {
+      trackIndex += 1;
+
+      if (trackIndex >= shuffledPlaylist.length) {
+        shuffledPlaylist = shuffle(playlist);
+        trackIndex = 0;
+      }
+
+      loadTrack();
+      playMusic();
+    }
+
+    function previousTrack() {
+      trackIndex -= 1;
+
+      if (trackIndex < 0) {
+        trackIndex = shuffledPlaylist.length - 1;
+      }
+
+      loadTrack();
+      playMusic();
+    }
+
+    function updateProgress() {
+      if (!musicAudio) return;
+
+      const current = musicAudio.currentTime || 0;
+      const duration = musicAudio.duration || 0;
+      const percent = duration > 0 ? (current / duration) * 100 : 0;
+
+      if (progressFill) {
+        progressFill.style.width = `${Math.min(percent, 100)}%`;
+      }
+
+      if (currentTimeText) {
+        currentTimeText.textContent = formatTime(current);
+      }
+
+      if (durationText) {
+        durationText.textContent = formatTime(duration);
+      }
+    }
+
+    function unlockSite(event, fast = false) {
+      if (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+
+      if (unlocked) return;
+
+      unlocked = true;
+
+      fadeOutIntro();
+
+      if (!fast && transition) {
+        transition.classList.add("active");
+        transition.setAttribute("aria-hidden", "false");
+      }
+
+      window.setTimeout(() => {
+        body.classList.remove("title-mode");
+        body.classList.add("site-started");
+        body.classList.add("music-paused");
+
+        if (siteShell) {
+          siteShell.setAttribute("aria-hidden", "false");
+          siteShell.scrollTop = 0;
+        }
+
+        window.scrollTo(0, 0);
+        switchPanel("homePanel");
+
+        shuffledPlaylist = shuffle(playlist);
+        trackIndex = 0;
+        loadTrack();
+        playMusic();
+      }, fast ? 0 : 650);
+
+      window.setTimeout(() => {
+        if (transition) {
+          transition.classList.remove("active");
+          transition.setAttribute("aria-hidden", "true");
+        }
+      }, 1700);
+    }
+
+    function returnToTitle(event) {
+      if (event) {
+        event.preventDefault();
+      }
+
+      unlocked = false;
+      pauseMusic();
+
+      body.classList.add("title-mode");
+      body.classList.remove("site-started");
+
+      if (siteShell) {
+        siteShell.setAttribute("aria-hidden", "true");
+      }
+
+      window.scrollTo(0, 0);
+
+      if (introAudio) {
+        introAudio.volume = 0.22;
+        introAudio.play().catch(() => {});
+      }
+    }
+
+    if (startButton) {
+      startButton.addEventListener("click", (event) => unlockSite(event, false), true);
+    }
+
+    if (skipButton) {
+      skipButton.addEventListener("click", (event) => unlockSite(event, true), true);
+    }
+
+    if (returnButton) {
+      returnButton.addEventListener("click", returnToTitle, true);
+    }
+
+    menuButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        switchPanel(button.dataset.panel);
+      });
+    });
+
+    panelJumpButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        switchPanel(button.dataset.panelJump);
+      });
+    });
+
+    if (playButton) {
+      playButton.addEventListener("click", () => {
+        if (!musicAudio) return;
+
+        if (musicAudio.paused) {
+          playMusic();
+        } else {
+          pauseMusic();
+        }
+      });
+    }
+
+    if (nextButton) {
+      nextButton.addEventListener("click", nextTrack);
+    }
+
+    if (prevButton) {
+      prevButton.addEventListener("click", previousTrack);
+    }
+
+    if (volumeSlider) {
+      volumeSlider.addEventListener("input", applyVolume);
+    }
+
+    if (musicAudio) {
+      musicAudio.addEventListener("timeupdate", updateProgress);
+      musicAudio.addEventListener("loadedmetadata", updateProgress);
+      musicAudio.addEventListener("ended", nextTrack);
+      musicAudio.addEventListener("play", () => setMusicState(true));
+      musicAudio.addEventListener("pause", () => setMusicState(false));
+    }
+
+    applyVolume();
+  })();
+</script>
 </body>
 </html>
