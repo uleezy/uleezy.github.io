@@ -4,80 +4,112 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Ula / Uleezy | Official Website</title>
+  <title>Ula / Uleezy | Ulaville</title>
 
   <meta
     name="description"
-    content="Official website of Ula, a San Diego rapper and producer blending West Coast rap, G-Funk, glitch-hop, funk, underground hip-hop, demo tapes, and strange digital soul."
+    content="Official website of Ula, a San Diego rapper and producer building a world between West Coast rap, G-Funk, glitch-hop, demos, videos, and strange digital soul."
   />
 
   <meta name="author" content="Ula" />
-  <meta name="theme-color" content="#140712" />
+  <meta name="theme-color" content="#130711" />
 
-  <meta property="og:title" content="Ula / Uleezy | Official Website" />
+  <meta property="og:title" content="Ula / Uleezy | Ulaville" />
   <meta
     property="og:description"
-    content="Welcome to Ulaville. Music, press kit, demos, videos, links, and random Ula transmissions."
+    content="Welcome to Ulaville. Music, demos, press kit, videos, socials, and Ula transmissions."
   />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ulanator.online/" />
 
+  <!-- Favicon -->
+  <link rel="icon" href="favicon/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="favicon/favicon-32.png" />
+  <link rel="apple-touch-icon" href="favicon/favicon-180.png" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 
-<body>
-  <div id="backgroundFX" aria-hidden="true">
-    <div id="asciiDrifter"></div>
+<body class="title-mode">
+  <!-- BACKGROUND EFFECTS -->
+  <div id="backgroundFX" class="background-fx" aria-hidden="true">
+    <div id="asciiDrifter" class="ascii-drifter"></div>
+    <div id="particleField" class="particle-field"></div>
   </div>
 
-  <button id="soundToggle" class="sound-toggle" type="button">
+  <!-- GLOBAL SOUND TOGGLE -->
+  <button id="soundToggle" class="sound-toggle" type="button" aria-label="Toggle website sound">
     sound: on
   </button>
 
-  <!-- TITLE / PRESS KIT SCREEN -->
-  <main id="titleScreen" class="title-screen">
-    <section class="title-card">
-      <p class="system-kicker">ULAVILLE ONLINE // MEMORY CARD FOUND</p>
+  <!-- AUDIO SYSTEM -->
+  <audio
+    id="introLoopAudio"
+    src="music/loop.mp3"
+    loop
+    preload="auto"
+  ></audio>
 
-      <div class="ula-logo" aria-label="Ula logo">
-        <span class="logo-main">ULA</span>
-        <span class="logo-shadow">ULA</span>
+  <audio
+    id="siteMusicAudio"
+    preload="auto"
+  ></audio>
+
+  <!-- TITLE SCREEN / DIGITAL PORTFOLIO -->
+  <main id="titleScreen" class="title-screen">
+    <section class="portfolio-card" aria-labelledby="titleLogoLabel">
+      <p class="system-kicker">ULAVILLE ONLINE // ARTIST PORTFOLIO FOUND</p>
+
+      <div id="ulaLogoTitle" class="ula-logo logo-large" aria-labelledby="titleLogoLabel">
+        <h1 id="titleLogoLabel" class="visually-hidden">Ula</h1>
+
+        <span class="logo-letter logo-u" data-letter="U">U</span>
+        <span class="logo-letter logo-l" data-letter="L">L</span>
+        <span class="logo-letter logo-a" data-letter="A">A</span>
       </div>
 
-      <p class="logo-subtitle">ULEEZY // THE ULANATOR</p>
+      <p class="logo-subtitle">
+        ULEEZY // THE ULANATOR // THE ULATRON
+      </p>
 
-      <section class="intro-press-card">
+      <section class="intro-press-card" aria-labelledby="introPressTitle">
         <p class="section-label">official artist file</p>
+
+        <h2 id="introPressTitle">San Diego rap, glitch-hop, G-Funk, and digital soul.</h2>
 
         <p>
           Ula is a San Diego rapper and producer building his own lane between
           West Coast rap, G-Funk, glitch-hop, funk, underground hip-hop, and
-          strange digital worlds.
+          strange little worlds that refuse to sit still.
         </p>
 
         <p>
-          SoCal Samoan. Half nerd. Half ghetto fabulous. Music for people who
-          grew up around family functions, fighting games, old consoles, weird
-          samples, and real-life pressure.
+          SoCal Samoan. Half nerd. Half ghetto fabulous. Music for people raised
+          around family functions, fighting games, old consoles, weird samples,
+          real pressure, and crooked smiles.
         </p>
 
-        <div class="stat-pills">
-          <span>san diego / southern california</span>
+        <div class="stat-pills" aria-label="Artist quick facts">
+          <span>San Diego, CA</span>
           <span>rapper</span>
           <span>producer</span>
-          <span>winner’s circle san diego</span>
+          <span>Winner’s Circle</span>
+          <span>Ulaville active</span>
         </div>
       </section>
 
-      <section class="title-release-strip">
+      <section class="title-release-strip" aria-labelledby="latestTitle">
         <p class="section-label">latest transmissions</p>
+
+        <h2 id="latestTitle" class="visually-hidden">Latest music</h2>
 
         <a
           href="https://www.newgrounds.com/playlist/531041/rogues-gallery-demo"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Rogues Gallery Demo Tape
+          <span>Rogues Gallery Demo Tape</span>
+          <small>Newgrounds</small>
         </a>
 
         <a
@@ -85,7 +117,8 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          graceULAnd: Blunt Rotation
+          <span>graceULAnd: Blunt Rotation</span>
+          <small>Newgrounds</small>
         </a>
 
         <a
@@ -93,11 +126,12 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          Modern Day Glitch-Hop
+          <span>Modern Day Glitch-Hop</span>
+          <small>Spotify</small>
         </a>
       </section>
 
-      <div class="title-links">
+      <nav class="title-links" aria-label="Intro quick links">
         <a
           href="https://epkbuilder.com/site/ula-uleezy-the-ulanator"
           target="_blank"
@@ -121,7 +155,7 @@
         >
           newgrounds
         </a>
-      </div>
+      </nav>
 
       <button id="pressStartButton" class="press-start" type="button">
         PRESS START
@@ -132,45 +166,54 @@
       </button>
 
       <p class="tiny-note">
-        warning: gold/pink radiation, kaomoji weather, menu beeps, and unstable Ula particles.
+        loop loaded: music/loop.mp3 // press start to unlock the real homepage
       </p>
     </section>
   </main>
 
-  <!-- TRANSITION SCREEN -->
-  <section id="bootSequence" class="boot-sequence" aria-hidden="true">
-    <div class="boot-box">
-      <p>booting ulaville...</p>
-      <p>loading tapes...</p>
-      <p>checking gold teeth shader...</p>
-      <p>opening home base...</p>
+  <!-- START TRANSITION -->
+  <section id="startTransition" class="start-transition" aria-hidden="true">
+    <div class="transition-logo" aria-hidden="true">
+      <span>U</span>
+      <span>L</span>
+      <span>A</span>
+    </div>
+
+    <div class="boot-text">
+      <p>press start confirmed...</p>
+      <p>fading title loop...</p>
+      <p>loading ulaville home base...</p>
+      <p>randomizing playlist...</p>
     </div>
   </section>
 
-  <!-- MAIN WEBSITE APP -->
-  <div id="siteShell" class="site-shell">
-    <header class="home-hero">
-      <div>
-        <p class="system-kicker">ULAVILLE HOME BASE</p>
+  <!-- REAL WEBSITE / HOMEPAGE -->
+  <div id="siteShell" class="site-shell" aria-hidden="true">
+    <header class="site-hero">
+      <div class="hero-copy-block">
+        <p class="system-kicker">ULAVILLE HOME BASE // WEBSITE UNLOCKED</p>
 
-        <h1>
-          Welcome to
-          <span>Ulaville</span>
-        </h1>
+        <div id="ulaLogoHome" class="ula-logo logo-home" aria-label="Ula logo">
+          <span class="logo-letter logo-u" data-letter="U">U</span>
+          <span class="logo-letter logo-l" data-letter="L">L</span>
+          <span class="logo-letter logo-a" data-letter="A">A</span>
+        </div>
 
-        <p class="hero-copy">
-          Music, demos, videos, links, press stuff, and whatever else falls out
-          of the backpack.
+        <p class="hero-subtitle">
+          Music, demos, videos, photos, links, press stuff, and whatever else
+          falls out of the backpack.
         </p>
       </div>
 
-      <div class="hero-orb" aria-hidden="true">
-        <span>ULA</span>
+      <div class="hero-status-card">
+        <p class="section-label">status</p>
+        <strong>active save file</strong>
+        <span>gold/pink mode online</span>
       </div>
     </header>
 
-    <nav class="main-menu" aria-label="Ulaville menu">
-      <button class="menu-button active" type="button" data-panel="homeBase">
+    <nav class="main-menu" aria-label="Main website menu">
+      <button class="menu-button active" type="button" data-panel="homePanel">
         Home
       </button>
 
@@ -178,19 +221,19 @@
         Music
       </button>
 
+      <button class="menu-button" type="button" data-panel="mediaPanel">
+        Media
+      </button>
+
+      <button class="menu-button" type="button" data-panel="galleryPanel">
+        Gallery
+      </button>
+
       <button class="menu-button" type="button" data-panel="pressPanel">
         Press
       </button>
 
-      <button class="menu-button" type="button" data-panel="videoPanel">
-        Video
-      </button>
-
-      <button class="menu-button" type="button" data-panel="questPanel">
-        Random
-      </button>
-
-      <button class="menu-button" type="button" data-panel="showPanel">
+      <button class="menu-button" type="button" data-panel="showsPanel">
         Shows
       </button>
 
@@ -199,102 +242,177 @@
       </button>
     </nav>
 
-    <main class="screen-frame">
-      <!-- HOME -->
-      <article id="homeBase" class="panel active-panel">
+    <main class="site-frame">
+      <!-- HOME PANEL -->
+      <article id="homePanel" class="panel active-panel">
         <div class="panel-heading">
           <p class="section-label">home</p>
-          <h2>i make music and stuff :3</h2>
+          <h2>Welcome to Ulaville</h2>
         </div>
 
-        <div class="home-grid">
-          <section class="player-card glass-card">
-            <p class="section-label">now playing</p>
-
-            <div class="player-display">
-              <p id="trackTitle">Rogues Gallery Demo Tape</p>
-              <span id="trackMeta">newgrounds playlist // demo tape</span>
+        <section class="home-grid">
+          <!-- REAL MUSIC PLAYER -->
+          <section class="music-player-card glass-card" aria-labelledby="playerTitle">
+            <div class="card-topline">
+              <p class="section-label">now playing</p>
+              <span id="playerStateBadge">shuffle ready</span>
             </div>
 
-            <div class="progress-bar">
-              <span></span>
+            <h3 id="playerTitle">Ulaville Radio</h3>
+
+            <div class="track-display">
+              <p id="currentTrackTitle">Random track loading...</p>
+              <span id="currentTrackMeta">local music player</span>
             </div>
 
-            <div class="player-controls">
-              <button type="button" data-player-action="prev">◀◀</button>
-              <button type="button" data-player-action="play" class="big-control">play</button>
-              <button type="button" data-player-action="next">▶▶</button>
-            </div>
+            <div class="player-main-row">
+              <div class="dance-companion" aria-label="Music companion sprite">
+                <img
+                  id="danceSprite"
+                  src="gif/TWdance.gif"
+                  alt="Transparent dancing Ula companion sprite"
+                />
+                <span id="danceSpriteStatus">idle...</span>
+              </div>
 
-            <label class="volume-row">
-              volume
-              <input id="volumeSlider" type="range" min="0" max="100" value="72" />
-            </label>
+              <div class="player-control-zone">
+                <div class="player-buttons">
+                  <button id="prevTrackButton" type="button" aria-label="Previous track">
+                    ◀◀
+                  </button>
+
+                  <button id="playPauseButton" class="big-player-button" type="button" aria-label="Play or pause music">
+                    play
+                  </button>
+
+                  <button id="nextTrackButton" type="button" aria-label="Next track">
+                    ▶▶
+                  </button>
+                </div>
+
+                <div class="track-progress" aria-hidden="true">
+                  <span id="trackProgressFill"></span>
+                </div>
+
+                <div class="time-row">
+                  <span id="currentTimeText">0:00</span>
+                  <span id="durationText">0:00</span>
+                </div>
+
+                <label class="volume-row" for="volumeSlider">
+                  <span>volume</span>
+                  <input id="volumeSlider" type="range" min="0" max="100" value="75" />
+                </label>
+              </div>
+            </div>
 
             <p class="small-copy">
-              This player is a custom Ulaville menu piece. Use Music to load the real links.
+              The title-screen loop fades out after Start. These tracks shuffle from your local music folder.
             </p>
           </section>
 
-          <section class="feature-card glass-card">
-            <p class="section-label">featured</p>
+          <!-- FEATURED RELEASES -->
+          <section class="featured-card glass-card">
+            <p class="section-label">featured drop</p>
 
             <h3>Rogues Gallery Demo Tape</h3>
 
             <p>
-              Recent demo tape from the lab. Villain files, rough gems, glitchy corners,
+              Recent demo tape from the lab. Villain files, rough gems, weird corners,
               and Ula transmissions.
             </p>
 
             <a
+              class="shine-link"
               href="https://www.newgrounds.com/playlist/531041/rogues-gallery-demo"
               target="_blank"
               rel="noopener noreferrer"
-              class="shine-link"
             >
-              load on newgrounds
+              listen on newgrounds
             </a>
           </section>
 
-          <section class="slideshow-card glass-card">
-            <p class="section-label">gallery terminal</p>
+          <!-- QUICK LATEST FILES -->
+          <section class="latest-files-card glass-card">
+            <p class="section-label">latest files</p>
 
-            <div class="slideshow-frame">
-              <p id="slideText">image slot 01</p>
-              <span>artist photo goes here later</span>
-            </div>
+            <ul class="latest-file-list">
+              <li>
+                <a
+                  href="https://www.newgrounds.com/playlist/531041/rogues-gallery-demo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Rogues Gallery Demo Tape
+                </a>
+              </li>
 
-            <div class="slideshow-controls">
-              <button type="button" id="prevSlide">prev</button>
-              <button type="button" id="nextSlide">next</button>
-            </div>
+              <li>
+                <a
+                  href="https://www.newgrounds.com/playlist/531040/graceuland-blunt-rotation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  graceULAnd: Blunt Rotation
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="https://open.spotify.com/album/3uozD70paVdKuIRL7Y0r5H"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Modern Day Glitch-Hop
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="https://open.spotify.com/album/3cUCnJapn2PI14WCUr8EH0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Bilingual
+                </a>
+              </li>
+
+              <li class="lab-file-text">
+                <span>Super Lame Boy EP</span>
+                <small>back in the lab</small>
+              </li>
+            </ul>
           </section>
 
-          <section class="status-card glass-card">
-            <p class="section-label">status</p>
+          <!-- MINI MEDIA PREVIEW -->
+          <section class="mini-media-card glass-card">
+            <p class="section-label">media room</p>
 
-            <h3>still in the lab</h3>
+            <h3>Modern Day G Funk</h3>
 
             <p>
-              Rebuilding the site, pushing demos, reshaping old files, and letting
-              the kaomoji drift through the ceiling vents.
+              Video archive loaded from your local videos folder.
             </p>
+
+            <button class="panel-jump-button" type="button" data-panel-jump="mediaPanel">
+              open media player
+            </button>
           </section>
-        </div>
+        </section>
       </article>
 
-      <!-- MUSIC -->
+      <!-- MUSIC PANEL -->
       <article id="musicPanel" class="panel">
         <div class="panel-heading">
           <p class="section-label">music select</p>
-          <h2>load a tape</h2>
+          <h2>Load a tape</h2>
         </div>
 
-        <div class="release-grid">
-          <section class="release-card hot-card">
-            <p class="file-tag">newgrounds // demo tape</p>
+        <section class="release-grid">
+          <article class="release-card hot-card">
+            <p class="file-tag">Newgrounds // demo tape</p>
             <h3>Rogues Gallery Demo Tape</h3>
-            <p>Villain file energy. Recent demo drop.</p>
+            <p>Recent demo drop from the Ulaville lab.</p>
 
             <a
               href="https://www.newgrounds.com/playlist/531041/rogues-gallery-demo"
@@ -303,12 +421,12 @@
             >
               listen
             </a>
-          </section>
+          </article>
 
-          <section class="release-card hot-card">
-            <p class="file-tag">newgrounds // demo tape</p>
+          <article class="release-card hot-card">
+            <p class="file-tag">Newgrounds // demo tape</p>
             <h3>graceULAnd: Blunt Rotation</h3>
-            <p>Recent demo tape. Blunt rotation from the Ulaville lab.</p>
+            <p>Blunt rotation files, rough gems, strange smoke signals.</p>
 
             <a
               href="https://www.newgrounds.com/playlist/531040/graceuland-blunt-rotation"
@@ -317,12 +435,12 @@
             >
               listen
             </a>
-          </section>
+          </article>
 
-          <section class="release-card">
-            <p class="file-tag">spotify // album</p>
+          <article class="release-card">
+            <p class="file-tag">Spotify // album</p>
             <h3>Modern Day Glitch-Hop</h3>
-            <p>Main album file. West Coast rap meets glitch-hop hardware dust.</p>
+            <p>Main album file. West Coast rap meets glitch-hop dust.</p>
 
             <a
               href="https://open.spotify.com/album/3uozD70paVdKuIRL7Y0r5H"
@@ -331,12 +449,12 @@
             >
               listen
             </a>
-          </section>
+          </article>
 
-          <section class="release-card">
-            <p class="file-tag">spotify // single</p>
+          <article class="release-card">
+            <p class="file-tag">Spotify // single</p>
             <h3>Bilingual</h3>
-            <p>Single file. Official Ula transmission.</p>
+            <p>Official single file.</p>
 
             <a
               href="https://open.spotify.com/album/3cUCnJapn2PI14WCUr8EH0"
@@ -345,19 +463,19 @@
             >
               listen
             </a>
-          </section>
+          </article>
 
-          <section class="release-card lab-file">
-            <p class="file-tag">ep // rebuilding</p>
-            <h3>Super Lame Boy</h3>
+          <article class="release-card lab-file">
+            <p class="file-tag">EP // rebuilding</p>
+            <h3>Super Lame Boy EP</h3>
             <p>Back in the lab. Temporarily taken down while it gets redone.</p>
 
             <span class="disabled-link">back in the lab</span>
-          </section>
-        </div>
+          </article>
+        </section>
 
-        <section class="link-bank glass-card">
-          <p class="section-label">platforms</p>
+        <section class="platform-bank glass-card">
+          <p class="section-label">platform portal</p>
 
           <div class="link-buttons">
             <a href="https://uleezy.newgrounds.com/" target="_blank" rel="noopener noreferrer">Newgrounds</a>
@@ -369,15 +487,109 @@
         </section>
       </article>
 
-      <!-- PRESS -->
+      <!-- MEDIA PANEL -->
+      <article id="mediaPanel" class="panel">
+        <div class="panel-heading">
+          <p class="section-label">media room</p>
+          <h2>Watch the archive</h2>
+        </div>
+
+        <section class="media-grid">
+          <div class="video-player-card glass-card">
+            <p class="section-label">video player</p>
+
+            <video
+              id="archiveVideo"
+              class="archive-video"
+              controls
+              preload="metadata"
+              poster="images/ula banner.jpg"
+            >
+              <source src="videos/modern%20day%20g%20funk.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+
+            <div class="video-info">
+              <h3>Modern Day G Funk</h3>
+              <p>Local video file loaded from your videos folder.</p>
+            </div>
+          </div>
+
+          <aside class="video-list-card glass-card">
+            <p class="section-label">archive list</p>
+
+            <button class="video-select-button active" type="button" data-video-src="videos/modern%20day%20g%20funk.mp4">
+              Modern Day G Funk
+            </button>
+
+            <p class="small-copy">
+              Add more videos later and we can turn this into a full media archive.
+            </p>
+          </aside>
+        </section>
+      </article>
+
+      <!-- GALLERY PANEL -->
+      <article id="galleryPanel" class="panel">
+        <div class="panel-heading">
+          <p class="section-label">gallery terminal</p>
+          <h2>Image database</h2>
+        </div>
+
+        <section class="gallery-grid">
+          <div class="gallery-viewer glass-card">
+            <p class="section-label">slideshow</p>
+
+            <figure class="gallery-frame">
+              <img
+                id="galleryImage"
+                src="images/pic1.jpg"
+                alt="Ulaville gallery image"
+              />
+
+              <figcaption id="galleryCaption">
+                pic1
+              </figcaption>
+            </figure>
+
+            <div class="gallery-controls">
+              <button id="prevImageButton" type="button">
+                prev
+              </button>
+
+              <button id="nextImageButton" type="button">
+                next
+              </button>
+            </div>
+          </div>
+
+          <aside class="gallery-note glass-card">
+            <p class="section-label">photo files</p>
+
+            <p>
+              This slideshow uses the images in your images folder. The script will
+              try to load your numbered pics and banner file.
+            </p>
+
+            <ul class="asset-note-list">
+              <li>images/pic1.jpg</li>
+              <li>images/pic2.jpg</li>
+              <li>images/pic3.jpg</li>
+              <li>images/ula banner.jpg</li>
+            </ul>
+          </aside>
+        </section>
+      </article>
+
+      <!-- PRESS PANEL -->
       <article id="pressPanel" class="panel">
         <div class="panel-heading">
           <p class="section-label">press kit</p>
-          <h2>artist file</h2>
+          <h2>Artist file</h2>
         </div>
 
-        <div class="press-grid">
-          <section class="glass-card wide">
+        <section class="press-grid">
+          <article class="glass-card wide-card">
             <p class="section-label">short bio</p>
 
             <p>
@@ -392,21 +604,21 @@
               between half nerd and half ghetto fabulous. His music is rhythmic,
               personal, weird, and homegrown.
             </p>
-          </section>
+          </article>
 
-          <section class="glass-card">
+          <article class="glass-card">
             <p class="section-label">quick facts</p>
 
             <ul class="fact-list">
               <li><strong>artist:</strong> Ula</li>
-              <li><strong>also known as:</strong> Uleezy / The Ulanator</li>
+              <li><strong>also known as:</strong> Uleezy / The Ulanator / The Ulatron</li>
               <li><strong>location:</strong> San Diego, CA</li>
               <li><strong>sound:</strong> West Coast rap, G-Funk, glitch-hop, funk, underground hip-hop</li>
               <li><strong>crew:</strong> Winner’s Circle San Diego</li>
             </ul>
-          </section>
+          </article>
 
-          <section class="glass-card">
+          <article class="glass-card">
             <p class="section-label">selected files</p>
 
             <ul class="fact-list">
@@ -414,11 +626,11 @@
               <li>graceULAnd: Blunt Rotation</li>
               <li>Modern Day Glitch-Hop</li>
               <li>Bilingual</li>
-              <li class="lab-text">Super Lame Boy — back in the lab</li>
+              <li class="lab-text">Super Lame Boy EP: back in the lab</li>
             </ul>
-          </section>
+          </article>
 
-          <section class="glass-card wide">
+          <article class="glass-card wide-card">
             <p class="section-label">official epk</p>
 
             <p>
@@ -426,83 +638,26 @@
             </p>
 
             <a
+              class="shine-link"
               href="https://epkbuilder.com/site/ula-uleezy-the-ulanator"
               target="_blank"
               rel="noopener noreferrer"
-              class="shine-link"
             >
               open press kit
             </a>
-          </section>
-        </div>
-      </article>
-
-      <!-- VIDEO -->
-      <article id="videoPanel" class="panel">
-        <div class="panel-heading">
-          <p class="section-label">video room</p>
-          <h2>camcorder mode</h2>
-        </div>
-
-        <section class="glass-card">
-          <p>
-            This room is for videos, studio clips, shows, gaming moments, room footage,
-            quick jokes, post-edit notes, and whatever weird public-access channel
-            Ulaville turns into.
-          </p>
-
-          <div class="link-buttons">
-            <a href="https://www.youtube.com/@ula619" target="_blank" rel="noopener noreferrer">YouTube</a>
-            <a href="https://www.instagram.com/uleezy4sheezy/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://bsky.app/profile/uleezy4sheezy.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
-          </div>
-
-          <div class="embed-placeholder">
-            <p>youtube embed slot</p>
-            <span>paste a YouTube embed here later</span>
-          </div>
+          </article>
         </section>
       </article>
 
-      <!-- RANDOM -->
-      <article id="questPanel" class="panel">
-        <div class="panel-heading">
-          <p class="section-label">random files</p>
-          <h2>ula stuff</h2>
-        </div>
-
-        <div class="quest-grid">
-          <section class="glass-card">
-            <h3>music lab</h3>
-            <p>Beat tapes, demos, full songs, rough drafts, weird samples, and late-night experiments.</p>
-          </section>
-
-          <section class="glass-card">
-            <h3>content arc</h3>
-            <p>Shows, friends, games, studio footage, room clips, funny moments, and camcorder energy.</p>
-          </section>
-
-          <section class="glass-card">
-            <h3>doodles / games / lore</h3>
-            <p>Future zone for drawings, small game ideas, side worlds, notes, and whatever else spawns.</p>
-          </section>
-
-          <section class="glass-card secret-card">
-            <h3>secret file</h3>
-            <p>Click around long enough and the button goblin notices.</p>
-          </section>
-        </div>
-      </article>
-
-      <!-- SHOWS -->
-      <article id="showPanel" class="panel">
+      <!-- SHOWS PANEL -->
+      <article id="showsPanel" class="panel">
         <div class="panel-heading">
           <p class="section-label">show dates</p>
-          <h2>quest board</h2>
+          <h2>Quest board</h2>
         </div>
 
         <section class="glass-card">
-          <p class="show-status">No upcoming shows logged. Check back soon.</p>
+          <p class="show-status">No upcoming shows logged.</p>
 
           <div class="show-card">
             <span>status</span>
@@ -512,25 +667,33 @@
         </section>
       </article>
 
-      <!-- CONTACT -->
+      <!-- CONTACT PANEL -->
       <article id="contactPanel" class="panel">
         <div class="panel-heading">
-          <p class="section-label">contact</p>
-          <h2>tap in</h2>
+          <p class="section-label">contact terminal</p>
+          <h2>Tap in</h2>
         </div>
 
-        <section class="glass-card">
-          <p>
-            For music, beats, features, shows, press, or general Ulaville transmissions,
-            use the link hub or socials.
-          </p>
+        <section class="contact-grid">
+          <article class="glass-card">
+            <p class="section-label">social portal</p>
 
-          <div class="link-buttons">
-            <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">Linktree</a>
-            <a href="https://www.instagram.com/uleezy4sheezy/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://bsky.app/profile/uleezy4sheezy.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
-            <a href="https://epkbuilder.com/site/ula-uleezy-the-ulanator" target="_blank" rel="noopener noreferrer">Press Kit</a>
-          </div>
+            <p>
+              For music, beats, features, shows, press, or general Ulaville
+              transmissions, use the link hub or socials.
+            </p>
+
+            <div class="link-buttons">
+              <a href="https://linktr.ee/uleezy" target="_blank" rel="noopener noreferrer">Linktree</a>
+              <a href="https://www.instagram.com/uleezy4sheezy/" target="_blank" rel="noopener noreferrer">Instagram</a>
+              <a href="https://bsky.app/profile/uleezy4sheezy.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
+              <a href="https://uleezy.newgrounds.com/" target="_blank" rel="noopener noreferrer">Newgrounds</a>
+              <a href="https://www.youtube.com/@ula619" target="_blank" rel="noopener noreferrer">YouTube</a>
+              <a href="https://soundcloud.com/la_the_anda" target="_blank" rel="noopener noreferrer">SoundCloud</a>
+              <a href="https://ulamusic.bandcamp.com/" target="_blank" rel="noopener noreferrer">Bandcamp</a>
+              <a href="https://epkbuilder.com/site/ula-uleezy-the-ulanator" target="_blank" rel="noopener noreferrer">Press Kit</a>
+            </div>
+          </article>
         </section>
       </article>
     </main>
@@ -538,11 +701,67 @@
     <footer class="site-footer">
       <p>ULA / ULEEZY // ULAVILLE IS UNDER ACTIVE CONSTRUCTION</p>
 
-      <button id="returnToTitle" type="button">
+      <button id="returnToTitleButton" type="button">
         return to title
       </button>
     </footer>
   </div>
+
+  <!-- LOCAL PLAYLIST DATA FOR SCRIPT.JS -->
+  <script id="localPlaylistData" type="application/json">
+    [
+      {
+        "title": "The Ulanator",
+        "artist": "Ula",
+        "src": "music/the%20ulanator.mp3"
+      },
+      {
+        "title": "The Ulatron",
+        "artist": "Ula",
+        "src": "music/the%20ulatron.mp3"
+      },
+      {
+        "title": "Ula",
+        "artist": "Ula",
+        "src": "music/ula.mp3"
+      },
+      {
+        "title": "Uleezy",
+        "artist": "Ula",
+        "src": "music/uleezy.mp3"
+      }
+    ]
+  </script>
+
+  <!-- GALLERY DATA FOR SCRIPT.JS -->
+  <script id="galleryData" type="application/json">
+    [
+      {
+        "title": "pic1",
+        "src": "images/pic1.jpg"
+      },
+      {
+        "title": "pic2",
+        "src": "images/pic2.jpg"
+      },
+      {
+        "title": "pic3",
+        "src": "images/pic3.jpg"
+      },
+      {
+        "title": "pic4",
+        "src": "images/pic4.jpg"
+      },
+      {
+        "title": "pic5",
+        "src": "images/pic5.jpg"
+      },
+      {
+        "title": "ula banner",
+        "src": "images/ula%20banner.jpg"
+      }
+    ]
+  </script>
 
   <script src="script.js"></script>
 </body>
