@@ -1946,3 +1946,101 @@ input[type="range"] {
     padding: 0.85rem;
   }
 }
+/* EDGE BANNERS */
+
+.edge-banners {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  pointer-events: none;
+}
+
+.edge-banner {
+  position: fixed;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.92;
+  filter:
+    drop-shadow(0 0 18px rgba(255, 211, 106, 0.24))
+    drop-shadow(0 0 28px rgba(255, 79, 195, 0.18));
+}
+
+.edge-banner-top {
+  top: 0;
+  left: 50%;
+  width: min(100vw, 1500px);
+  height: clamp(54px, 8vw, 104px);
+  transform: translateX(-50%);
+  object-fit: cover;
+  object-position: center;
+  mask-image: linear-gradient(to bottom, black 68%, transparent 100%);
+}
+
+.edge-banner-bottom {
+  bottom: 0;
+  left: 50%;
+  width: min(100vw, 1500px);
+  height: clamp(54px, 8vw, 104px);
+  transform: translateX(-50%);
+  object-fit: cover;
+  object-position: center;
+  mask-image: linear-gradient(to top, black 68%, transparent 100%);
+}
+
+.edge-banner-left {
+  left: 0;
+  top: 50%;
+  width: clamp(78px, 9vw, 150px);
+  height: min(78vh, 820px);
+  transform: translateY(-50%);
+  object-fit: cover;
+  object-position: center;
+  mask-image: linear-gradient(to right, black 68%, transparent 100%);
+}
+
+.edge-banner-right {
+  right: 0;
+  top: 50%;
+  width: clamp(78px, 9vw, 150px);
+  height: min(78vh, 820px);
+  transform: translateY(-50%);
+  object-fit: cover;
+  object-position: center;
+  mask-image: linear-gradient(to left, black 68%, transparent 100%);
+}
+
+/* Give the actual site a little breathing room so banners don't sit on top of everything */
+.title-screen {
+  padding-top: clamp(5rem, 9vw, 7.5rem);
+  padding-bottom: clamp(4rem, 9vw, 7rem);
+}
+
+.site-shell {
+  padding-top: clamp(4.6rem, 8vw, 6.8rem);
+  padding-bottom: clamp(4.6rem, 8vw, 6.8rem);
+}
+
+/* Keep banners from crushing mobile */
+@media (max-width: 820px) {
+  .edge-banner-left,
+  .edge-banner-right {
+    display: none;
+  }
+
+  .edge-banner-top,
+  .edge-banner-bottom {
+    height: 52px;
+    opacity: 0.78;
+  }
+
+  .title-screen {
+    padding-top: 4.7rem;
+    padding-bottom: 4rem;
+  }
+
+  .site-shell {
+    padding-top: 3.8rem;
+    padding-bottom: 3.8rem;
+  }
+}
